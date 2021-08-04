@@ -1,4 +1,4 @@
-# 👋 Welcome to AcceleratorLAB Front-End 👋
+# 👋 Front-End 👋
 
 This application is developed on Windows OS.
 
