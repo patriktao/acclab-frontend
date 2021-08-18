@@ -1,6 +1,6 @@
-@import '~antd/dist/antd.less';
-
-.content { 
+/* @import '~antd/dist/antd.less';
+ */
+.content {
   padding: 2rem;
   background-color: #fff;
 }
@@ -9,14 +9,16 @@
   display: grid;
   align-content: left;
   justify-content: left;
-  padding-top:1rem;
-  padding-left:3rem;
+  padding-top: 2rem;
+  padding-left: 3rem;
+  line-height: 35px;
 }
 
-.sidebar-header-text{
+.sidebar-header-text {
   color: white;
   text-align: left;
-  font-size: 28px;
+  font-size: 30px;
+  font-weight: 600;
 }
 
 .sub-header-background {
@@ -31,14 +33,26 @@
 }
 
 .sideBar {
+  background: #363740 !important;
   height: 100vh;
 }
 
 .menu {
   font-size: 16px !important;
   margin-top: 2rem !important;
+  background: #363740 !important;
 }
 
-.footer{
+.menu-item {
+  height: 65px !important;
+}
+
+.footer {
   text-align: center;
+}
+
+.anticon {
+  font-size: 16px !important;
+  padding-right: 15px;
+  padding-left: 20px;
 }

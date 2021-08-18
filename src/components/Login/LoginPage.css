@@ -64,19 +64,19 @@
   height: 444px;
 }
 
-.login-header{
-    text-align: left;
-    padding-top: 4rem;
-    padding-left: 4rem;
-    position:absolute;
-    font-size: 24px;
-    font-weight: bold;
-    position:relative;
+.login-header {
+  text-align: left;
+  padding-top: 4rem;
+  padding-left: 55px;
+  position: absolute;
+  font-size: 24px;
+  font-weight: bold;
+  position: relative;
 }
 
-.login-form-container{
-    padding-top: 2rem;
-    padding-left: 4rem;
+.login-form-container {
+  padding-top: 30px;
+  padding-left: 55px;
 }
 
 /* For 13.3 inch screen */
@@ -87,11 +87,17 @@
   .header {
     font-size: 55px;
   }
-  .login-style {
+  .login-container-style {
     width: 360px !important;
     height: 394px !important;
   }
-  .login-position {
-    padding-left: 4rem !important;
+  .login-container {
+    padding-left: 8rem !important;
+  }
+  .login-form-container {
+    padding-top: 25px;
+  }
+  .ant-form-item-explain.ant-form-item-explain-error{
+    font-size: 12px;
   }
 }

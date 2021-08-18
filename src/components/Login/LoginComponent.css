@@ -1,0 +1,62 @@
+.login-forms .ant-form-item {
+  margin-bottom: 20px;
+}
+
+.login-form .ant-input-affix-wrapper {
+  width: 290px;
+  height: 60px;
+  border-radius: 16px;
+  color: black;
+}
+
+.login-form .ant-input-affix-wrapper:hover {
+  border-color: #00bdf2;
+  border-right-width: 1px !important;
+}
+
+.login-button .ant-btn-primary {
+  width: 290px;
+  border-radius: 16px;
+  height: 60px;
+  font-size: large;
+  background: #00bdf2;
+  border-color: #00bdf2;
+}
+
+.login-form .anticon {
+  padding-left: 10px;
+  padding-right: 15px;
+}
+
+.login-button .ant-btn-primary:hover,
+.login-button .ant-btn-primary:focus {
+  color: #fff;
+  border-color: #00bdf2;
+  background: #00bdf2;
+}
+
+.login-button .ant-col-offset-8 {
+  margin-left: 0;
+}
+
+/* For 13.3 inch screen */
+@media (max-width: 1366px) {
+  .ant-input {
+    font-size: 12px;
+  }
+
+  .login-forms .ant-form-item {
+    margin-bottom: 10   px;
+  }
+
+  .login-form .ant-input-affix-wrapper {
+    width: 250px;
+    height: 50px;
+  }
+
+  .login-button .ant-btn-primary {
+    width: 250px;
+    height: 50px;
+    font-size:medium;
+  }
+}

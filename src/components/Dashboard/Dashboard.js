@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { Link, BrowserRouter as Router } from "react-router-dom";
 import NavBar from "../NavBar/NavBar";
 import TopicMenu from "../TopicMenu";
-import "./Dashboard.less";
+import "./Dashboard.css";
 import { Layout, Menu } from "antd";
 import {
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
+  PieChartOutlined,
+  SnippetsOutlined,
+  BarsOutlined,
+  BarChartOutlined,
+  HistoryOutlined,
 } from "@ant-design/icons";
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -47,7 +49,10 @@ const App = () => {
           trigger={null}
         >
           <div className="sidebar-header">
-            <div className="sidebar-header-text">Accelerator{<br />}Lab</div>
+            <div className="sidebar-header-text">
+              Accelerator <br />
+              <span className="blue-text">Lab</span>
+            </div>
           </div>
           <Menu
             className="menu"
@@ -55,31 +60,39 @@ const App = () => {
             mode="inline"
             defaultSelectedKeys={["5"]}
           >
-            <Menu.Item style={{ height: 55 }} key="1" icon={<UserOutlined />}>
+            <Menu.Item
+              className="menu-item"
+              key="1"
+              icon={<PieChartOutlined />}
+            >
               <Link to="/dashboard">
                 <span>Dashboard</span>
               </Link>
             </Menu.Item>
             <Menu.Item
-              style={{ height: 55 }}
+              className="menu-item"
               key="2"
-              icon={<VideoCameraOutlined />}
+              icon={<SnippetsOutlined />}
             >
               <Link to="/inventory">
                 <span>Inventory</span>
               </Link>
             </Menu.Item>
-            <Menu.Item style={{ height: 55 }} key="3" icon={<UploadOutlined />}>
+            <Menu.Item className="menu-item" key="3" icon={<BarsOutlined />}>
               <Link to="/products">
                 <span>Final Products</span>
               </Link>
             </Menu.Item>
-            <Menu.Item style={{ height: 55 }} key="4" icon={<UserOutlined />}>
+            <Menu.Item
+              className="menu-item"
+              key="4"
+              icon={<BarChartOutlined />}
+            >
               <Link to="/reports">
                 <span>Reports</span>
               </Link>
             </Menu.Item>
-            <Menu.Item style={{ height: 55 }} key="5" icon={<UserOutlined />}>
+            <Menu.Item className="menu-item" key="5" icon={<HistoryOutlined />}>
               <Link to="/history">
                 <span>History</span>
               </Link>
@@ -93,9 +106,7 @@ const App = () => {
               This is the content of the page
             </div>
           </Content>
-          <Footer className="footer">
-            Accelerator Lab ©2021 Tetra Pak
-          </Footer>
+          <Footer className="footer">Accelerator Lab ©2021 Tetra Pak</Footer>
         </Layout>
       </Layout>
     </Router>
