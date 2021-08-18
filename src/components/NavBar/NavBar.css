@@ -1,0 +1,22 @@
+.navbar {
+  background-color: white;
+  padding-left: 2rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+@media (min-width: 1000px) {
+  .menu-button {
+    display: none !important;
+  }
+}
+
+.logo {
+  height: 32px;
+  margin-left: 1rem;
+}
+
+.menu-button {
+  width: 32px !important;
+  height: 32px !important;
+}
