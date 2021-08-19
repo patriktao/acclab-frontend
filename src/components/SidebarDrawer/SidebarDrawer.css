@@ -1,0 +1,19 @@
+.menu-button .ant-btn-primary {
+  margin-left: 1.5rem;
+  width: 35px;
+  height: 35px;
+  background: #00bdf2;
+  border-color: #00bdf2;
+}
+
+.ant-drawer-content-wrapper {
+  width: 270px !important;
+}
+
+@media (min-width: 1000px) {
+  .menu-button {
+    display: none !important;
+  }
+}
+
+

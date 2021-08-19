@@ -1,23 +1,17 @@
 /* @import '~antd/dist/antd.less';
  */
-.content {
-  padding: 2rem;
-  background-color: #fff;
-}
 
 .sidebar-header {
   display: grid;
-  align-content: left;
-  justify-content: left;
-  padding-top: 2rem;
-  padding-left: 3rem;
-  line-height: 35px;
+  align-content: center;
+  justify-content: center;
+  height:65px;
 }
 
 .sidebar-header-text {
   color: white;
   text-align: left;
-  font-size: 30px;
+  font-size: 26px;
   font-weight: 600;
 }
 
@@ -25,34 +19,43 @@
   background: #fff;
 }
 
-.layout-background {
-  background: #fff;
-  padding: 1rem;
-  min-height: 560px;
-  font-size: 16px;
-}
-
-.sideBar {
+.sidebar {
   background: #363740 !important;
   height: 100vh;
 }
 
-.menu {
+.ant-menu.sidebar-menu {
   font-size: 16px !important;
   margin-top: 2rem !important;
   background: #363740 !important;
 }
 
-.menu-item {
+.sidebar-item {
   height: 65px !important;
+}
+
+.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected{
+  background-color: rgba(221, 226, 255, 0.10);
+}
+
+.ant-menu-dark .ant-menu-item-selected > a, .ant-menu-dark .ant-menu-item-selected > span > a, .ant-menu-dark .ant-menu-item-selected > a:hover, .ant-menu-dark .ant-menu-item-selected > span > a:hover{
+  color: #DDE2FF;
+}
+
+.ant-menu-dark .ant-menu-item-selected .ant-menu-item-icon, .ant-menu-dark .ant-menu-item-selected .anticon.ant-menu-dark .ant-menu-item-selected .ant-menu-item-icon, .ant-menu-dark .ant-menu-item-selected .anticon{
+  color:#DDE2FF;
 }
 
 .footer {
   text-align: center;
 }
 
-.anticon {
-  font-size: 16px !important;
+.sidebar-item .anticon {
   padding-right: 15px;
   padding-left: 20px;
+  font-size: 16px;
+}
+
+.content {
+  margin: 24px 24px 0;
 }

@@ -1,8 +1,15 @@
 .navbar {
   background-color: white;
-  padding-left: 2rem;
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
+  height: 65px;
+  display: flex;
+  align-content: center;
+  align-items: center;
+}
+
+h2 {
+  padding-left: 1.5rem;
+  margin-bottom: 0px;
+  font-weight: 500;
 }
 
 @media (min-width: 1000px) {
@@ -11,7 +18,3 @@
   }
 }
 
-.menu-button {
-  width: 32px !important;
-  height: 32px !important;
-}

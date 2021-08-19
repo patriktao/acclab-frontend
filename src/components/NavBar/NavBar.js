@@ -1,31 +1,21 @@
 import React, { useState } from "react";
-import { Drawer, Button } from "antd";
-import { LeftSquareOutlined } from "@ant-design/icons";
 import "./NavBar.css";
+import SidebarDrawer from "../SidebarDrawer/SidebarDrawer.js";
+import PropTypes from 'prop-types';
 
-const NavBar = ({ menu }) => {
-  const [visible, setVisible] = useState(false);
-
+const NavBar = ({header}) =>  {
   return (
     <nav className="navbar">
-      <Button
-        className="menu-button"
-        type="primary"
-        icon={<LeftSquareOutlined />}
-        onClick={() => setVisible(true)}
-        display="none"
-      />
-      <Drawer
-        title="Topics"
-        placement="left"
-        width={270}
-        onClick={() => setVisible(false)}
-        onClose={() => setVisible(false)}
-        visible={visible}
-      > 
-        {menu}
-     </Drawer>
+      <SidebarDrawer/>
+      <h2> {header} </h2>
     </nav>
   );
 };
-export default NavBar;  
+
+NavBar.propTypes = {
+  header: PropTypes.string
+}
+
+export default NavBar;
+
+
