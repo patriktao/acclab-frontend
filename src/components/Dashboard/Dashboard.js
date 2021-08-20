@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link, BrowserRouter as Router } from "react-router-dom";
 import "./Dashboard.css";
-import { Layout, Menu } from "antd";
-import { Row, Col } from "antd";
+
+/* Importing UI-Components */
 import {
   PieChartFilled,
   SnippetsOutlined,
@@ -10,10 +10,12 @@ import {
   BarChartOutlined,
   HistoryOutlined,
 } from "@ant-design/icons";
-
-/* Importing Components */
+import { Layout, Menu } from "antd";
+import { Row, Col } from "antd";
 import NavBar from "../NavBar/NavBar";
-import ExpiringTable from "../ExpiringIngredients/ExpiringTable";
+import ExpiringTable from "../ExpiringTable/ExpiringTable";
+import ShoppingTable from "../ShoppingTable/ShoppingTable";
+import DashboardCards from "./DashboardCards";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -89,16 +91,35 @@ const App = () => {
           </Menu>
         </Sider>
         <Layout>
-          <NavBar header={"Dashboard"} />
+          <NavBar header={" "} />
           <Content className="content">
+            <div className="content-header">
+              <h1> Dashboard </h1>
+              <span> Get an overview of the lab here </span>
+            </div>
+            <Row>
+              <Col span={14} style={{ marginTop: "25px" }}>
+                <DashboardCards className="card-design" />
+              </Col>
+              <Col span={10} style={{ marginTop: "25px" }}></Col>
+            </Row>
             <div>
-              <Row gutter={[ ]}> Here will be some small components </Row>
-              <Row gutter={[150, 100]}>
-                <Col span={14} style={{marginTop: "55px"}}>
-                  <ExpiringTable />
+              <Row gutter={[50, 100]}>
+                <Col span={14} style={{ marginTop: "25px" }}>
+                  <div className="expiration-table">
+                    <span className="sub-header-table">TODAY, JULY 6 2021</span>
+                    <br />
+                    <h2 className="main-header-table">Expiring Products</h2>
+                    <ExpiringTable />
+                  </div>
                 </Col>
-                <Col span={10} style={{marginTop: "55px"}}>
-                  <ExpiringTable />
+                <Col span={10} style={{ marginTop: "25px" }}>
+                  <div className="expiration-table">
+                    <span className="sub-header-table">RESTOCK</span>
+                    <br />
+                    <h1 className="main-header-table">Shopping List</h1>
+                    <ShoppingTable />
+                  </div>
                 </Col>
               </Row>
             </div>
