@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy":"https://localhost:4000",
+  "proxy": "https://localhost:4000",
   "main": "index.js",
   "dependencies": {
     "@craco/craco": "^6.2.0",

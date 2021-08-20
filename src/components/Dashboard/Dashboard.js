@@ -13,9 +13,10 @@ import {
 import { Layout, Menu } from "antd";
 import { Row, Col } from "antd";
 import NavBar from "../NavBar/NavBar";
-import ExpiringTable from "../ExpiringTable/ExpiringTable";
-import ShoppingTable from "../ShoppingTable/ShoppingTable";
-import DashboardCards from "./DashboardCards";
+import ExpiringTable from "./ExpiringTable/ExpiringTable";
+import ShoppingTable from "./ShoppingTable/ShoppingTable";
+import DashboardCards from "./DashboardCards/DashboardCards";
+import EmptyComponent from "./EmptyComponent/EmptyComponent";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -94,17 +95,25 @@ const App = () => {
           <NavBar header={" "} />
           <Content className="content">
             <div className="content-header">
-              <h1> Dashboard </h1>
-              <span> Get an overview of the lab here </span>
+              <div>
+                <h1> Dashboard </h1>
+                <span> Get an overview of the lab here </span>
+              </div>
+              <div className="introduction-header">
+                <span> Welcome to Accelerator<span className="blue-text">LAB</span>,</span> <br />
+                <h2>Patrik Tao</h2>
+              </div>
             </div>
-            <Row>
+            <Row gutter={[30, 100]}>
               <Col span={14} style={{ marginTop: "25px" }}>
-                <DashboardCards className="card-design" />
+                <DashboardCards />
               </Col>
-              <Col span={10} style={{ marginTop: "25px" }}></Col>
+              <Col span={10} style={{ marginTop: "25px" }}>
+                <EmptyComponent />
+              </Col>
             </Row>
             <div>
-              <Row gutter={[50, 100]}>
+              <Row gutter={[30, 100]}>
                 <Col span={14} style={{ marginTop: "25px" }}>
                   <div className="expiration-table">
                     <span className="sub-header-table">TODAY, JULY 6 2021</span>
@@ -117,7 +126,7 @@ const App = () => {
                   <div className="expiration-table">
                     <span className="sub-header-table">RESTOCK</span>
                     <br />
-                    <h1 className="main-header-table">Shopping List</h1>
+                    <h2 className="main-header-table">Shopping List</h2>
                     <ShoppingTable />
                   </div>
                 </Col>

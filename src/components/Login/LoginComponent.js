@@ -37,7 +37,7 @@ const LoginComponent = () => {
             rules={[
               {
                 required: true,
-                message: "Please input your email!",
+                message: "Please input your email",
               },
             ]}
           >
@@ -51,7 +51,7 @@ const LoginComponent = () => {
             rules={[
               {
                 required: true,
-                message: "Please input your password!",
+                message: "Please input your password",
               },
             ]}
           >
