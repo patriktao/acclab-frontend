@@ -2,8 +2,6 @@ import React from "react";
 import { Form, Input, Button } from "antd";
 import { MailOutlined, EyeOutlined } from "@ant-design/icons";
 import "./LoginComponent.css";
-import { Link, BrowserRouter as Router } from "react-router-dom";
-import App from "../Dashboard/Dashboard";
 
 const LoginComponent = () => {
   const onFinish = (values) => {
@@ -13,7 +11,7 @@ const LoginComponent = () => {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-
+  
   return (
     <div className="login-forms">
       <Form

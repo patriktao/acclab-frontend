@@ -1,49 +1,83 @@
-import { Card, Col, Row } from "antd";
+import { Card, Col, Row, Divider } from "antd";
 import "./DashboardCards.css";
-import { FileOutlined, FileExclamationOutlined, FileSyncOutlined, FileDoneOutlined} from "@ant-design/icons";
+import {
+  SnippetsOutlined,
+  FileExclamationOutlined,
+  FileSyncOutlined,
+  FileDoneOutlined,
+} from "@ant-design/icons";
+
 
 const DashboardCards = () => {
   return (
     <div className="site-card-wrapper">
-      <Row gutter={(50, 16)}>
+      <Row gutter={50,24}>
         <Col span={6}>
           <Card className="card" bordered={false}>
-            <div className="icon-material-background">
-              <FileOutlined className="icon-material" />
+            <div className="card-container">
+              <div>
+                <span className="card-header">Total Materials</span>
+                <br />
+                <span className="card-value">46</span>
+              </div>
+              <div>
+                <div className="icon-material-background">
+                  <SnippetsOutlined className="icon-material" />
+                </div>
+              </div>
             </div>
-            <span className="card-value">46</span>
-            <br />
-            <span className="card-header">Total Materials</span>
+            <Divider style={{margin:"2rem 0 5px 0"}}/>  
           </Card>
         </Col>
         <Col span={6}>
           <Card className="card" bordered={false}>
-            <div className="icon-expired-background">
-              <FileExclamationOutlined className="icon-expired" />
+          <div className="card-container">
+              <div>
+                <span className="card-header">Expired Materials</span>
+                <br />
+                <span className="card-value">2</span>
+              </div>
+              <div>
+                <div className="icon-expired-background">
+                  <FileExclamationOutlined className="icon-expired" />
+                </div>
+              </div>
             </div>
-            <span className="card-value">2</span>
-            <br />
-            <span className="card-header">Expired Materials</span>
+            <Divider style={{margin:"2rem 0 5px 0"}}/>
           </Card>
         </Col>
         <Col span={6}>
           <Card className="card" bordered={false}>
-            <div className="icon-progress-background">
-              <FileSyncOutlined className="icon-progress" />
+          <div className="card-container">
+              <div>
+                <span className="card-header">Reports In Progress</span>
+                <br />
+                <span className="card-value">5</span>
+              </div>
+              <div>
+                <div className="icon-progress-background">
+                  <FileSyncOutlined className="icon-progress" />
+                </div>
+              </div>
             </div>
-            <span className="card-value">5</span>
-            <br />
-            <span className="card-header">Reports In Progress</span>
+            <Divider style={{margin:"2rem 0 5px 0"}}/>
           </Card>
         </Col>
         <Col span={6}>
           <Card className="card" bordered={false}>
-            <div className="icon-finished-background">
-              <FileDoneOutlined className="icon-finished" />
+          <div className="card-container">
+              <div>
+                <span className="card-header">Finished Reports</span>
+                <br />
+                <span className="card-value">3</span>
+              </div>
+              <div>
+                <div className="icon-finished-background">
+                  <FileDoneOutlined className="icon-finished" />
+                </div>
+              </div>
             </div>
-            <span className="card-value">3</span>
-            <br />
-            <span className="card-header">Finished Reports</span>
+            <Divider style={{margin:"2rem 0 5px 0"}}/>
           </Card>
         </Col>
       </Row>

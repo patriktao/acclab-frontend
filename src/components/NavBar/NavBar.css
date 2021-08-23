@@ -1,9 +1,51 @@
 .navbar {
-  background-color: white;
-  height: 65px;
-  display: flex;
+  height: 48px;
+  line-height: 48px;
+  background: white;
+  display:grid;
+  grid-template-columns: 1fr 1fr;
   align-content: center;
   align-items: center;
+ /*  box-shadow: 0 1px 4px rgb(0 21 41 / 8%); */
+  box-shadow: 0 0 4px 4px rgb(0 0 0 / 8%);
+  min-width: 100%;
+  position:relative;
+  top:0;
+  overflow:hidden;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+.account-component{
+  display:flex;
+  justify-content: flex-end;
+}
+
+.account-layout{
+  display: flex;
+  align-items: center;
+  column-gap: 12px;
+  padding-right:20px;
+}
+
+.divider-component{
+  display:flex;
+  align-items: center;  
+  padding-right: 1.5rem;
+}
+
+.v-divider{
+  border-left: 1px solid #0000001A;
+  height: 26px;
+}
+
+.account-name{
+  font-size: 14px;
+  color: #404040;
+}
+
+.drawer-layout{
+  text-align: left;
 }
 
 h2 {
@@ -17,4 +59,3 @@ h2 {
     display: none !important;
   }
 }
-

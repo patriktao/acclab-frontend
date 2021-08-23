@@ -4,7 +4,7 @@ import "./SidebarDrawer.css";
 import { Menu, Drawer, Button, Divider, Layout } from "antd";
 import { Link } from "react-router-dom";
 import {
-  MenuUnfoldOutlined,
+  MenuOutlined,
   PieChartFilled,
   SnippetsOutlined,
   BarsOutlined,
@@ -30,11 +30,10 @@ const SidebarDrawer = () => {
     <>
       <nav className="menu-button">
         <Button
-          type="primary"
           className="button"
           onClose={() => setIsVisible(false)}
           onClick={showDrawer}
-          icon={<MenuUnfoldOutlined />}
+          icon={<MenuOutlined />}
         />
       </nav>
       <div className="drawer">

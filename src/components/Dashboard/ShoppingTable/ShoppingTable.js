@@ -1,26 +1,38 @@
 import { Table } from "antd";
 import { shopping_columns  } from "./ShoppingColumns";
-import { shopping_data } from "./ShoppingData";
+import { useState, useEffect } from "react";
+import "./ShoppingTable.css"
 const axios = require("axios");
 
 
 const ShoppingTable= () => {
+  const [ShoppingList, setShoppingList] = useState([]);
 
-  //Get all expiring ingredients from API-endpoint
-  async function ShoppingList(){
-    await axios.get('https://localhost:4000/shoppinglist')
-    .then(res => {
-      console.log(res.data)
-    });
-  };
+  useEffect(() => {
+    const fetchShoppingList = async () => {
+      try {
+        const response = await axios.get("/shopping_list");
+        setShoppingList(response.data);
+      } catch (err) {
+        if (err.response) {
+          // Not in the 200 response range.
+          console.log(err.response.data);
+          console.log(err.response.status);
+          console.log(err.response.headers);
+        } else{
+          console.log(`Error: ${err.message}`)
+        }
+      }
+    }
+    fetchShoppingList();
+  }, []);
 
-  ShoppingList();
 
   return (
     <Table
-      className="table-header"
+      className="table-content"
       columns={shopping_columns}
-      dataSource={shopping_data}
+      dataSource={ShoppingList}
     />
   );
 };

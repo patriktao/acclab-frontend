@@ -1,27 +1,37 @@
+import React from "react";
 import { Table } from "antd";
 import { expiring_columns } from "./ExpiringColumns";
-import { expiring_data } from "./ExpiringData";
 import "./ExpiringTable.css";
-const axios = require("axios");
-
+import { axios } from "../../../Axios.js";
+import { useState, useEffect } from "react";
 
 const ExpiringTable = () => {
+  const [data, setData] = useState([]);
 
-  //Get all expiring ingredients from API-endpoint
-  async function ExpiringIngredients(){
-    await axios.get('https://localhost:4000/expiring_ingredients')
-    .then(res => {
-      console.log(res.data)
-    });
-  };
-
-  ExpiringIngredients();
+  useEffect(() => {
+    const fetchIngredients = async () => {
+      try {
+        const response = await axios.get("/expiring_ingredients");
+        setData(response.data);
+      } catch (err) {
+        if (err.response) {
+          // Not in the 200 response range.
+          console.log(err.response.data);
+          console.log(err.response.status);
+          console.log(err.response.headers);
+        } else {
+          console.log(`Error: ${err.message}`);
+        }
+      }
+    };
+    fetchIngredients();
+  }, []);
 
   return (
     <Table
       className="table-header"
       columns={expiring_columns}
-      dataSource={expiring_data}
+      dataSource={data}
     />
   );
 };
