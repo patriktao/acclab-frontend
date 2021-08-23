@@ -1,74 +1,6 @@
-/* @import '~antd/dist/antd.less';
- */
-
+/* Common CSS */
 .app-layout {
   height: 100vh;
-}
-
-/* Sidebar */
-.ant-layout-sider {
-  width: 270px !important;
-  overflow: hidden;
-}
-
-.sidebar {
-  background: #363740 !important;
-  box-shadow: 2px 0 8px 0 rgb(29 35 41 / 5%);
-}
-
-.sidebar-wrapper {
-  display: grid;
-  align-content: center;
-  justify-content: center;
-  height: 5.5rem;
-}
-
-.sidebar-header {
-  color: white;
-  text-align: left;
-  font-size: 1.3rem;
-  font-weight: 600;
-}
-
-.sidebar-item {
-  height: 65px !important;
-}
-
-.sub-header-background {
-  background: #fff;
-}
-
-.ant-menu.sidebar-menu {
-  font-size: 14px;
-  margin-top: 0rem;
-  background: #363740;
-}
-
-.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
-  background-color: rgba(221, 226, 255, 0.1);
-}
-
-.ant-menu-dark .ant-menu-item-selected > a,
-.ant-menu-dark .ant-menu-item-selected > span > a,
-.ant-menu-dark .ant-menu-item-selected > a:hover,
-.ant-menu-dark .ant-menu-item-selected > span > a:hover {
-  color: #dde2ff;
-}
-
-.ant-menu-dark .ant-menu-item-selected .ant-menu-item-icon,
-.ant-menu-dark
-  .ant-menu-item-selected
-  .anticon.ant-menu-dark
-  .ant-menu-item-selected
-  .ant-menu-item-icon,
-.ant-menu-dark .ant-menu-item-selected .anticon {
-  color: #dde2ff;
-}
-
-.sidebar-item .anticon {
-  padding-right: 1rem;
-  padding-left: 1.75rem;
-  font-size: 1rem;
 }
 
 /* Layout */
@@ -82,6 +14,11 @@
   background: #f6f6f6;
 }
 
+.content-wrapper {
+  padding: 1rem 2rem 1rem;
+  flex: 1;
+}
+
 /* Content */
 .content-layout {
   overflow-x: hidden;
@@ -90,22 +27,19 @@
   flex-wrap: nowrap;
 }
 
-.content-wrapper {
-  padding: 1rem 2rem 1rem;
-  flex: 1;
-}
-
 .introduction-header {
   text-align: right;
   color: #828282;
 }
 
-.table {
-  border-radius: 12px;
-  background: white;
-  padding: 24px 24px 0px 24px;
-  box-shadow: 0px 16px 16px rgba(17, 17, 17, 5%);
-  overflow-x: auto;
+.content-sub-header {
+  color: #777777;
+  font-weight: 500;
+}
+
+.table-wrapper {
+  display: grid;
+  row-gap: 2rem;
 }
 
 /* Content CSS */
@@ -118,28 +52,43 @@ h1 {
 
 h2 {
   font-weight: 600 !important;
-  font-size: 18px;
+  font-size: 16px;
   margin-bottom: 0;
   color: #404040;
 }
 
-.content-sub-header {
-  font-size: 14px !important;
-  color: #777777;
-  font-weight: 500;
+@media (min-width: 1200px) {
+  .content-sub-header {
+    font-size: 12px;
+  }
+  h1 {
+    font-size: 18px;
+  }
+
+  h2 {
+    font-size: 19px;
+  }
+
+  .table-wrapper {
+    grid-template-columns: 1.4fr 1fr;
+    column-gap: 1rem;
+  }
 }
 
-/* Table Components */
-.main-header-table {
-  padding-bottom: 0.5rem;
-  padding-left: 1rem;
-  margin-bottom: 0.5rem;
-  margin-top: 4px;
-}
+@media (min-width: 1366px) {
+  .content-sub-header {
+    font-size: 14px;
+  }
+  h1 {
+    font-size: 22px;
+  }
 
-.sub-header-table {
-  padding-left: 1rem;
-  font-size: 14px;
-  font-weight: 500;
-  color: #777777;
+  h2 {
+    font-size: 18px;
+  }
+
+  .table-wrapper {
+    grid-template-columns: 1.3fr 1fr;
+    column-gap: 1.5rem;
+  }
 }

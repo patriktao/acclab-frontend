@@ -1,11 +1,10 @@
 import { Table } from "antd";
-import { shopping_columns  } from "./ShoppingColumns";
+import { shopping_columns } from "./ShoppingColumns";
 import { useState, useEffect } from "react";
-import "./ShoppingTable.css"
+import "./ShoppingTable.css";
 const axios = require("axios");
 
-
-const ShoppingTable= () => {
+const ShoppingTable = () => {
   const [ShoppingList, setShoppingList] = useState([]);
 
   useEffect(() => {
@@ -19,21 +18,25 @@ const ShoppingTable= () => {
           console.log(err.response.data);
           console.log(err.response.status);
           console.log(err.response.headers);
-        } else{
-          console.log(`Error: ${err.message}`)
+        } else {
+          console.log(`Error: ${err.message}`);
         }
       }
-    }
+    };
     fetchShoppingList();
   }, []);
 
-
   return (
-    <Table
-      className="table-content"
-      columns={shopping_columns}
-      dataSource={ShoppingList}
-    />
+    <div className="table">
+      <span className="sub-header-table">RESTOCK</span>
+      <br />
+      <h2 className="main-header-table">Shopping List</h2>
+      <Table
+        className="table-content"
+        columns={shopping_columns}
+        dataSource={ShoppingList}
+      />
+    </div>
   );
 };
 

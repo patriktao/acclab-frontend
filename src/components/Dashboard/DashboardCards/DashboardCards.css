@@ -6,7 +6,7 @@
   position: relative;
 }
 
-.card-container{
+.card-container {
   display: grid;
   grid-template-columns: 4fr 1fr;
   align-items: center;
@@ -18,10 +18,8 @@
   display: grid;
   align-items: center;
   justify-items: center;
-  width: 55px;
-  height: 55px;
   border-radius: 12px;
-  background: #2f80ed1A;
+  background: #2f80ed1a;
 }
 
 .icon-expired-background {
@@ -29,10 +27,8 @@
   display: grid;
   align-items: center;
   justify-items: center;
-  width: 55px;
-  height: 55px;
   border-radius: 12px;
-  background: #eb57571A;
+  background: #eb57571a;
 }
 
 .icon-progress-background {
@@ -40,10 +36,8 @@
   display: grid;
   align-items: center;
   justify-items: center;
-  width: 55px;
-  height: 55px;
   border-radius: 12px;
-  background: #FFD2401A;
+  background: #ffd2401a;
 }
 
 .icon-finished-background {
@@ -51,40 +45,147 @@
   display: grid;
   align-items: center;
   justify-items: center;
-  width: 48px;
-  height: 48px;
   border-radius: 12px;
-  background: #29cc971A;
+  background: #29cc971a;
 }
 
 .card-header {
-  font-size: 14px;
   font-weight: 500;
+  font-size: 14px;
   color: #777777;
-  margin-right: 2rem;
+  margin-right: 4rem;
 }
 
 .card-value {
-  font-size: 30px;
   font-weight: 600;
+  font-size: 26px;
   color: #404040;
 }
 
 .icon-material {
   font-size: 22px;
+  display:none;
   color: #2f80ed;
 }
 
 .icon-expired {
   font-size: 22px;
+  display:none;
   color: #eb5757;
 }
 
 .icon-progress {
   font-size: 22px;
+  display:none;
   color: #f2c94c;
 }
+
 .icon-finished {
   font-size: 22px;
+  display:none;
   color: #29cc97;
+}
+
+
+.divider {
+  margin: 2rem 0 5px 0;
+}
+
+@media (min-width: 1100px) {
+
+  .card-header {
+    font-size: 12px;
+  }
+
+  .card-value {
+    font-size: 26px;
+  }
+
+  .divider {
+    margin: 1rem 0 5px 0;
+  }
+
+  .icon-material-background {
+    width: 45px;
+    height: 45px;
+  }
+
+  .icon-expired-background {
+    width: 45px;
+    height: 45px;
+  }
+  .icon-progress-background {
+    width: 45px;
+    height: 45px;
+  }
+  .icon-finished-background {
+    width: 45px;
+    height: 45px;
+  }
+  .divider {
+    margin: 2rem 0 5px 0;
+  }
+  
+.icon-material {
+  font-size: 22px;
+  display:inline;
+  color: #2f80ed;
+}
+
+.icon-expired {
+  font-size: 22px;
+  display:inline;
+  color: #eb5757;
+}
+
+.icon-progress {
+  font-size: 22px;
+  display:inline;
+  color: #f2c94c;
+}
+
+.icon-finished {
+  font-size: 22px;
+  display:inline;
+  color: #29cc97;
+}
+}
+
+@media (min-width: 1366px) {
+  .card-header {
+    font-size: 14px;
+  }
+
+  .card-value {
+    font-size: 30px;
+  }
+
+  .icon-material-background {
+    width: 55px;
+    height: 55px;
+  }
+
+  .icon-expired-background {
+    width: 55px;
+    height: 55px;
+  }
+  .icon-progress-background {
+    width: 55px;
+    height: 55px;
+  }
+  .icon-finished-background {
+    width: 55px;
+    height: 55px;
+  }
+  .divider {
+    margin: 2rem 0 5px 0;
+  }
+
+  
+}
+
+@media (min-width: 1600px) {
+  .divider {
+    margin: 3rem 0 5px 0;
+  }
 }

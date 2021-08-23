@@ -33,7 +33,7 @@ export const expiring_columns = [
     title: "Priority",
     dataIndex: "priority",
     key: "priority",
-    render: (priority) => (
+    /* render: (priority) => (
       <div
         style={{
           display: "grid",
@@ -42,6 +42,6 @@ export const expiring_columns = [
         }}
       >
       </div>
-    ),
+    ), */
   },
 ];

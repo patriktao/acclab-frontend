@@ -10,7 +10,7 @@
   width: 270px !important;
 }
 
-@media (min-width: 1000px) {
+@media (min-width: 1060px) {
   .menu-button {
     display: none !important;
   }

@@ -26,7 +26,7 @@ const DashboardCards = () => {
                 </div>
               </div>
             </div>
-            <Divider style={{margin:"2rem 0 5px 0"}}/>  
+            <Divider className="divider"/>  
           </Card>
         </Col>
         <Col span={6}>
@@ -43,7 +43,7 @@ const DashboardCards = () => {
                 </div>
               </div>
             </div>
-            <Divider style={{margin:"2rem 0 5px 0"}}/>
+            <Divider className="divider"/>
           </Card>
         </Col>
         <Col span={6}>
@@ -60,7 +60,7 @@ const DashboardCards = () => {
                 </div>
               </div>
             </div>
-            <Divider style={{margin:"2rem 0 5px 0"}}/>
+            <Divider className="divider"/>
           </Card>
         </Col>
         <Col span={6}>
@@ -77,7 +77,7 @@ const DashboardCards = () => {
                 </div>
               </div>
             </div>
-            <Divider style={{margin:"2rem 0 5px 0"}}/>
+            <Divider className="divider"/>
           </Card>
         </Col>
       </Row>

@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, Tooltip } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import "./ShoppingTable";
 
@@ -31,9 +31,11 @@ export const shopping_columns = [
           alignContent: "center",
         }}
       >
-        <Button type="primary" className="shopping-button" danger>
-          <DeleteOutlined style={{ fontSize: "18px" }} />{" "}
-        </Button>
+        <Tooltip title="Remove from list">
+          <Button type="primary" className="shopping-button" danger>
+            <DeleteOutlined style={{ fontSize: "18px" }} />{" "}
+          </Button>
+        </Tooltip>
       </div>
     ),
   },
