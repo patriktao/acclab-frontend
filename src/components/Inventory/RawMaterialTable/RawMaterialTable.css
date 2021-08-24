@@ -1,9 +1,24 @@
+/* Button Styling */
+.edit-button{
+  padding:13px;
+  width:16px;
+  height:16px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: wrap;
+  outline: none;
+}
+
+
+/* Table Styling */
 .table {
   border-radius: 12px;
   background: white;
   padding: 24px 24px 0px 24px;
   box-shadow: 0px 16px 16px rgba(17, 17, 17, 5%);
-  overflow-x:auto;
+  overflow-x: auto;
 }
 
 .sub-header-table {
@@ -36,6 +51,8 @@
   font-weight: 500;
 }
 
+
+/* Responsive Styling */
 @media (min-width: 960px) {
   .ant-table {
     font-size: 12px;
@@ -46,7 +63,7 @@
   }
 
   .sub-header-table {
-    font-size: 12px;
+    font-size: 12px !important;
   }
 }
 

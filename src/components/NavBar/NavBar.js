@@ -1,23 +1,18 @@
 import "./NavBar.css";
-import SidebarDrawer from "../SidebarDrawer/SidebarDrawer.js";
+import SidebarDrawer from "../Sidebar/SidebarDrawer/SidebarDrawer.js";
 import PropTypes from "prop-types";
 import { Layout, Avatar, Menu, Dropdown } from "antd";
 import { UserOutlined } from "@ant-design/icons";
+import { Link, BrowserRouter as Router } from "react-router-dom";
 
 const { Header } = Layout;
 
 const menu = (
-  <Menu style={{borderRadius:"12px"}}>
-    <Menu.Item  style={{borderRadius:"10px"}}>
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://localhost:3000/"
-      >
-        Logout
-      </a>
-    </Menu.Item>
-  </Menu>
+    <Menu style={{ borderRadius: "12px" }}>
+      <Menu.Item style={{ borderRadius: "10px" }}>
+        <Link to="/">Logout</Link>
+      </Menu.Item>
+    </Menu>
 );
 
 const NavBar = () => {
@@ -27,8 +22,8 @@ const NavBar = () => {
         <SidebarDrawer />
       </div>
       <div className="account-component">
-        <div class="divider-component">
-          <div class="v-divider"/>
+        <div className="divider-component">
+          <div className="v-divider" />
         </div>
         <Dropdown className="account-layout" overlay={menu}>
           <a onClick={(e) => e.preventDefault()}>

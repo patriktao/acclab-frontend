@@ -2,16 +2,22 @@ import React from "react";
 import { Form, Input, Button } from "antd";
 import { MailOutlined, EyeOutlined } from "@ant-design/icons";
 import "./LoginComponent.css";
+import { Redirect } from 'react-router';
 
 const LoginComponent = () => {
   const onFinish = (values) => {
     console.log("Success:", values);
   };
 
+  const Login = () => {
+    console.log('Successful');
+    <Redirect to="/dashboard" />
+  };
+
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-  
+
   return (
     <div className="login-forms">
       <Form
@@ -25,7 +31,7 @@ const LoginComponent = () => {
         initialValues={{
           remember: true,
         }}
-        onFinish={onFinish}
+        onFinish={onFinish && Login}
         onFinishFailed={onFinishFailed}
       >
         <div className="login-form">
