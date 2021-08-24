@@ -6,19 +6,76 @@ import {
   FileSyncOutlined,
   FileDoneOutlined,
 } from "@ant-design/icons";
-
+import { useState, useEffect } from "react";
+const axios = require("axios");
 
 const DashboardCards = () => {
+  /* Total Materials */
+  const [TotalMaterials, setTotalMaterials] = useState([]);
+  useEffect(() => {
+    const fetchTotalMaterials = async () => {
+      try {
+        const response = await axios.get("/total_materials");
+        setTotalMaterials(response.data.map((data) => data.total));
+      } catch (err) {
+        console.log(`Error: ${err.message}`);
+      }
+    };
+    fetchTotalMaterials();
+  }, []);
+
+  /* Total Expired Materials*/
+  const [ExpiredMaterials, setExpiredMaterials] = useState([]);
+  useEffect(() => {
+    const fetchExpiredMaterials = async () => {
+      try {
+        const response = await axios.get("/total_expired_materials");
+        setExpiredMaterials(response.data.map((data) => data.total));
+      } catch (err) {
+        console.log(`Error: ${err.message}`);
+      }
+    };
+    fetchExpiredMaterials();
+  }, []);
+
+  /* Total Ongoing Reports*/
+  const [OngoingReports, setOngoingReports] = useState([]);
+  useEffect(() => {
+    const fetchOngoingReports = async () => {
+      try {
+        const response = await axios.get("/ongoing_reports");
+        setOngoingReports(response.data.map((data) => data.total));
+      } catch (err) {
+        console.log(`Error: ${err.message}`);
+      }
+    };
+    fetchOngoingReports();
+  }, []);
+
+    /* Total Ongoing Reports*/
+    const [FinishedReports, setFinishedReports] = useState([]);
+    useEffect(() => {
+      const fetchFinishedReports = async () => {
+        try {
+          const response = await axios.get("/fnished_reports");
+          setOngoingReports(response.data.map((data) => data.total));
+        } catch (err) {
+          console.log(`Error: ${err.message}`);
+        }
+      };
+      fetchFinishedReports();
+    }, []);
+
   return (
     <div className="site-card-wrapper">
-      <Row gutter={50,24}>
+      <Row gutter={(50, 24)}>
         <Col span={6}>
           <Card className="card" bordered={false}>
             <div className="card-container">
               <div>
                 <span className="card-header">Total Materials</span>
                 <br />
-                <span className="card-value">46</span>
+                <span className="card-value">{TotalMaterials}</span>
               </div>
               <div>
                 <div className="icon-material-background">
@@ -26,16 +83,16 @@ const DashboardCards = () => {
                 </div>
               </div>
             </div>
-            <Divider className="divider"/>  
+            <Divider className="divider" />
           </Card>
         </Col>
         <Col span={6}>
           <Card className="card" bordered={false}>
-          <div className="card-container">
+            <div className="card-container">
               <div>
                 <span className="card-header">Expired Materials</span>
                 <br />
-                <span className="card-value">2</span>
+                <span className="card-value">{ExpiredMaterials}</span>
               </div>
               <div>
                 <div className="icon-expired-background">
@@ -43,16 +100,16 @@ const DashboardCards = () => {
                 </div>
               </div>
             </div>
-            <Divider className="divider"/>
+            <Divider className="divider" />
           </Card>
         </Col>
         <Col span={6}>
           <Card className="card" bordered={false}>
-          <div className="card-container">
+            <div className="card-container">
               <div>
                 <span className="card-header">Reports In Progress</span>
                 <br />
-                <span className="card-value">5</span>
+                <span className="card-value"> 0 {/* OngoingReports */}</span>
               </div>
               <div>
                 <div className="icon-progress-background">
@@ -60,16 +117,16 @@ const DashboardCards = () => {
                 </div>
               </div>
             </div>
-            <Divider className="divider"/>
+            <Divider className="divider" />
           </Card>
         </Col>
         <Col span={6}>
           <Card className="card" bordered={false}>
-          <div className="card-container">
+            <div className="card-container">
               <div>
                 <span className="card-header">Finished Reports</span>
                 <br />
-                <span className="card-value">3</span>
+                <span className="card-value">0 {/* Finished Reports */} </span>
               </div>
               <div>
                 <div className="icon-finished-background">
@@ -77,7 +134,7 @@ const DashboardCards = () => {
                 </div>
               </div>
             </div>
-            <Divider className="divider"/>
+            <Divider className="divider" />
           </Card>
         </Col>
       </Row>

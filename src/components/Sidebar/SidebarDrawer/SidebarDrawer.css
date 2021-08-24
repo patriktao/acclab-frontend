@@ -19,3 +19,7 @@
 .button {
   color: #777777;
 }
+
+.drawer-item{
+  height:3rem !important;
+}

@@ -1,22 +1,24 @@
 import React from "react";
-import { Table, Tooltip, Button } from "antd";
-import { expiring_columns } from "./ExpiringColumns";
 import "./ExpiringTable.css";
 import { axios } from "../../../Axios.js";
 import { useState, useEffect } from "react";
+
+/* UI Components */
 import { ArrowsAltOutlined } from "@ant-design/icons";
+import { Spin } from 'antd';
+import { expiring_columns } from "./ExpiringColumns";
+import { Table, Tooltip, Button } from "antd";
 
 const ExpiringTable = () => {
+  /* Fetching all ingredients in ascending order */
   const [data, setData] = useState([]);
-
   useEffect(() => {
     const fetchIngredients = async () => {
       try {
-        const response = await axios.get("/expiring_ingredients");
+        const response = await axios.get("/expiring_materials");
         setData(response.data);
       } catch (err) {
         if (err.response) {
-          // Not in the 200 response range.
           console.log(err.response.data);
           console.log(err.response.status);
           console.log(err.response.headers);
@@ -46,6 +48,7 @@ const ExpiringTable = () => {
         className="table-header"
         columns={expiring_columns}
         dataSource={data}
+        loading={Spin}
         pagination={{ pageSize: 7 }}
       />
     </div>

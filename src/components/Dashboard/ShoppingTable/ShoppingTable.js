@@ -2,11 +2,13 @@ import { Table } from "antd";
 import { shopping_columns } from "./ShoppingColumns";
 import { useState, useEffect } from "react";
 import "./ShoppingTable.css";
+import { Spin } from "antd";
+
 const axios = require("axios");
 
 const ShoppingTable = () => {
+    /* Fetching all items with Shopping_List set to True */
   const [ShoppingList, setShoppingList] = useState([]);
-
   useEffect(() => {
     const fetchShoppingList = async () => {
       try {
@@ -35,6 +37,7 @@ const ShoppingTable = () => {
         className="table-content"
         columns={shopping_columns}
         dataSource={ShoppingList}
+        loading={Spin}
       />
     </div>
   );

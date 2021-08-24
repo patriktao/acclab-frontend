@@ -1,20 +1,18 @@
-import React, { useState } from "react";
 import { Link, BrowserRouter as Router } from "react-router-dom";
 import "./Dashboard.css";
 
 /* Importing UI-Components */
-import { Layout, Space, Row, Col } from "antd";
-import NavBar from "./NavBar/NavBar";
+import { Layout, Row, Col } from "antd";
+import NavBar from "../NavBar/NavBar";
 import ExpiringTable from "./ExpiringTable/ExpiringTable";
 import ShoppingTable from "./ShoppingTable/ShoppingTable";
 import DashboardCards from "./DashboardCards/DashboardCards";
-import Sidebar from "./Sidebar/Sidebar";
+import Sidebar from "../Sidebar/Sidebar";
 
 const { Content, Footer } = Layout;
 
-const App = () => {
+ const Dashboard = () => {
   return (
-    <Router>
       <Layout className="app-layout">
         <Sidebar />
         <Layout className="layout">
@@ -48,8 +46,7 @@ const App = () => {
           </Content>
         </Layout>
       </Layout>
-    </Router>
   );
 };
 
-export default App;
+export default Dashboard;
