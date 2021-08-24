@@ -46,6 +46,7 @@ const ExpiringTable = () => {
         className="table-header"
         columns={expiring_columns}
         dataSource={data}
+        pagination={{ pageSize: 7 }}
       />
     </div>
   );
