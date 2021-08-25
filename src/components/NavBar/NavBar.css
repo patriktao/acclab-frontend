@@ -21,7 +21,7 @@
   justify-content: flex-end;
 }
 
-.account-layout{
+.dropdown-layout{
   display: flex;
   align-items: center;
   column-gap: 12px;
@@ -48,13 +48,7 @@
   text-align: left;
 }
 
-h2 {
-  padding-left: 1.5rem;
-  margin-bottom: 0px;
-  font-weight: 500;
-}
-
-@media (min-width: 1000px) {
+@media (min-width: 960px) {
   .menu-button {
     display: none !important;
   }

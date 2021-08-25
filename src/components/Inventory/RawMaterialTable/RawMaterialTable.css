@@ -13,10 +13,11 @@
 
 
 /* Table Styling */
-.table {
-  border-radius: 12px;
+.raw-material-table {
+  border-radius: 4px;
   background: white;
-  padding: 24px 24px 0px 24px;
+  padding: 16px 16px 0 16px;
+/*   padding: 24px 24px 0 24px; */
   box-shadow: 0px 16px 16px rgba(17, 17, 17, 5%);
   overflow-x: auto;
 }
@@ -63,7 +64,7 @@
   }
 
   .sub-header-table {
-    font-size: 12px !important;
+    font-size: 12px;
   }
 }
 

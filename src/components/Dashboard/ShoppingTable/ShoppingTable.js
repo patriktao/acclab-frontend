@@ -29,7 +29,7 @@ const ShoppingTable = () => {
   }, []);
 
   return (
-    <div className="table">
+    <div className="shopping-table">
       <span className="sub-header-table">RESTOCK</span>
       <br />
       <h2 className="main-header-table">Shopping List</h2>
@@ -38,6 +38,7 @@ const ShoppingTable = () => {
         columns={shopping_columns}
         dataSource={ShoppingList}
         loading={Spin}
+        pagination={{ pageSize: 7 }}
       />
     </div>
   );

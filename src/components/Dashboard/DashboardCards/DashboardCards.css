@@ -1,5 +1,6 @@
+/* Card Component */
 .card {
-  border-radius: 12px;
+  border-radius: 4px;
   text-align: left;
   box-shadow: 0 0 5px 5px rgb(0 0 0 / 2%);
   height: 10.5rem;
@@ -13,42 +14,7 @@
   justify-items: left;
 }
 
-.icon-material-background {
-  text-align: right;
-  display: grid;
-  align-items: center;
-  justify-items: center;
-  border-radius: 12px;
-  background: #2f80ed1a;
-}
-
-.icon-expired-background {
-  text-align: right;
-  display: grid;
-  align-items: center;
-  justify-items: center;
-  border-radius: 12px;
-  background: #eb57571a;
-}
-
-.icon-progress-background {
-  text-align: right;
-  display: grid;
-  align-items: center;
-  justify-items: center;
-  border-radius: 12px;
-  background: #ffd2401a;
-}
-
-.icon-finished-background {
-  margin: 0 auto;
-  display: grid;
-  align-items: center;
-  justify-items: center;
-  border-radius: 12px;
-  background: #29cc971a;
-}
-
+/* Icon Components */
 .card-header {
   font-weight: 500;
   font-size: 14px;
@@ -62,39 +28,92 @@
   color: #404040;
 }
 
+/* Icons */
 .icon-material {
   font-size: 22px;
-  display:none;
-  color: #2f80ed;
+  display: none;
+  color: #00bdf2;
 }
 
 .icon-expired {
   font-size: 22px;
-  display:none;
-  color: #eb5757;
+  display: none;
+  /*   color: #eb5757; */
+  color: #ff0000;
 }
 
 .icon-progress {
   font-size: 22px;
-  display:none;
-  color: #f2c94c;
+  display: none;
+  /*   color: #f2c94c; */
+  color: #ffdd00;
 }
 
 .icon-finished {
   font-size: 22px;
-  display:none;
-  color: #29cc97;
+  display: none;
+  /*   color: #29cc97; */
+  color: #8dc63f;
 }
 
+/* Icon Backgrounds */
+.icon-material-background {
+  text-align: right;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  border-radius: 4px;
+  background: #2f80ed1a;
+}
 
+.icon-expired-background {
+  text-align: right;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  border-radius: 4px;
+  background: #eb57571a;
+}
+
+.icon-progress-background {
+  text-align: right;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  border-radius: 4px;
+  background: #ffd2401a;
+}
+
+.icon-finished-background {
+  margin: 0 auto;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  border-radius: 4px;
+  background: #29cc971a;
+}
+
+/* Divider */
 .divider {
   margin: 2rem 0 5px 0;
 }
 
-@media (min-width: 1100px) {
-
+@media (min-width: 0px) {
   .card-header {
     font-size: 12px;
+  }
+}
+
+@media (min-width: 765px) {
+  .card-header {
+    font-size: 14px;
+  }
+}
+
+/* When the Icon reaches border, remove icons */
+@media (min-width: 1200px) {
+  .card-header {
+    font-size: 14px;
   }
 
   .card-value {
@@ -125,39 +144,36 @@
   .divider {
     margin: 2rem 0 5px 0;
   }
-  
-.icon-material {
-  font-size: 22px;
-  display:inline;
-  color: #2f80ed;
+
+  .icon-material {
+    font-size: 22px;
+    display: inline;
+  }
+
+  .icon-expired {
+    font-size: 22px;
+    display: inline;
+  }
+
+  .icon-progress {
+    font-size: 22px;
+    display: inline;
+  }
+
+  .icon-finished {
+    font-size: 22px;
+    display: inline;
+  }
 }
 
-.icon-expired {
-  font-size: 22px;
-  display:inline;
-  color: #eb5757;
-}
-
-.icon-progress {
-  font-size: 22px;
-  display:inline;
-  color: #f2c94c;
-}
-
-.icon-finished {
-  font-size: 22px;
-  display:inline;
-  color: #29cc97;
-}
-}
-
+/* Desktop */
 @media (min-width: 1366px) {
   .card-header {
     font-size: 14px;
   }
 
   .card-value {
-    font-size: 30px;
+    font-size: 1.75rem;
   }
 
   .icon-material-background {
@@ -180,8 +196,6 @@
   .divider {
     margin: 2rem 0 5px 0;
   }
-
-  
 }
 
 @media (min-width: 1600px) {

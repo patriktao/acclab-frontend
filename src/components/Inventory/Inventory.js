@@ -23,7 +23,7 @@ const Inventory = () => {
                   Create, edit and retrieve raw materials and semi-finished products from the inventory
                 </span>
               </div>
-              <div className="raw-material-table">
+              <div style={{marginTop:"1.5rem"}}>
                 <RawMaterialTable/>
               </div>
             </div>

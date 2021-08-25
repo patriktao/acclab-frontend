@@ -1,11 +1,10 @@
 import "./RawMaterialTable";
 import { axios } from "../../../Axios";
 import { useState, useEffect } from "react";
-import { raw_material_columns } from "./RawMaterialColumns"
+import { raw_material_columns } from "./RawMaterialColumns";
 import { Table, Spin } from "antd";
 
 const RawMaterialTable = () => {
-
   /* Fetching all raw materials */
   const [table, setTable] = useState([]);
   useEffect(() => {
@@ -26,23 +25,23 @@ const RawMaterialTable = () => {
     fetchTable();
   }, []);
 
-  return(
-    <div className="table">
-    <div className="table-headers">
-      <div>
-        <span className="sub-header-table">TODAY, JULY 6 2021</span>
-        <br />
-        <h2 className="main-header-table">Raw Materials (8)</h2>
+  return (
+    <div className="raw-material-table">
+      <div className="table-headers">
+        <div>
+          <span className="sub-header-table">TODAY, JULY 6 2021</span>
+          <br />
+          <h2 className="main-header-table">Raw Materials (8)</h2>
+        </div>
       </div>
+      <Table
+        className="table-header"
+        columns={raw_material_columns}
+        dataSource={table}
+        loading={Spin}
+      />
     </div>
-    <Table
-      className="table-header"
-      columns={raw_material_columns}
-      dataSource={table}
-      loading={Spin}
-    />
-  </div>
-  )
+  );
 };
 
 export default RawMaterialTable;

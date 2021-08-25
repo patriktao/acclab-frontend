@@ -38,7 +38,7 @@ const DashboardCards = () => {
     fetchExpiredMaterials();
   }, []);
 
-  /* Total Ongoing Reports*/
+  /* TBD: Total Ongoing Reports*/
   const [OngoingReports, setOngoingReports] = useState([]);
   useEffect(() => {
     const fetchOngoingReports = async () => {
@@ -52,7 +52,7 @@ const DashboardCards = () => {
     fetchOngoingReports();
   }, []);
 
-    /* Total Ongoing Reports*/
+    /* TBD: Finished Reports */
     const [FinishedReports, setFinishedReports] = useState([]);
     useEffect(() => {
       const fetchFinishedReports = async () => {
@@ -109,7 +109,7 @@ const DashboardCards = () => {
               <div>
                 <span className="card-header">Reports In Progress</span>
                 <br />
-                <span className="card-value"> 0 {/* OngoingReports */}</span>
+                <span className="card-value"> 0 </span>
               </div>
               <div>
                 <div className="icon-progress-background">
@@ -126,7 +126,7 @@ const DashboardCards = () => {
               <div>
                 <span className="card-header">Finished Reports</span>
                 <br />
-                <span className="card-value">0 {/* Finished Reports */} </span>
+                <span className="card-value">0 </span>
               </div>
               <div>
                 <div className="icon-finished-background">

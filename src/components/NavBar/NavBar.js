@@ -8,8 +8,8 @@ import { Link, BrowserRouter as Router } from "react-router-dom";
 const { Header } = Layout;
 
 const menu = (
-    <Menu style={{ borderRadius: "12px" }}>
-      <Menu.Item style={{ borderRadius: "10px" }}>
+    <Menu style={{ borderRadius: "4px" }}>
+      <Menu.Item style={{ borderRadius: "4px" }}>
         <Link to="/">Logout</Link>
       </Menu.Item>
     </Menu>
@@ -25,7 +25,7 @@ const NavBar = () => {
         <div className="divider-component">
           <div className="v-divider" />
         </div>
-        <Dropdown className="account-layout" overlay={menu}>
+        <Dropdown className="dropdown-layout" overlay={menu}>
           <a onClick={(e) => e.preventDefault()}>
             <Avatar className="avatar" size="medium" icon={<UserOutlined />} />
             <span className="account-name">Patrik Tao</span>

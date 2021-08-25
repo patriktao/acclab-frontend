@@ -13,9 +13,9 @@ const { Content, Footer } = Layout;
 
  const Dashboard = () => {
   return (
-      <Layout className="app-layout">
+      <Layout className="sidebar-header-layout">
         <Sidebar />
-        <Layout className="layout">
+        <Layout>
           <NavBar />
           <Content className="content-layout">
             <div className="content-wrapper">
@@ -28,12 +28,12 @@ const { Content, Footer } = Layout;
               </div>
               <section title="Card-Wrapper">
                 <Row gutter={16}>
-                  <Col span={24} style={{ marginTop: "25px" }}>
+                  <Col span={24} style={{ marginTop: "1.5rem" }}>
                     <DashboardCards />
                   </Col>
                 </Row>
               </section>
-              <section className="table-wrapper" style={{ marginTop: "25px" }}>
+              <section className="table-wrapper" style={{ marginTop: "1.5rem" }}>
                 <div>
                   <ExpiringTable />
                 </div>

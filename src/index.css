@@ -6,7 +6,8 @@ body {
   height: 100%;
   width: 100%;
   margin: 0;
-  font-family: 'Montserrat','Manrope', sans-serif;
+  color: #404040;
+  font-family: "Montserrat", "Manrope", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -16,11 +17,77 @@ code {
     monospace;
 }
 
-.ant-layout{
-  background:  #F6F6F6;
+/* Common Page Css */
+.sidebar-header-layout {
+  height: 100vh !important;
+}
+
+.footer {
+  text-align: center;
+  background: #f6f6f6;
+}
+
+.content-wrapper {
+  padding: 1.5rem 2rem 1.5rem;
+  flex: 1;
+}
+
+.content-layout {
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+.ant-layout {
+  background: #f6f6f6;
   position: relative;
 }
 
 .blue-text {
   color: #00bdf2;
+}
+
+/* Common Font Headers */
+.sub-header {
+  color: #777777;
+  font-weight: 500;
+}
+
+/* Responsive Fonts */
+
+@media (min-width: 0px) {
+  h1 {
+    font-weight: 700;
+    font-size: 32px;
+    margin-bottom: 0;
+    color: black;
+  }
+
+  h2 {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 0;
+    color: #404040;
+  }
+}
+
+@media (min-width: 768px) {
+  h1 {
+    font-size: 22px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+}
+
+@media (min-width: 1366px) {
+  h1 {
+    font-size: 28px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
 }

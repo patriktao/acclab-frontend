@@ -4,11 +4,6 @@
 Montserrat
 ```
 
-**Tetra Pak Blue**
-```shell
-#00bdf2;
-```
-
 **Header**
 ```shell
 #404040;
@@ -21,6 +16,11 @@ Montserrat
 ```
 
 Add **1A** after the hexa to have 10& opacity
+
+**Tetra Pak Blue**
+```shell
+#00bdf2;
+```
 
 **Blue**
 ```shell

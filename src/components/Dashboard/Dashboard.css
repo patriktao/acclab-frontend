@@ -1,32 +1,3 @@
-/* Common CSS */
-.app-layout {
-  height: 100vh;
-}
-
-/* Layout */
-.layout {
-  height: 100vh;
-}
-
-/* Footer */
-.footer {
-  text-align: center;
-  background: #f6f6f6;
-}
-
-.content-wrapper {
-  padding: 1rem 2rem 1rem;
-  flex: 1;
-}
-
-/* Content */
-.content-layout {
-  overflow-x: hidden;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-}
-
 .introduction-header {
   text-align: right;
   color: #828282;
@@ -42,51 +13,26 @@
   row-gap: 2rem;
 }
 
-/* Content CSS */
-h1 {
-  font-weight: 700;
-  font-size: 22px;
-  margin-bottom: 0;
-  color: #404040;
-}
-
-h2 {
-  font-weight: 600 !important;
-  font-size: 16px;
-  margin-bottom: 0;
-  color: #404040;
-}
-
-@media (min-width: 1200px) {
+/* Tablets */
+@media (min-width: 768px) {
   .content-sub-header {
-    font-size: 12px;
+    font-size: 14px;
   }
-  h1 {
-    font-size: 18px;
-  }
+}
 
-  h2 {
-    font-size: 19px;
-  }
-
+/* When Table doesn't fit the page */
+@media(min-width:1240px) {
   .table-wrapper {
     grid-template-columns: 1.4fr 1fr;
     column-gap: 1rem;
   }
 }
 
+/* Desktop */
 @media (min-width: 1366px) {
   .content-sub-header {
     font-size: 14px;
   }
-  h1 {
-    font-size: 22px;
-  }
-
-  h2 {
-    font-size: 18px;
-  }
-
   .table-wrapper {
     grid-template-columns: 1.3fr 1fr;
     column-gap: 1.5rem;
