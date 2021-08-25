@@ -39,19 +39,6 @@
   padding-right: 1rem;
 }
 
-.table-headers {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.ant-table-thead > tr > th {
-  background: white;
-  color: #777777;
-  font-weight: 500;
-}
-
 
 /* Responsive Styling */
 @media (min-width: 960px) {

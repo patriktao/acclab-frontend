@@ -15,6 +15,7 @@ const DashboardCards = () => {
   useEffect(() => {
     const fetchTotalMaterials = async () => {
       try {
+        setTotalMaterials([0])
         const response = await axios.get("/total_materials");
         setTotalMaterials(response.data.map((data) => data.total));
       } catch (err) {
@@ -29,6 +30,7 @@ const DashboardCards = () => {
   useEffect(() => {
     const fetchExpiredMaterials = async () => {
       try {
+        setExpiredMaterials([0])
         const response = await axios.get("/total_expired_materials");
         setExpiredMaterials(response.data.map((data) => data.total));
       } catch (err) {

@@ -111,7 +111,7 @@
 }
 
 /* When the Icon reaches border, remove icons */
-@media (min-width: 1200px) {
+@media (min-width: 1240px) {
   .card-header {
     font-size: 14px;
   }

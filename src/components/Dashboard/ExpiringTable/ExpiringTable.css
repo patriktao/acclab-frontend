@@ -31,12 +31,6 @@
   align-items: center;
 }
 
-.ant-table-thead > tr > th {
-  background: white;
-  color: #777777;
-  font-weight: 500;
-}
-
 /* Tablets */
 @media (min-width: 768px) {
   .ant-table {

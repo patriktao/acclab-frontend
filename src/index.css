@@ -3,10 +3,11 @@
 
 body {
   font-size: 1rem;
+  font-weight: 400px;
   height: 100%;
   width: 100%;
   margin: 0;
-  color: #404040;
+  color: #404040; /* or 4A4A4A (Tetra Pak Recommended) */
   font-family: "Montserrat", "Manrope", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -22,11 +23,6 @@ code {
   height: 100vh !important;
 }
 
-.footer {
-  text-align: center;
-  background: #f6f6f6;
-}
-
 .content-wrapper {
   padding: 1.5rem 2rem 1.5rem;
   flex: 1;
@@ -40,8 +36,13 @@ code {
 }
 
 .ant-layout {
-  background: #f6f6f6;
+/*   background: #f6f6f6; */
   position: relative;
+}
+
+.footer {
+  text-align: center;
+/*   background: #f6f6f6; */
 }
 
 .blue-text {
@@ -54,8 +55,19 @@ code {
   font-weight: 500;
 }
 
-/* Responsive Fonts */
+/* Table */
+.ant-table{
+  font-weight: 400;
+  color: #404040;
+}
 
+.ant-table-thead > tr > th {
+  background: white;
+  color: #777777;
+  font-weight: 600;
+}
+
+/* Responsive Fonts */
 @media (min-width: 0px) {
   h1 {
     font-weight: 700;
@@ -67,6 +79,20 @@ code {
   h2 {
     font-weight: 700;
     font-size: 16px;
+    margin-bottom: 0;
+    color: #404040;
+  }
+
+  h3 {
+    font-weight: 500;
+    font-size: 16px;
+    margin-bottom: 0;
+    color: #404040;
+  }
+
+  h4 {
+    font-weight: 700;
+    font-size: 18px;
     margin-bottom: 0;
     color: #404040;
   }
@@ -88,6 +114,11 @@ code {
   }
 
   h2 {
+    font-size: 18px;
+  }
+
+  
+  h4 {
     font-size: 18px;
   }
 }
