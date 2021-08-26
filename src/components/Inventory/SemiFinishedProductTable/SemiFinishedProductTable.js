@@ -1,6 +1,6 @@
-import "./RawMaterialTable";
+import "./SemiFinishedProductTable";
 import React, { useState, useEffect } from "react";
-import { raw_material_columns } from "./RawMaterialColumns";
+import { raw_material_columns } from "./SemiFinishedProductColumns";
 import { Table, Spin, Input, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
@@ -8,7 +8,7 @@ const { Search } = Input;
 
 const axios = require("axios");
 
-const RawMaterialTable = () => {
+const SemiFinishedProductTable = () => {
   /* Fetching all raw materials */
   const [table, setTable] = useState([]);
   const [tableLoading, setTableLoading] = useState({ tableLoading: true });
@@ -17,7 +17,7 @@ const RawMaterialTable = () => {
   useEffect(() => {
     const fetchTable = async () => {
       try {
-        const response = await axios.get("/raw_material_table");
+        const response = await axios.get("/sfp_table");
         setTable(response.data);
         setTableLoading(false);
       } catch (err) {
@@ -34,9 +34,6 @@ const RawMaterialTable = () => {
     fetchTable();
   }, []);
 
-
-
-
   return (
     <div className="raw-material-table">
       <div className="table-headers">
@@ -44,7 +41,7 @@ const RawMaterialTable = () => {
           <div>
             <span className="sub-header-table">TODAY, JULY 6 2021</span>
             <br />
-            <h2 className="main-header-table">Raw Materials (6)</h2>
+            <h2 className="main-header-table">Semi-Finished Products (6)</h2>
           </div>
           <div className="filter-position">
           <Button className="table-filter-button" type="primary" size="large">
@@ -58,7 +55,7 @@ const RawMaterialTable = () => {
           </div>
           <div>
             <Search
-              placeholder="search for a raw material..."
+              placeholder="search for a semi-finished product..."
               allowClear
               onSearch={() => this.handleSearch()} 
               className="table-search"
@@ -67,7 +64,7 @@ const RawMaterialTable = () => {
           </div>
           <div className="create-button-position">
             <Button className="table-create-button" type="primary" size="large" icon={<PlusOutlined />}>
-              Add Raw Material
+              Add Semi-Finished Product
             </Button>
           </div>
         </div>
@@ -84,4 +81,4 @@ const RawMaterialTable = () => {
   );
 };
 
-export default RawMaterialTable;
+export default SemiFinishedProductTable;

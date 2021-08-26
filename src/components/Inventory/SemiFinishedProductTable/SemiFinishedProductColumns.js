@@ -1,7 +1,7 @@
 import moment from "moment";
 import { Button, Tooltip } from "antd";
 import { EllipsisOutlined } from "@ant-design/icons";
-import "./RawMaterialTable.css"
+import "./SemiFinishedProductTable"
 
 export const raw_material_columns = [
   {
