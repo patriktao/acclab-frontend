@@ -28,7 +28,7 @@ const Inventory = () => {
                 <RawMaterialTable/>
               </div>
               <div style={{marginTop:"3rem"}}>
-                <SemiFinishedProductTable/>
+   {/*              <SemiFinishedProductTable/> */}
               </div>
             </div>
             <Footer className="footer">Accelerator Lab ©2021 Tetra Pak</Footer>

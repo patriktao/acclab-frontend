@@ -3,15 +3,3 @@
   color: #777777;
   font-weight: 500;
 }
-
-@media (min-width: 1200px) {
-  .sub-header {
-    font-size: 12px;
-  }
-}
-
-@media (min-width: 1366px) {
-  .sub-header {
-    font-size: 14px;
-  }
-}

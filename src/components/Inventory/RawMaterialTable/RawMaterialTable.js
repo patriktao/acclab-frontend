@@ -51,48 +51,46 @@ const RawMaterialTable = () => {
     <div className="raw-material-table">
       <div className="table-headers">
         <div className="table-header-position">
-          <div>
-            <span className="sub-header-table">TODAY, JULY 6 2021</span>
-            <br />
-            <h2 className="main-header-table">Raw Materials (6)</h2>
+          <div className="table-text">
+            <div>
+              <span className="sub-header-table">TODAY, JULY 6 2021</span>
+            </div>
+            <div>
+              <h2 className="main-header-table">Raw Materials (6)</h2>
+            </div>
           </div>
-          <div className="buttons">
-            <div className="filter-position">
-              <Button
-                className="table-filter-button"
-                type="primary"
-                size="large"
-              >
+          <div className="table-buttons">
+            {/* Button Layouts */}
+            <div>
+              <Button className="table-filter" type="primary" size="large">
                 Filter
               </Button>
-            </div>
-            <div className="reset-position">
               <Button
                 onClick={() => this.handleReset()}
-                className="table-filter-button"
+                className="table-clear"
                 size="large"
               >
                 Clear
               </Button>
             </div>
             <div>
-              <Search
-                placeholder="search for a raw material..."
-                allowClear
-                onSearch={() => this.handleSearch()}
-                className="table-search"
-                size="large"
-              />
-            </div>
-            <div className="create-button-position">
-              <Button
-                className="table-create-button"
-                type="primary"
-                size="large"
-                icon={<PlusOutlined />}
-              >
-                Add Raw Material
-              </Button>
+              <div className="search-add">
+                <Search
+                  placeholder="search for a raw material..."
+                  allowClear
+                  onSearch={() => this.handleSearch()}
+                  className="table-search"
+                  size="large"
+                />
+                <Button
+                  className="table-add"
+                  type="primary"
+                  size="large"
+                  icon={<PlusOutlined />}
+                >
+                  Add Raw Material
+                </Button>
+              </div>
             </div>
           </div>
         </div>

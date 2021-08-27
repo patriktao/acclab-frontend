@@ -45,7 +45,7 @@ const LoginComponent = () => {
               },
             ]}
           >
-            <Input prefix={<MailOutlined />} placeholder="Enter your email" />
+            <Input prefix={<MailOutlined />} placeholder="Enter your email" className="username-input"/>
           </Form.Item>
 
           <Form.Item
