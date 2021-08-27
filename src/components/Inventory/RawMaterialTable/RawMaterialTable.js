@@ -12,7 +12,7 @@ const RawMaterialTable = () => {
   /* Fetching all raw materials */
   const [table, setTable] = useState([]);
   const [tableLoading, setTableLoading] = useState({ tableLoading: true });
-  const [searchText, searchedColumn] = useState([])
+  const [searchText, searchedColumn] = useState([]);
 
   useEffect(() => {
     const fetchTable = async () => {
@@ -41,10 +41,10 @@ const RawMaterialTable = () => {
       searchedColumn: dataIndex,
     });
   };
-  
-  const handleReset = clearFilters => {
+
+  const handleReset = (clearFilters) => {
     clearFilters();
-    this.setState({ searchText: '' });
+    this.setState({ searchText: "" });
   };
 
   return (
@@ -56,29 +56,44 @@ const RawMaterialTable = () => {
             <br />
             <h2 className="main-header-table">Raw Materials (6)</h2>
           </div>
-          <div className="filter-position">
-          <Button className="table-filter-button" type="primary" size="large">
-              Filter
-            </Button>
-          </div>
-          <div className="reset-position">
-          <Button onClick={() => this.handleReset()} className="table-filter-button" size="large">
-              Clear
-            </Button>
-          </div>
-          <div>
-            <Search
-              placeholder="search for a raw material..."
-              allowClear
-              onSearch={() => this.handleSearch()} 
-              className="table-search"
-              size="large"
-            />
-          </div>
-          <div className="create-button-position">
-            <Button className="table-create-button" type="primary" size="large" icon={<PlusOutlined />}>
-              Add Raw Material
-            </Button>
+          <div className="buttons">
+            <div className="filter-position">
+              <Button
+                className="table-filter-button"
+                type="primary"
+                size="large"
+              >
+                Filter
+              </Button>
+            </div>
+            <div className="reset-position">
+              <Button
+                onClick={() => this.handleReset()}
+                className="table-filter-button"
+                size="large"
+              >
+                Clear
+              </Button>
+            </div>
+            <div>
+              <Search
+                placeholder="search for a raw material..."
+                allowClear
+                onSearch={() => this.handleSearch()}
+                className="table-search"
+                size="large"
+              />
+            </div>
+            <div className="create-button-position">
+              <Button
+                className="table-create-button"
+                type="primary"
+                size="large"
+                icon={<PlusOutlined />}
+              >
+                Add Raw Material
+              </Button>
+            </div>
           </div>
         </div>
       </div>
