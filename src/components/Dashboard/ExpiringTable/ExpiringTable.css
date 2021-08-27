@@ -34,29 +34,18 @@
 /* Tablets */
 @media (min-width: 768px) {
   .ant-table {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .ant-table-thead > tr > th {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .sub-header-table {
-    font-size: 12px;
+    font-size: 14px;
   }
 }
 
 /* Desktop */
 @media (min-width: 1025px) {
-  .ant-table {
-    font-size: 14px;
-  }
-
-  .ant-table-thead > tr > th {
-    font-size: 14px;
-  }
-
-  .sub-header-table {
-    font-size: 14px;
-  }
 }

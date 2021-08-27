@@ -3,12 +3,16 @@
   padding:13px;
   width:16px;
   height:16px;
-  border-radius: 6px;
+  border-radius: 4px;
   display: flex;
   justify-content: center;
   align-content: center;
   flex-wrap: wrap;
   outline: none;
+}
+
+.ant-btn > .anticon{
+  line-height: 0;
 }
 
 .table-header-position{
@@ -77,15 +81,15 @@
 /* Responsive Styling */
 @media (min-width: 960px) {
   .ant-table {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .ant-table-thead > tr > th {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .sub-header-table {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .table-search{
@@ -94,18 +98,6 @@
 }
 
 @media (min-width: 1366px) {
-  .ant-table {
-    font-size: 14px;
-  }
-
-  .ant-table-thead > tr > th {
-    font-size: 14px;
-  }
-
-  .sub-header-table {
-    font-size: 14px;
-  }
-
   .table-search{
     width: 450px;
   }

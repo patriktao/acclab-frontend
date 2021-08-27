@@ -3,16 +3,16 @@ import SidebarDrawer from "../Sidebar/SidebarDrawer/SidebarDrawer.js";
 import PropTypes from "prop-types";
 import { Layout, Avatar, Menu, Dropdown } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import { Link, BrowserRouter as Router } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const { Header } = Layout;
 
 const menu = (
-    <Menu style={{ borderRadius: "4px" }}>
-      <Menu.Item style={{ borderRadius: "4px" }}>
-        <Link to="/">Logout</Link>
-      </Menu.Item>
-    </Menu>
+  <Menu style={{ borderRadius: "4px" }}>
+    <Menu.Item style={{ borderRadius: "4px" }}>
+      <Link to="/">Logout</Link>
+    </Menu.Item>
+  </Menu>
 );
 
 const NavBar = () => {
@@ -25,12 +25,18 @@ const NavBar = () => {
         <div className="divider-component">
           <div className="v-divider" />
         </div>
-        <Dropdown className="dropdown-layout" overlay={menu}>
-          <a onClick={(e) => e.preventDefault()}>
-            <Avatar className="avatar" size="medium" icon={<UserOutlined />} />
-            <span className="account-name">Patrik Tao</span>
-          </a>
-        </Dropdown>
+        <div>
+          <Dropdown className="dropdown-layout" overlay={menu}>
+            <a onClick={(e) => e.preventDefault()}>
+              <Avatar
+                className="avatar"
+                size="medium"
+                icon={<UserOutlined />}
+              />
+              <span className="account-name">Patrik Tao</span>
+            </a>
+          </Dropdown>
+        </div>
       </div>
     </Header>
   );

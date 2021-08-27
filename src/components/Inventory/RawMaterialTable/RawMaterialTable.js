@@ -34,8 +34,18 @@ const RawMaterialTable = () => {
     fetchTable();
   }, []);
 
-
-
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    this.setState({
+      searchText: selectedKeys[0],
+      searchedColumn: dataIndex,
+    });
+  };
+  
+  const handleReset = clearFilters => {
+    clearFilters();
+    this.setState({ searchText: '' });
+  };
 
   return (
     <div className="raw-material-table">
@@ -52,7 +62,7 @@ const RawMaterialTable = () => {
             </Button>
           </div>
           <div className="reset-position">
-          <Button className="table-filter-button" size="large">
+          <Button onClick={() => this.handleReset()} className="table-filter-button" size="large">
               Clear
             </Button>
           </div>

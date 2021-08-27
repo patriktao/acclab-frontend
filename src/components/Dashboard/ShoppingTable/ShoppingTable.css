@@ -5,8 +5,7 @@
   border-radius: 4px;
   display: flex;
   justify-content: center;
-  align-content: center;
-  flex-wrap: wrap;
+  align-items: center;
 }
 
 /* Table Components */

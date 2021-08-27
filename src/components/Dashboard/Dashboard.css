@@ -21,7 +21,7 @@
 }
 
 /* When Table doesn't fit the page */
-@media(min-width:1240px) {
+@media(min-width:1300px) {
   .table-wrapper {
     grid-template-columns: 1.4fr 1fr;
     column-gap: 1rem;

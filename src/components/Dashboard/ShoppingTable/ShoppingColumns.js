@@ -33,7 +33,7 @@ export const shopping_columns = [
       >
         <Tooltip title="Remove from list">
           <Button type="primary" className="shopping-button" danger>
-            <DeleteOutlined style={{ fontSize: "18px" }} />{" "}
+            <DeleteOutlined style={{ fontSize: "18px" }} />
           </Button>
         </Tooltip>
       </div>
