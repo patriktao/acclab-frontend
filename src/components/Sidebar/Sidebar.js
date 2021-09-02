@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Menu, Layout } from "antd";
 import {
   PieChartFilled,
@@ -14,11 +14,8 @@ import "./Sidebar.css";
 const { Sider } = Layout;
 
 const Sidebar = () => {
-  const [SelectedKey, setSelectedKey] = useState([]);
-
-  function handleClick(e) {
-    setSelectedKey(e.key);
-  }
+  /* Which menu item that is selected is decided by which location/route you are in */
+  const location = useLocation();
 
   return (
     <>
@@ -44,44 +41,39 @@ const Sidebar = () => {
           className="sidebar-menu"
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={["1"]}
+          selectedKeys={[location.pathname]}
         >
           <Menu.Item
             className="sidebar-item"
-            key="1"
-            onClick={(e) => handleClick(e)}
+            key="/dashboard"
             icon={<PieChartFilled />}
           >
             <Link to="/dashboard">Dashboard</Link>
           </Menu.Item>
           <Menu.Item
             className="sidebar-item"
-            key="2"
-            onClick={(e) => handleClick(e)}
+            key="/inventory"
             icon={<SnippetsFilled />}
           >
             <Link to="/inventory">Inventory</Link>
           </Menu.Item>
           <Menu.Item
             className="sidebar-item"
-            key="3"
-            onClick={(e) => handleClick(e)}
+            key="/products"
             icon={<ProfileFilled />}
           >
             Products
           </Menu.Item>
           <Menu.Item
             className="sidebar-item"
-            key="4"
-            onClick={(e) => handleClick(e)}
+            key="/reports"
             icon={<ReconciliationFilled />}
           >
             Reports
           </Menu.Item>
           <Menu.Item
             className="sidebar-item"
-            key="5"
-            onClick={(e) => handleClick(e)}
+            key="/history"
             icon={<ClockCircleFilled />}
           >
             History

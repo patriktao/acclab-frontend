@@ -3,11 +3,11 @@ import "./Dashboard.css";
 
 /* Importing UI-Components */
 import { Layout, Row, Col } from "antd";
-import NavBar from "../NavBar/NavBar";
-import ExpiringTable from "./ExpiringTable/ExpiringTable";
-import ShoppingTable from "./ShoppingTable/ShoppingTable";
-import DashboardCards from "./DashboardCards/DashboardCards";
-import Sidebar from "../Sidebar/Sidebar";
+import NavBar from "../../components/NavBar";
+import Sidebar from "../../components/Sidebar";
+import ExpiringTable from "./ExpiringTable";
+import ShoppingTable from "./ShoppingTable";
+import DashboardCards from "./DashboardCards";
 
 const { Content, Footer } = Layout;
 

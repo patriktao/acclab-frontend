@@ -62,7 +62,7 @@ code {
 }
 
 .ant-table-thead > tr > th {
-/*   background: white; */
+  background: white;
   color: #777777;
   font-weight: 600;
 }

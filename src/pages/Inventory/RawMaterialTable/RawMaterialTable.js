@@ -1,7 +1,7 @@
 import "./RawMaterialTable";
 import React, { useState, useEffect } from "react";
 import { raw_material_columns } from "./RawMaterialColumns";
-import { Table, Spin, Input, Button } from "antd";
+import { Table, Spin, Input, Button, AutoComplete } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
 const { Search } = Input;
@@ -10,22 +10,20 @@ const axios = require("axios");
 
 const RawMaterialTable = () => {
   /* Fetching all raw materials */
+  const [data, setData] = useState([]);
   const [table, setTable] = useState([]);
+  const [value, setValue] = useState("");
   const [tableLoading, setTableLoading] = useState({ tableLoading: true });
-  const [searchText, searchedColumn] = useState([]);
 
   useEffect(() => {
     const fetchTable = async () => {
       try {
         const response = await axios.get("/raw_material_table");
+        setData(response.data);
         setTable(response.data);
         setTableLoading(false);
       } catch (err) {
         if (err.response) {
-          console.log(err.response.data);
-          console.log(err.response.status);
-          console.log(err.response.headers);
-        } else {
           console.log(`Error: ${err.message}`);
         }
         setTableLoading(true);
@@ -34,17 +32,17 @@ const RawMaterialTable = () => {
     fetchTable();
   }, []);
 
-  const handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm();
-    this.setState({
-      searchText: selectedKeys[0],
-      searchedColumn: dataIndex,
-    });
+  const handleSearch = (input) => {
+    setValue(input);
+    const filtered_table = data.filter((item) =>
+      item.name.toLowerCase().includes(input.toLowerCase())
+    );
+    setTable(filtered_table);
   };
 
-  const handleReset = (clearFilters) => {
-    clearFilters();
-    this.setState({ searchText: "" });
+  const handleClear = () => {
+    setTable(data);
+    setValue("");
   };
 
   return (
@@ -60,28 +58,34 @@ const RawMaterialTable = () => {
             </div>
           </div>
           <div className="table-buttons">
-            {/* Button Layouts */}
             <div>
               <Button className="table-filter" type="primary" size="large">
                 Filter
               </Button>
               <Button
-                onClick={() => this.handleReset()}
                 className="table-clear"
                 size="large"
+                onClick={handleClear}
               >
                 Clear
               </Button>
             </div>
             <div>
               <div className="search-add">
-                <Search
-                  placeholder="search for a raw material..."
-                  allowClear
-                  onSearch={() => this.handleSearch()}
-                  className="table-search"
-                  size="large"
-                />
+                <AutoComplete
+                  className="auto-complete"
+                  dataSource={table.map((item) => item.name)}
+                >
+                  <Search
+                    id="search-bar"
+                    placeholder="search for a raw material..."
+                    allowClear
+                    className="table-search"
+                    size="large"
+                    value={value}
+                    onSearch={handleSearch}
+                  />
+                </AutoComplete>
                 <Button
                   className="table-add"
                   type="primary"
@@ -100,7 +104,7 @@ const RawMaterialTable = () => {
           className="table-header"
           columns={raw_material_columns}
           dataSource={table}
-          pagination={{ pageSize: 8, position: ["bottomCenter"] }}
+          pagination={{pageSize: 8, position: ["bottomCenter"] }}
         />
       </Spin>
     </div>

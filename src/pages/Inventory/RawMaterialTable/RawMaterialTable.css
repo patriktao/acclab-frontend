@@ -11,10 +11,6 @@
   outline: none;
 }
 
-.table-headers{
-  
-}
-
 .ant-btn > .anticon {
   line-height: 0;
 }
@@ -31,7 +27,6 @@
   display: grid;
   align-items: center;
   row-gap: 4px;
-  padding-left: 1rem;
 }
 
 /* Table Buttons */
@@ -48,7 +43,15 @@
 .table-search {
   border-radius: 4px;
   width: 300px;
-  margin-right: 0.75rem;
+}
+
+.auto-complete {
+  width: 300px;
+}
+
+.search-add {
+  display: flex;
+  column-gap: 0.75rem;
 }
 
 .table-add {
@@ -82,8 +85,12 @@
 }
 
 /* Responsive Styling */
-@media (min-width: 960px) {
+@media (min-width: 0px) {
   .table-search {
+    width: 320px;
+  }
+
+  .auto-complete {
     width: 320px;
   }
 
@@ -102,6 +109,10 @@
 
 @media (min-width: 1360px) {
   .table-search {
+    width: 350px;
+  }
+
+  .auto-complete {
     width: 350px;
   }
 

@@ -2,10 +2,10 @@ import "./Inventory.css";
 
 /* Importing UI-Components */
 import { Layout } from "antd";
-import NavBar from "../NavBar/NavBar.js";
-import Sidebar from "../Sidebar/Sidebar.js";
-import RawMaterialTable from "./RawMaterialTable/RawMaterialTable"
-import SemiFinishedProductTable from "./SemiFinishedProductTable/SemiFinishedProductTable"
+import NavBar from "../../components/NavBar";
+import Sidebar from "../../components/Sidebar";
+import RawMaterialTable from "./RawMaterialTable"
+/* import SemiFinishedProductTable from "./SemiFinishedProductTable" */
 
 const { Content, Footer } = Layout;
 

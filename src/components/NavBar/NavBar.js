@@ -1,5 +1,5 @@
 import "./NavBar.css";
-import SidebarDrawer from "../Sidebar/SidebarDrawer/SidebarDrawer.js";
+import SidebarDrawer from "./SidebarDrawer/SidebarDrawer";
 import PropTypes from "prop-types";
 import { Layout, Avatar, Menu, Dropdown } from "antd";
 import { UserOutlined } from "@ant-design/icons";
