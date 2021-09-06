@@ -1,0 +1,65 @@
+/* General Component CSS */
+.filter-component {
+  width: 650px !important;
+}
+
+.modal-sub-header {
+  color: #777777;
+  font-weight: 500;
+}
+
+.ant-modal-content {
+  border-radius: 4px !important;
+}
+
+/* The filter component consists of rows, in each row they are divided in columns */
+.modal-rows {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  row-gap: 1rem;
+}
+
+.modal-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 1rem;
+}
+
+/* Removing margins from each form */
+.ant-form-item {
+    margin-bottom: 0;
+}
+
+/* Makes space between header and field */
+.header-field-component{
+    display: grid;
+    row-gap: 0.5rem;
+}
+
+/* Brand Component */
+.brand-input-field {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 1rem;
+  border-radius: 12px;
+}
+
+/* Select Components (Stored Location, Material Form) */
+.ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  border-radius: 12px;
+  width: 100%;
+  padding-left: 1rem;
+}
+
+.ant-select-arrow {
+  padding-right: 1.4rem;
+  font-size: 1rem;
+}
+
+/* Date Picker */
+.date-component {
+  padding: 0.75rem 1rem 0.75rem 1rem;
+  border-radius: 12px;
+}

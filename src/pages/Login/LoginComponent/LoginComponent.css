@@ -3,7 +3,7 @@
 }
 
 .login-form .ant-input-affix-wrapper {
-  width: 290px;
+  width: 100%;
   height: 60px;
   border-radius: 16px;
   color: black;
@@ -15,7 +15,8 @@
 }
 
 .login-button .ant-btn-primary {
-  width: 290px;
+  width: 100%;
+  max-width: 100%;
   border-radius: 16px;
   height: 60px;
   font-size: large;
@@ -37,22 +38,4 @@
 
 .login-button .ant-col-offset-8 {
   margin-left: 0;
-}
-
-/* For 13.3 inch screen */
-@media (max-width: 1366px) {
-  .login-forms .ant-form-item {
-    margin-bottom: 10   px;
-  }
-
-  .login-form .ant-input-affix-wrapper {
-    width: 250px;
-    height: 50px;
-  }
-
-  .login-button .ant-btn-primary {
-    width: 250px;
-    height: 50px;
-    font-size:medium;
-  }
 }

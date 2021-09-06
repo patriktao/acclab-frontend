@@ -49,7 +49,7 @@ export const raw_material_columns = [
         {moment(expiration_date).format("MMM D, YYYY")}
       </p>
     ),
-    sorter: (a, b) => a.expiration_date - b.expiration_date,
+    sorter: (a, b) => moment(a.expiration_date).format("YYYYMMDD") - moment(b.expiration_date).format("YYYYMMDD"),
   },
   {
     title: "Priority",

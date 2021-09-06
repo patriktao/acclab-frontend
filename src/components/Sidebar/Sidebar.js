@@ -23,12 +23,6 @@ const Sidebar = () => {
         className="sidebar"
         breakpoint="lg"
         collapsedWidth="0"
-        onBreakpoint={(broken) => {
-          console.log(broken);
-        }}
-        onCollapse={(collapsed, type) => {
-          console.log(collapsed, type);
-        }}
         trigger={null}
       >
         <div className="sidebar-wrapper">
@@ -41,7 +35,7 @@ const Sidebar = () => {
           className="sidebar-menu"
           theme="dark"
           mode="inline"
-          selectedKeys={[location.pathname]}
+          selectedKeys={location.pathname}
         >
           <Menu.Item
             className="sidebar-item"

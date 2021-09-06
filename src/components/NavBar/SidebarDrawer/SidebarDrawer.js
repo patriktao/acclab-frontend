@@ -2,10 +2,13 @@ import "antd/dist/antd.css";
 import React, { useState } from "react";
 import "./SidebarDrawer.css";
 import { Menu, Drawer, Button } from "antd";
-import { BrowserRouter as Router, Link } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { MenuOutlined } from "@ant-design/icons";
 
 const SidebarDrawer = () => {
+  /* Which menu item that is selected is decided by which location/route you are in */
+  const location = useLocation();
+
   // The drawer is invisible by default
   const [isVisible, setIsVisible] = useState(false);
 
@@ -37,23 +40,28 @@ const SidebarDrawer = () => {
           title="Accelerator Lab"
         >
           <div>
-              <Menu defaultSelectedKeys={["1"]} mode="inline" theme="light">
-                <Menu.Item className="drawer-item" key="1">
-                  <Link to="/dashboard">Dashboard</Link>
-                </Menu.Item>
-                <Menu.Item className="drawer-item" key="2">
+            <Menu
+              /* selectedKeys={[location.pathname]} */
+              defaultSelectedKeys={location.pathname}
+              mode="inline"
+              theme="light"
+            >
+              <Menu.Item className="drawer-item" key="/dashboard">
+                <Link to="/dashboard">Dashboard</Link>
+              </Menu.Item>
+              <Menu.Item className="drawer-item" key="/inventory">
                 <Link to="/inventory">Inventory</Link>
-                </Menu.Item>
-                <Menu.Item className="drawer-item" key="3">
-                  Products
-                </Menu.Item>
-                <Menu.Item className="drawer-item" key="4">
-                  Reports
-                </Menu.Item>
-                <Menu.Item className="drawer-item" key="5">
-                  History
-                </Menu.Item>
-              </Menu>
+              </Menu.Item>
+              <Menu.Item className="drawer-item" key="/products">
+                Products
+              </Menu.Item>
+              <Menu.Item className="drawer-item" key="/reports">
+                Reports
+              </Menu.Item>
+              <Menu.Item className="drawer-item" key="/history">
+                History
+              </Menu.Item>
+            </Menu>
           </div>
         </Drawer>
       </div>
