@@ -26,9 +26,11 @@ const FilterComponent = ({ filterVisible, closeFilter }) => {
   /* States */
   const [companies, setCompanies] = useState([]);
   const [forms, setForms] = useState([]);
-  const [location, setLocations] = useState([]);
+  const [locations, setLocations] = useState([]);
 
   /* Fetch Data from Backend API */
+
+  /* AutoComplete Component */
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
@@ -42,18 +44,19 @@ const FilterComponent = ({ filterVisible, closeFilter }) => {
     };
     fetchCompanies();
 
+    /* Select Component have data type {value,name} */
     const fetchForms = async () => {
       try {
         const response = await axios.get("/material_forms");
-        const filteredData = [];
+        const formsArray = [];
         response.data.forEach((item) => {
-          console.log(item);
-          filteredData.push((item) => ({
-            label: `${item.form}`,
-            value: `${item.form}`,
-          }));
+          formsArray.push({
+            value: item.form,
+            name: item.form,
+          });
         });
-        setForms(filteredData);
+        formsArray.sort((a, b) => a.name.localeCompare(b.name));
+        setForms(formsArray);
       } catch (err) {
         if (err.response) {
           console.log(`Error: ${err.message}`);
@@ -65,7 +68,17 @@ const FilterComponent = ({ filterVisible, closeFilter }) => {
     const fetchLocations = async () => {
       try {
         const response = await axios.get("/stored_locations");
-        setLocations(response.data);
+        const locationArray = [];
+        response.data.forEach((item) => {
+          locationArray.push({
+            value: item.location,
+            name: item.location,
+          });
+        });
+        /* Sorting the List */
+        locationArray.sort((a, b) => a.name.localeCompare(b.name));
+        /* Set State */
+        setLocations(locationArray);
       } catch (err) {
         if (err.response) {
           console.log(`Error: ${err.message}`);
@@ -116,17 +129,19 @@ const FilterComponent = ({ filterVisible, closeFilter }) => {
               <Form.Item>
                 <Select
                   allowClear
-                  dataSource={forms.map((e) => e.form)}
+                  options={locations}
                   placeholder="Select location..."
-                ></Select>
+                />
               </Form.Item>
             </div>
             <div name="Form" className="header-field-component">
               <span className="modal-sub-header">Material Form</span>
               <Form.Item>
-                <Select allowClear placeholder="Select form...">
-                  {forms}
-                </Select>
+                <Select
+                  allowClear
+                  options={forms}
+                  placeholder="Select form..."
+                />
               </Form.Item>
             </div>
           </div>
