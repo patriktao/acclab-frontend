@@ -43,6 +43,13 @@
   border-radius: 12px;
 }
 
+/* The Div for Priority for Usage and Clear-Button */
+.priority-clear{
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
 /* Select Components (Stored Location, Material Form) */
 .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
   display: flex;

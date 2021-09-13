@@ -1,7 +1,13 @@
 import moment from "moment";
-import { Button, Tooltip } from "antd";
+import { Button, Tooltip, Dropdown, Menu } from "antd";
 import { EllipsisOutlined } from "@ant-design/icons";
-import "./RawMaterialTable.css"
+import "./RawMaterialTable.css";
+
+const editMenu = (
+  <Menu style={{ borderRadius: "4px" }}>
+    <Menu.Item style={{ borderRadius: "4px" }}>Edit item</Menu.Item>
+  </Menu>
+);
 
 export const raw_material_columns = [
   {
@@ -9,19 +15,19 @@ export const raw_material_columns = [
     dataIndex: "name",
     key: "name",
     render: (text) => <a>{text}</a>,
-    sorter: (a, b) => a.name.localeCompare(b.name)
+    sorter: (a, b) => a.name.localeCompare(b.name),
   },
   {
     title: "Brand",
     dataIndex: "company",
     key: "company",
-    sorter: (a, b) => a.company.localeCompare(b.company)
+    sorter: (a, b) => a.company.localeCompare(b.company),
   },
   {
     title: "Country",
     dataIndex: "country",
     key: "country",
-    sorter: true
+    sorter: true,
   },
   {
     title: "Amount",
@@ -38,7 +44,7 @@ export const raw_material_columns = [
     title: "Location",
     dataIndex: "location",
     key: "location",
-    sorter: (a, b) => a.location.localeCompare(b.location)
+    sorter: (a, b) => a.location.localeCompare(b.location),
   },
   {
     title: "Expiration Date",
@@ -49,13 +55,15 @@ export const raw_material_columns = [
         {moment(expiration_date).format("MMM D, YYYY")}
       </p>
     ),
-    sorter: (a, b) => moment(a.expiration_date).format("YYYYMMDD") - moment(b.expiration_date).format("YYYYMMDD"),
+    sorter: (a, b) =>
+      moment(a.expiration_date).format("YYYYMMDD") -
+      moment(b.expiration_date).format("YYYYMMDD"),
   },
   {
     title: "Priority",
     dataIndex: "priority",
     key: "priority",
-    sorter: (a, b) => a.priority.localeCompare(b.priority)
+    sorter: (a, b) => a.priority.localeCompare(b.priority),
   },
   {
     title: "Edit",
@@ -69,10 +77,12 @@ export const raw_material_columns = [
           alignContent: "center",
         }}
       >
-       <Tooltip title="Edit Item">
-          <Button className="edit-button">
-            <EllipsisOutlined style={{ fontSize: "22px" }} />{" "}
-          </Button>
+        <Tooltip title="Edit Item">
+          <Dropdown overlay={editMenu} placement="bottomCenter" trigger="click">
+            <Button className="edit-button">
+              <EllipsisOutlined style={{ fontSize: "22px" }} />{" "}
+            </Button>
+          </Dropdown>
         </Tooltip>
       </div>
     ),

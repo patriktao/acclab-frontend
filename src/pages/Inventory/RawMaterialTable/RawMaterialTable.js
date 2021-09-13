@@ -1,7 +1,7 @@
 import "./RawMaterialTable";
 import { useState, useEffect } from "react";
 import { raw_material_columns } from "./RawMaterialColumns";
-import { Table, Spin, Input, Button, AutoComplete } from "antd";
+import { Table, Spin, Input, Button, AutoComplete, Tooltip } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import FilterComponent from "./FilterComponent";
 
@@ -49,12 +49,20 @@ const RawMaterialTable = () => {
     setValue("");
   };
 
-  /* Filter Component */
-  const openFilter = (e) => {
+  /* Open Filter Modal */
+  const openFilter = () => {
     setFilterVisible(true);
   };
 
+  /* Closes Filter in Modal */
   const closeFilter = (e) => {
+    e.stopPropagation();
+    setFilterVisible(false);
+  };
+
+  /* When OK is pressed in Modal */
+  const handleFilter = (e) => {
+    console.log(e);
     e.stopPropagation();
     setFilterVisible(false);
   };
@@ -83,16 +91,19 @@ const RawMaterialTable = () => {
                 <FilterComponent
                   filterVisible={filterVisible}
                   closeFilter={closeFilter}
+                  handleFilter={handleFilter}
                 />
                 Filter
               </Button>
-              <Button
-                className="table-clear"
-                size="large"
-                onClick={handleClear}
-              >
-                Clear
-              </Button>
+              <Tooltip title="Clear search and filters">
+                <Button
+                  className="table-clear"
+                  size="large"
+                  onClick={handleClear}
+                >
+                  Clear
+                </Button>
+              </Tooltip>
             </div>
             <div>
               <div className="search-add">

@@ -6,17 +6,16 @@ import {
   Form,
   DatePicker,
   Radio,
+  Button,
 } from "antd";
 import PropTypes from "prop-types";
 import "./FilterComponent.css";
 import { SearchOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-
 const { RangePicker } = DatePicker;
-const { Option } = Select;
 const axios = require("axios");
 
-const FilterComponent = ({ filterVisible, closeFilter }) => {
+const FilterComponent = ({ filterVisible, closeFilter, handleFilter }) => {
   /* Type Checker */
   FilterComponent.propTypes = {
     filterVisible: PropTypes.bool,
@@ -28,9 +27,15 @@ const FilterComponent = ({ filterVisible, closeFilter }) => {
   const [forms, setForms] = useState([]);
   const [locations, setLocations] = useState([]);
 
-  /* Fetch Data from Backend API */
+  /* Form States */
+  const [brand, setBrand] = useState("");
+  const [location, setLocation] = useState();
+  const [form, setForm] = useState();
+  const [recievedDate, setRecievedDate] = useState("");
+  const [expirationDate, setExpirationDate] = useState("");
+  const [priority, setPriority] = useState("all");
 
-  /* AutoComplete Component */
+  /* Fetch Data from Backend API */
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
@@ -75,9 +80,7 @@ const FilterComponent = ({ filterVisible, closeFilter }) => {
             name: item.location,
           });
         });
-        /* Sorting the List */
         locationArray.sort((a, b) => a.name.localeCompare(b.name));
-        /* Set State */
         setLocations(locationArray);
       } catch (err) {
         if (err.response) {
@@ -88,12 +91,47 @@ const FilterComponent = ({ filterVisible, closeFilter }) => {
     fetchLocations();
   }, []);
 
+  /* Functions */
+  const selectBrand = (e) => {
+    setBrand(e);
+    console.log(brand);
+  };
+
+  const selectLocation = (e) => {
+    setLocation(e);
+  };
+
+  const selectForm = (e) => {
+    setForm(e);
+  };
+
+  const selectRecievedDate = (date) => {
+    setRecievedDate(date);
+  };
+
+  const selectExpirationDate = (date) => {
+    setExpirationDate(date);
+  };
+
+  const selectPriority = (e) => {
+    setPriority(e.target.value);
+  };
+
+  const resetFields = () => {
+    setBrand("");
+    setLocation();
+    setForm();
+    setRecievedDate();
+    setExpirationDate();
+    setPriority("all");
+  };
+
   return (
     <>
       <Modal
         className="filter-component"
         visible={filterVisible}
-        onOk={closeFilter}
+        onOk={handleFilter}
         onCancel={closeFilter}
         maskClosable={false}
       >
@@ -111,6 +149,8 @@ const FilterComponent = ({ filterVisible, closeFilter }) => {
                       .toUpperCase()
                       .indexOf(inputValue.toUpperCase()) !== -1
                   }
+                  onChange={selectBrand}
+                  value={brand}
                 >
                   <Input
                     allowClear
@@ -130,7 +170,9 @@ const FilterComponent = ({ filterVisible, closeFilter }) => {
                 <Select
                   allowClear
                   options={locations}
-                  placeholder="Select location..."
+                  value={location}
+                  placeholder="All locations..."
+                  onChange={selectLocation}
                 />
               </Form.Item>
             </div>
@@ -140,7 +182,9 @@ const FilterComponent = ({ filterVisible, closeFilter }) => {
                 <Select
                   allowClear
                   options={forms}
-                  placeholder="Select form..."
+                  placeholder="All forms..."
+                  onChange={selectForm}
+                  value={form}
                 />
               </Form.Item>
             </div>
@@ -149,23 +193,54 @@ const FilterComponent = ({ filterVisible, closeFilter }) => {
           <div className="modal-columns">
             <div name="recieved-date" className="header-field-component">
               <span className="modal-sub-header">Recieved Date</span>
-              <RangePicker className="date-component" format={"MMM D, YYYY"} />
+              <DatePicker
+                className="date-component"
+                format={"MMM D, YYYY"}
+                value={recievedDate}
+                onChange={selectRecievedDate}
+              />
             </div>
             <div name="expiration-date" className="header-field-component">
               <span className="modal-sub-header">Expiration Date</span>
-              <RangePicker className="date-component" format={"MMM D, YYYY"} />
+              <DatePicker
+                className="date-component"
+                format={"MMM D, YYYY"}
+                onChange={selectExpirationDate}
+                value={expirationDate}
+              />
             </div>
           </div>
 
-          <div name="priority" className="header-field-component">
-            <span className="modal-sub-header">Priority for Usage</span>
-            <Radio.Group className="" defaultValue="a" buttonStyle="solid">
-              <Radio.Button value="a">All</Radio.Button>
-              <Radio.Button value="b">Low</Radio.Button>
-              <Radio.Button value="c">Normal</Radio.Button>
-              <Radio.Button value="d">High</Radio.Button>
-              <Radio.Button value="e">Expried</Radio.Button>
-            </Radio.Group>
+          <div className="priority-clear">
+            <div name="priority" className="header-field-component">
+              <span className="modal-sub-header">Priority for Usage</span>
+              <Radio.Group
+                defaultValue={"all"}
+                value={priority}
+                buttonStyle="solid"
+              >
+                <Radio.Button value="all" onClick={selectPriority}>
+                  All
+                </Radio.Button>
+                <Radio.Button value="low" onClick={selectPriority}>
+                  Low
+                </Radio.Button>
+                <Radio.Button value="normal" onClick={selectPriority}>
+                  Normal
+                </Radio.Button>
+                <Radio.Button value="high" onClick={selectPriority}>
+                  High
+                </Radio.Button>
+                <Radio.Button value="expired" onClick={selectPriority}>
+                  Expired
+                </Radio.Button>
+              </Radio.Group>
+            </div>
+            <div>
+              <Button type="dashed" onClick={resetFields}>
+                Reset
+              </Button>
+            </div>
           </div>
         </section>
       </Modal>
