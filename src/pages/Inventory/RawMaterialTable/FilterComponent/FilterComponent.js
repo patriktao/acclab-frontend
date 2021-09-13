@@ -12,6 +12,7 @@ import PropTypes from "prop-types";
 import "./FilterComponent.css";
 import { SearchOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
+
 const { RangePicker } = DatePicker;
 const axios = require("axios");
 
@@ -24,22 +25,24 @@ const FilterComponent = ({ filterVisible, closeFilter, handleFilter }) => {
 
   /* States */
   const [companies, setCompanies] = useState([]);
+  const [countries, setCountries] = useState([]);
   const [forms, setForms] = useState([]);
   const [locations, setLocations] = useState([]);
 
-  /* Form States */
+  /* Field States */
   const [brand, setBrand] = useState("");
+  const [country, setCountry] = useState("");
   const [location, setLocation] = useState();
   const [form, setForm] = useState();
-  const [recievedDate, setRecievedDate] = useState("");
-  const [expirationDate, setExpirationDate] = useState("");
+  const [recievedDate, setRecievedDate] = useState();
+  const [expirationDate, setExpirationDate] = useState();
   const [priority, setPriority] = useState("all");
 
   /* Fetch Data from Backend API */
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const response = await axios.get("/brands/companies");
+        const response = await axios.get("/brands/raw_material_companies");
         setCompanies(response.data);
       } catch (err) {
         if (err.response) {
@@ -48,6 +51,18 @@ const FilterComponent = ({ filterVisible, closeFilter, handleFilter }) => {
       }
     };
     fetchCompanies();
+
+    const fetchCountries = async () => {
+      try {
+        const response = await axios.get("/brands/raw_material_countries");
+        setCountries(response.data);
+      } catch (err) {
+        if (err.response) {
+          console.log(`Error: ${err.message}`);
+        }
+      }
+    };
+    fetchCountries();
 
     /* Select Component have data type {value,name} */
     const fetchForms = async () => {
@@ -94,7 +109,10 @@ const FilterComponent = ({ filterVisible, closeFilter, handleFilter }) => {
   /* Functions */
   const selectBrand = (e) => {
     setBrand(e);
-    console.log(brand);
+  };
+
+  const selectCountry = (e) => {
+    setCountry(e);
   };
 
   const selectLocation = (e) => {
@@ -119,6 +137,7 @@ const FilterComponent = ({ filterVisible, closeFilter, handleFilter }) => {
 
   const resetFields = () => {
     setBrand("");
+    setCountry("");
     setLocation();
     setForm();
     setRecievedDate();
@@ -126,12 +145,24 @@ const FilterComponent = ({ filterVisible, closeFilter, handleFilter }) => {
     setPriority("all");
   };
 
+  const passStatesToParent = () => {
+    const stateMap = new Map();
+    stateMap.set("brand", brand);
+    stateMap.set("country", country);
+    stateMap.set("location", location);
+    stateMap.set("form", form);
+    stateMap.set("recievedDate", recievedDate);
+    stateMap.set("expirationDate", expirationDate);
+    stateMap.set("priority", priority);
+    handleFilter(stateMap);
+  };
+
   return (
     <>
       <Modal
         className="filter-component"
         visible={filterVisible}
-        onOk={handleFilter}
+        onOk={passStatesToParent}
         onCancel={closeFilter}
         maskClosable={false}
       >
@@ -154,15 +185,36 @@ const FilterComponent = ({ filterVisible, closeFilter, handleFilter }) => {
                 >
                   <Input
                     allowClear
-                    className="brand-input-field"
+                    className="input-autocomplete"
                     placeholder="All brands..."
                     suffix={<SearchOutlined style={{ fontSize: "1rem" }} />}
                   />
                 </AutoComplete>
               </Form.Item>
             </div>
+            <div name="Country" className="header-field-component">
+              <span className="modal-sub-header">Country</span>
+              <Form.Item>
+                <AutoComplete
+                  dataSource={countries.map((e) => e.country)}
+                  filterOption={(inputValue, option) =>
+                    option.value
+                      .toUpperCase()
+                      .indexOf(inputValue.toUpperCase()) !== -1
+                  }
+                  onChange={selectCountry}
+                  value={country}
+                >
+                  <Input
+                    allowClear
+                    className="input-autocomplete"
+                    placeholder="All countries..."
+                    suffix={<SearchOutlined style={{ fontSize: "1rem" }} />}
+                  />
+                </AutoComplete>
+              </Form.Item>
+            </div>
           </div>
-
           <div className="modal-columns">
             <div name="Location" className="header-field-component">
               <span className="modal-sub-header">Stored Location</span>

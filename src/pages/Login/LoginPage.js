@@ -16,7 +16,7 @@ const login = () => {
           <div className="login-container-style">
             <div className="login-header">Login</div>
             <div className="login-form-container">
-              <LoginComponent/>
+              <LoginComponent />
             </div>
           </div>
         </div>
@@ -29,4 +29,3 @@ const login = () => {
 };
 
 export default login;
-

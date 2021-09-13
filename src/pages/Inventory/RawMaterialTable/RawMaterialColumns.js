@@ -27,7 +27,7 @@ export const raw_material_columns = [
     title: "Country",
     dataIndex: "country",
     key: "country",
-    sorter: true,
+    sorter: (a, b) => a.country.localeCompare(b.country),
   },
   {
     title: "Amount",

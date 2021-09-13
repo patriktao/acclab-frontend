@@ -13,7 +13,7 @@ const RawMaterialTable = () => {
   /* States */
   const [data, setData] = useState([]);
   const [table, setTable] = useState([]);
-  const [value, setValue] = useState("");
+  const [searchText, setSearchText] = useState();
   const [tableLoading, setTableLoading] = useState({ tableLoading: true });
   const [filterVisible, setFilterVisible] = useState(false);
 
@@ -37,7 +37,7 @@ const RawMaterialTable = () => {
 
   /* Search Bar */
   const handleSearch = (input) => {
-    setValue(input);
+    setSearchText(input);
     const filtered_table = data.filter((item) =>
       item.name.toLowerCase().includes(input.toLowerCase())
     );
@@ -46,25 +46,33 @@ const RawMaterialTable = () => {
 
   const handleClear = () => {
     setTable(data);
-    setValue("");
+    setSearchText();
   };
 
-  /* Open Filter Modal */
+  /* Opens Filter Modal */
   const openFilter = () => {
     setFilterVisible(true);
   };
 
-  /* Closes Filter in Modal */
+  /* Closes Filter Modal */
   const closeFilter = (e) => {
     e.stopPropagation();
     setFilterVisible(false);
   };
 
-  /* When OK is pressed in Modal */
+  /* When OK is pressed in Filter Modal, retrieve all input fields */
   const handleFilter = (e) => {
-    console.log(e);
-    e.stopPropagation();
-    setFilterVisible(false);
+    const filterStates = e;
+    const filtered_table = data.filter(
+      (item) =>
+        item.company
+          .toLowerCase()
+          .includes(filterStates.get("brand").toLowerCase()) &&
+        item.country
+          .toLowerCase()
+          .includes(filterStates.get("country").toLowerCase())
+    );
+    setTable(filtered_table);
   };
 
   /* Render */
@@ -117,7 +125,7 @@ const RawMaterialTable = () => {
                     allowClear
                     className="table-search"
                     size="large"
-                    value={value}
+                    value={searchText}
                     onSearch={handleSearch}
                   />
                 </AutoComplete>
