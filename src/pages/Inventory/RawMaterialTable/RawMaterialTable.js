@@ -16,6 +16,7 @@ const RawMaterialTable = () => {
   const [searchText, setSearchText] = useState("");
   const [tableLoading, setTableLoading] = useState({ tableLoading: true });
   const [filterVisible, setFilterVisible] = useState(false);
+  const [counter, setCounter] = useState(0);
 
   /* Fetch Table Data */
   useEffect(() => {
@@ -48,6 +49,7 @@ const RawMaterialTable = () => {
   const handleClear = () => {
     setTable(data);
     setSearchText("");
+    setCounter(0);
   };
 
   /* Opens Filter Modal */
@@ -78,15 +80,16 @@ const RawMaterialTable = () => {
   /* Actions when you press "OK" in the Filter Module */
   const handleFilter = (e) => {
     const states = e;
-
-    console.log(states.get("receivedDate"));
-
     /* If state is null, convert it to empty string so table can interpret */
+    let count = 0;
     for (const [key, value] of e.entries()) {
-      if (value == null || value === "Invalid date") {
+      if (value == null || value === "Invalid date" || value === "") {
         states.set(key, "");
+      } else {
+        count++;
       }
     }
+    setCounter(count);
 
     const filtered_table = data.filter(
       (item) =>
@@ -157,7 +160,7 @@ const RawMaterialTable = () => {
                   handleFilter={handleFilter}
                   handleClear={handleClear}
                 />
-                Filter
+                Filter ({counter})
               </Button>
             </div>
             <div>

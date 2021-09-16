@@ -12,7 +12,6 @@ import PropTypes from "prop-types";
 import "./FilterComponent.css";
 import { SearchOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import moment from "moment";
 
 const { RangePicker } = DatePicker;
 const axios = require("axios");
@@ -147,10 +146,6 @@ const FilterComponent = ({
     }
   };
 
-  const handleReceivedDate = (e) => {
-    setReceivedDate(e);
-  };
-
   return (
     <>
       <Modal
@@ -244,7 +239,7 @@ const FilterComponent = ({
                 className="date-component"
                 format={"MMM D, YYYY"}
                 value={receivedDate}
-                onChange={handleReceivedDate}
+                onChange={(e) => setReceivedDate(e)}
               />
             </div>
             <div name="expiration-date" className="header-field-component">
