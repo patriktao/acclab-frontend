@@ -41,7 +41,7 @@ const FilterComponent = ({
   const [country, setCountry] = useState("");
   const [location, setLocation] = useState();
   const [form, setForm] = useState();
-  const [recievedDate, setRecievedDate] = useState();
+  const [receivedDate, setReceivedDate] = useState(null);
   const [expirationDate, setExpirationDate] = useState(null);
   const [priority, setPriority] = useState();
 
@@ -118,7 +118,7 @@ const FilterComponent = ({
     setCountry("");
     setLocation();
     setForm();
-    setRecievedDate();
+    setReceivedDate(null);
     setExpirationDate(null);
     setPriority("");
     handleClear();
@@ -131,7 +131,7 @@ const FilterComponent = ({
     stateMap.set("country", country);
     stateMap.set("location", location);
     stateMap.set("form", form);
-    stateMap.set("recievedDate", recievedDate);
+    stateMap.set("receivedDate", receivedDate);
     stateMap.set("expirationDate", expirationDate);
     stateMap.set("priority", priority);
     await handleFilter(stateMap);
@@ -145,6 +145,10 @@ const FilterComponent = ({
     } else {
       setPriority(e.target.value);
     }
+  };
+
+  const handleReceivedDate = (e) => {
+    setReceivedDate(e);
   };
 
   return (
@@ -231,15 +235,16 @@ const FilterComponent = ({
               </Form.Item>
             </div>
           </div>
-
           <div className="modal-columns">
-            <div name="recieved-date" className="header-field-component">
-              <span className="modal-sub-header">Recieved Date</span>
-              <DatePicker
+            <div className="header-field-component">
+              <span className="modal-sub-header">Received Date</span>
+              <RangePicker
+                allowClear
+                showToday
                 className="date-component"
                 format={"MMM D, YYYY"}
-                value={recievedDate}
-                onChange={(e) => setRecievedDate(e)}
+                value={receivedDate}
+                onChange={handleReceivedDate}
               />
             </div>
             <div name="expiration-date" className="header-field-component">

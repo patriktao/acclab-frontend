@@ -79,7 +79,8 @@ const RawMaterialTable = () => {
   const handleFilter = (e) => {
     const states = e;
 
-    console.log(states.get("priority"));
+    console.log(states.get("receivedDate"));
+
     /* If state is null, convert it to empty string so table can interpret */
     for (const [key, value] of e.entries()) {
       if (value == null || value === "Invalid date") {
@@ -104,6 +105,15 @@ const RawMaterialTable = () => {
               item.expiration_date,
               states.get("expirationDate")[0],
               states.get("expirationDate")[1]
+            )
+          ) &&
+        moment(item.received_date)
+          .format("YYYYMMDD")
+          .includes(
+            checkDate(
+              item.received_date,
+              states.get("receivedDate")[0],
+              states.get("receivedDate")[1]
             )
           ) &&
         item.priority.toLowerCase().includes(states.get("priority"))

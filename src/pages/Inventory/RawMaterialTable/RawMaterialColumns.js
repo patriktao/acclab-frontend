@@ -51,7 +51,14 @@ export const raw_material_columns = [
     title: "Receieved Date",
     dataIndex: "received_date",
     key: "received_date",
-    sorter: (a, b) => a.received_date.localeCompare(b.received_date),
+    render: (received_date) => (
+      <p style={{ marginBottom: "auto" }}>
+        {moment(received_date).format("MMM D, YYYY")}
+      </p>
+    ),
+    sorter: (a, b) =>
+      moment(a.received_date).format("YYYYMMDD") -
+      moment(b.received_date).format("YYYYMMDD"),
   },
   {
     title: "Expiration Date",
