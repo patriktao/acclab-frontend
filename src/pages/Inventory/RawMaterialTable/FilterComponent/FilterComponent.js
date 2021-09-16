@@ -12,33 +12,40 @@ import PropTypes from "prop-types";
 import "./FilterComponent.css";
 import { SearchOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
+import moment from "moment";
 
 const { RangePicker } = DatePicker;
 const axios = require("axios");
 
-const FilterComponent = ({ filterVisible, closeFilter, handleFilter }) => {
-  /* Type Checker */
+const FilterComponent = ({
+  filterVisible,
+  closeFilter,
+  handleFilter,
+  handleClear,
+}) => {
   FilterComponent.propTypes = {
     filterVisible: PropTypes.bool,
     closeFilter: PropTypes.func,
+    handleFilter: PropTypes.func,
+    handleClear: PropTypes.func,
   };
 
-  /* States */
+  /* Data States */
   const [companies, setCompanies] = useState([]);
   const [countries, setCountries] = useState([]);
   const [forms, setForms] = useState([]);
   const [locations, setLocations] = useState([]);
 
-  /* Field States */
+  /* Input Field States */
   const [brand, setBrand] = useState("");
   const [country, setCountry] = useState("");
   const [location, setLocation] = useState();
   const [form, setForm] = useState();
   const [recievedDate, setRecievedDate] = useState();
-  const [expirationDate, setExpirationDate] = useState();
-  const [priority, setPriority] = useState("all");
+  const [expirationDate, setExpirationDate] = useState(null);
+  const [priority, setPriority] = useState();
 
-  /* Fetch Data from Backend API */
+  /* Fetches Data, the select components have data types {value, name} and require different method to handle */
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
@@ -64,7 +71,6 @@ const FilterComponent = ({ filterVisible, closeFilter, handleFilter }) => {
     };
     fetchCountries();
 
-    /* Select Component have data type {value,name} */
     const fetchForms = async () => {
       try {
         const response = await axios.get("/material_forms");
@@ -106,46 +112,20 @@ const FilterComponent = ({ filterVisible, closeFilter, handleFilter }) => {
     fetchLocations();
   }, []);
 
-  /* Functions */
-  const selectBrand = (e) => {
-    setBrand(e);
-  };
-
-  const selectCountry = (e) => {
-    setCountry(e);
-  };
-
-  const selectLocation = (e) => {
-    setLocation(e);
-  };
-
-  const selectForm = (e) => {
-    setForm(e);
-  };
-
-  const selectRecievedDate = (date) => {
-    setRecievedDate(date);
-  };
-
-  const selectExpirationDate = (date) => {
-    setExpirationDate(date);
-  };
-
-  const selectPriority = (e) => {
-    setPriority(e.target.value);
-  };
-
+  /* Resets all input fields */
   const resetFields = () => {
     setBrand("");
     setCountry("");
     setLocation();
     setForm();
     setRecievedDate();
-    setExpirationDate();
-    setPriority("all");
+    setExpirationDate(null);
+    setPriority("");
+    handleClear();
   };
 
-  const passStatesToParent = () => {
+  /* Passes all states to parent component */
+  const passStatesToParent = async (e) => {
     const stateMap = new Map();
     stateMap.set("brand", brand);
     stateMap.set("country", country);
@@ -154,7 +134,17 @@ const FilterComponent = ({ filterVisible, closeFilter, handleFilter }) => {
     stateMap.set("recievedDate", recievedDate);
     stateMap.set("expirationDate", expirationDate);
     stateMap.set("priority", priority);
-    handleFilter(stateMap);
+    await handleFilter(stateMap);
+    closeFilter(e);
+  };
+
+  /* Handles priority change */
+  const handlePriority = (e) => {
+    if (e.target.value === "") {
+      setPriority("");
+    } else {
+      setPriority(e.target.value);
+    }
   };
 
   return (
@@ -180,7 +170,7 @@ const FilterComponent = ({ filterVisible, closeFilter, handleFilter }) => {
                       .toUpperCase()
                       .indexOf(inputValue.toUpperCase()) !== -1
                   }
-                  onChange={selectBrand}
+                  onChange={(e) => setBrand(e)}
                   value={brand}
                 >
                   <Input
@@ -202,7 +192,7 @@ const FilterComponent = ({ filterVisible, closeFilter, handleFilter }) => {
                       .toUpperCase()
                       .indexOf(inputValue.toUpperCase()) !== -1
                   }
-                  onChange={selectCountry}
+                  onChange={(e) => setCountry(e)}
                   value={country}
                 >
                   <Input
@@ -224,7 +214,7 @@ const FilterComponent = ({ filterVisible, closeFilter, handleFilter }) => {
                   options={locations}
                   value={location}
                   placeholder="All locations..."
-                  onChange={selectLocation}
+                  onChange={(e) => setLocation(e)}
                 />
               </Form.Item>
             </div>
@@ -235,7 +225,7 @@ const FilterComponent = ({ filterVisible, closeFilter, handleFilter }) => {
                   allowClear
                   options={forms}
                   placeholder="All forms..."
-                  onChange={selectForm}
+                  onChange={(e) => setForm(e)}
                   value={form}
                 />
               </Form.Item>
@@ -249,15 +239,17 @@ const FilterComponent = ({ filterVisible, closeFilter, handleFilter }) => {
                 className="date-component"
                 format={"MMM D, YYYY"}
                 value={recievedDate}
-                onChange={selectRecievedDate}
+                onChange={(e) => setRecievedDate(e)}
               />
             </div>
             <div name="expiration-date" className="header-field-component">
               <span className="modal-sub-header">Expiration Date</span>
-              <DatePicker
+              <RangePicker
+                allowClear
+                showToday
                 className="date-component"
                 format={"MMM D, YYYY"}
-                onChange={selectExpirationDate}
+                onChange={(e) => setExpirationDate(e)}
                 value={expirationDate}
               />
             </div>
@@ -266,24 +258,20 @@ const FilterComponent = ({ filterVisible, closeFilter, handleFilter }) => {
           <div className="priority-clear">
             <div name="priority" className="header-field-component">
               <span className="modal-sub-header">Priority for Usage</span>
-              <Radio.Group
-                defaultValue={"all"}
-                value={priority}
-                buttonStyle="solid"
-              >
-                <Radio.Button value="all" onClick={selectPriority}>
+              <Radio.Group defaultValue="" value={priority} buttonStyle="solid">
+                <Radio.Button value="" onClick={handlePriority}>
                   All
                 </Radio.Button>
-                <Radio.Button value="low" onClick={selectPriority}>
+                <Radio.Button value="low" onClick={handlePriority}>
                   Low
                 </Radio.Button>
-                <Radio.Button value="normal" onClick={selectPriority}>
+                <Radio.Button value="normal" onClick={handlePriority}>
                   Normal
                 </Radio.Button>
-                <Radio.Button value="high" onClick={selectPriority}>
+                <Radio.Button value="high" onClick={handlePriority}>
                   High
                 </Radio.Button>
-                <Radio.Button value="expired" onClick={selectPriority}>
+                <Radio.Button value="expired" onClick={handlePriority}>
                   Expired
                 </Radio.Button>
               </Radio.Group>

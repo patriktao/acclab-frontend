@@ -4,20 +4,20 @@ import { raw_material_columns } from "./RawMaterialColumns";
 import { Table, Spin, Input, Button, AutoComplete, Tooltip } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import FilterComponent from "./FilterComponent";
+import moment from "moment";
 
 const { Search } = Input;
 
 const axios = require("axios");
 
 const RawMaterialTable = () => {
-  /* States */
   const [data, setData] = useState([]);
   const [table, setTable] = useState([]);
-  const [searchText, setSearchText] = useState();
+  const [searchText, setSearchText] = useState("");
   const [tableLoading, setTableLoading] = useState({ tableLoading: true });
   const [filterVisible, setFilterVisible] = useState(false);
 
-  /* Fetch Data into Table */
+  /* Fetch Table Data */
   useEffect(() => {
     const fetchTable = async () => {
       try {
@@ -44,9 +44,10 @@ const RawMaterialTable = () => {
     setTable(filtered_table);
   };
 
+  /* Resets table */
   const handleClear = () => {
     setTable(data);
-    setSearchText();
+    setSearchText("");
   };
 
   /* Opens Filter Modal */
@@ -60,17 +61,52 @@ const RawMaterialTable = () => {
     setFilterVisible(false);
   };
 
-  /* When OK is pressed in Filter Modal, retrieve all input fields */
+  /* Check the item date and if requirements are satisfied, return the date in string format */
+  const checkDate = (inputData, startDate, endDate) => {
+    const date = moment(inputData);
+    if (startDate == null || endDate == null) {
+      return "";
+    } else if (
+      (date.isAfter(startDate) || date.isSame(startDate, "date")) &&
+      (date.isBefore(endDate) || date.isSame(endDate, "date"))
+    ) {
+      return date.format("YYYYMMDD");
+    }
+    return;
+  };
+
+  /* Actions when you press "OK" in the Filter Module */
   const handleFilter = (e) => {
-    const filterStates = e;
+    const states = e;
+
+    console.log(states.get("priority"));
+    /* If state is null, convert it to empty string so table can interpret */
+    for (const [key, value] of e.entries()) {
+      if (value == null || value === "Invalid date") {
+        states.set(key, "");
+      }
+    }
+
     const filtered_table = data.filter(
       (item) =>
         item.company
           .toLowerCase()
-          .includes(filterStates.get("brand").toLowerCase()) &&
+          .includes(states.get("brand").toLowerCase()) &&
         item.country
           .toLowerCase()
-          .includes(filterStates.get("country").toLowerCase())
+          .includes(states.get("country").toLowerCase()) &&
+        item.location.includes(states.get("location")) &&
+        item.form.includes(states.get("form")) &&
+        moment(item.expiration_date)
+          .format("YYYYMMDD")
+          .includes(
+            checkDate(
+              item.expiration_date,
+              states.get("expirationDate")[0],
+              states.get("expirationDate")[1]
+            )
+          ) &&
+        item.priority.toLowerCase().includes(states.get("priority"))
     );
     setTable(filtered_table);
   };
@@ -90,6 +126,15 @@ const RawMaterialTable = () => {
           </div>
           <div className="table-buttons">
             <div>
+              <Tooltip title="Clear search and filters">
+                <Button
+                  className="table-clear"
+                  size="large"
+                  onClick={handleClear}
+                >
+                  Clear
+                </Button>
+              </Tooltip>
               <Button
                 className="table-filter"
                 type="primary"
@@ -100,18 +145,10 @@ const RawMaterialTable = () => {
                   filterVisible={filterVisible}
                   closeFilter={closeFilter}
                   handleFilter={handleFilter}
+                  handleClear={handleClear}
                 />
                 Filter
               </Button>
-              <Tooltip title="Clear search and filters">
-                <Button
-                  className="table-clear"
-                  size="large"
-                  onClick={handleClear}
-                >
-                  Clear
-                </Button>
-              </Tooltip>
             </div>
             <div>
               <div className="search-add">
@@ -145,7 +182,10 @@ const RawMaterialTable = () => {
       <Spin spinning={tableLoading} tip="Loading..." size="large">
         <Table
           className="table-header"
-          columns={raw_material_columns}
+          columns={raw_material_columns.filter(
+            (col) =>
+              col.dataIndex !== "form" && col.dataIndex !== "received_date"
+          )}
           dataSource={table}
           pagination={{ pageSize: 8, position: ["bottomCenter"] }}
         />

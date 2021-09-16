@@ -1,4 +1,3 @@
-import { Link, BrowserRouter as Router } from "react-router-dom";
 import "./Dashboard.css";
 
 /* Importing UI-Components */

@@ -30,21 +30,28 @@ export const raw_material_columns = [
     sorter: (a, b) => a.country.localeCompare(b.country),
   },
   {
-    title: "Amount",
+    title: "Form",
+    dataIndex: "form",
+    key: "form",
+    sorter: (a, b) => a.form.localeCompare(b.form),
+  },
+  {
+    title: "Amount (g/unit)",
     dataIndex: "amount",
     key: "amount",
     sorter: (a, b) => a.amount - b.amount,
-  },
-  {
-    title: "Unit",
-    dataIndex: "unit",
-    key: "unit",
   },
   {
     title: "Location",
     dataIndex: "location",
     key: "location",
     sorter: (a, b) => a.location.localeCompare(b.location),
+  },
+  {
+    title: "Receieved Date",
+    dataIndex: "received_date",
+    key: "received_date",
+    sorter: (a, b) => a.received_date.localeCompare(b.received_date),
   },
   {
     title: "Expiration Date",
