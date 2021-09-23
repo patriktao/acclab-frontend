@@ -1,16 +1,16 @@
 import { Table } from "antd";
-import { shopping_columns } from "./ShoppingColumns";
+import shopping_columns from "./ShoppingColumns";
 import { useState, useEffect } from "react";
 import "./ShoppingTable.css";
-import { Spin } from "antd";
+import { Spin, Popconfirm, message } from "antd";
 
 const axios = require("axios");
 
 const ShoppingTable = () => {
   const [tableLoading, setTableLoading] = useState({ tableLoading: true });
-
-    /* Fetching all items with Shopping_List set to True */
   const [ShoppingList, setShoppingList] = useState([]);
+
+  /* Fetching all items with Shopping_List set to True */
   useEffect(() => {
     const fetchShoppingList = async () => {
       try {
@@ -19,7 +19,6 @@ const ShoppingTable = () => {
         setTableLoading(false);
       } catch (err) {
         if (err.response) {
-          // Not in the 200 response range.
           console.log(err.response.data);
           console.log(err.response.status);
           console.log(err.response.headers);
@@ -38,12 +37,12 @@ const ShoppingTable = () => {
       <br />
       <h4 className="main-header-table">Shopping List</h4>
       <Spin spinning={tableLoading} tip="Loading..." size="medium">
-      <Table
-        className="table-content"
-        columns={shopping_columns}
-        dataSource={ShoppingList}
-        pagination={{ pageSize: 7 }}
-      />
+        <Table
+          className="table-content"
+          columns={shopping_columns}
+          dataSource={ShoppingList}
+          pagination={{ pageSize: 8 }}
+        />
       </Spin>
     </div>
   );

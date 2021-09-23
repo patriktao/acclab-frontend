@@ -1,7 +1,7 @@
 import "./NavBar.css";
 import SidebarDrawer from "./SidebarDrawer/SidebarDrawer";
 import PropTypes from "prop-types";
-import { Layout, Avatar, Menu, Dropdown } from "antd";
+import { Layout, Avatar, Menu, Dropdown, PageHeader } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 

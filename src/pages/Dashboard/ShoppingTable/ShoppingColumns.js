@@ -1,13 +1,18 @@
-import { Button, Tooltip } from "antd";
+import { Button, message, Popconfirm } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import "./ShoppingTable";
+import { Link } from "react-router-dom";
 
-export const shopping_columns = [
+const confirm = () => {
+  message.success("Item removed from list");
+};
+
+const shopping_columns = [
   {
     title: "Item name",
     dataIndex: "material_name",
     key: "name",
-    render: (text) => <a>{text}</a>,
+    render: (text) => <Link to="/inventory">{text}</Link>,
   },
   {
     title: "Brand",
@@ -31,12 +36,19 @@ export const shopping_columns = [
           alignContent: "center",
         }}
       >
-        <Tooltip title="Remove from list">
+        <Popconfirm
+          title="Remove from the list?"
+          onConfirm={confirm}
+          okText="Yes"
+          cancelText="No"
+        >
           <Button type="primary" className="shopping-button" danger>
             <DeleteOutlined style={{ fontSize: "18px" }} />
           </Button>
-        </Tooltip>
+        </Popconfirm>
       </div>
     ),
   },
 ];
+
+export default shopping_columns;

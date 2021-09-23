@@ -74,13 +74,13 @@ const RawMaterialTable = () => {
     ) {
       return date.format("YYYYMMDD");
     }
-    return;
   };
 
   /* Actions when you press "OK" in the Filter Module */
   const handleFilter = (e) => {
     const states = e;
-    /* If state is null, convert it to empty string so table can interpret */
+
+    /* If state is null, convert to empty string so that table can interpret */
     let count = 0;
     for (const [key, value] of e.entries()) {
       if (value == null || value === "Invalid date" || value === "") {
@@ -91,6 +91,7 @@ const RawMaterialTable = () => {
     }
     setCounter(count);
 
+    /* Filters Table Data */
     const filtered_table = data.filter(
       (item) =>
         item.company
@@ -139,7 +140,7 @@ const RawMaterialTable = () => {
           </div>
           <div className="table-buttons">
             <div>
-              <Tooltip title="Clear search and filters">
+              <Tooltip title="Clear search and filters" color="#00bdf2">
                 <Button
                   className="table-clear"
                   size="large"

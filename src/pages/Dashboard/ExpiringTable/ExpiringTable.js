@@ -1,6 +1,7 @@
 import React from "react";
 import "./ExpiringTable.css";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 /* UI Components */
 import { ArrowsAltOutlined } from "@ant-design/icons";
@@ -44,8 +45,12 @@ const ExpiringTable = () => {
           <h4 className="main-header-table">Expiring Materials</h4>
         </div>
         <div className="expand-button">
-          <Tooltip title="Show inventory">
-            <Button shape="circle" icon={<ArrowsAltOutlined />} size="large" />
+          <Tooltip title="Show inventory" color="#2db7f5">
+            <Button shape="circle" size="large">
+              <Link to="/inventory">
+                <ArrowsAltOutlined />
+              </Link>
+            </Button>
           </Tooltip>
         </div>
       </div>
@@ -54,7 +59,7 @@ const ExpiringTable = () => {
           className="table-header"
           columns={expiring_columns}
           dataSource={data}
-          pagination={{ pageSize: 7 }}
+          pagination={{ pageSize: 8 }}
         />
       </Spin>
     </div>

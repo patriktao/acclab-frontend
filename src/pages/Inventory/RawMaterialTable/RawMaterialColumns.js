@@ -1,7 +1,10 @@
 import moment from "moment";
 import { Button, Tooltip, Dropdown, Menu } from "antd";
+import { Link } from "react-router-dom";
 import { EllipsisOutlined } from "@ant-design/icons";
 import "./RawMaterialTable.css";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 const editMenu = (
   <Menu style={{ borderRadius: "4px" }}>
@@ -14,7 +17,11 @@ export const raw_material_columns = [
     title: "Item name",
     dataIndex: "name",
     key: "name",
-    render: (text) => <a>{text}</a>,
+    render: (name) => (
+      <Link to={"/inventory/" + name.replace(/\s/g, "").toLowerCase()}>
+        {name}
+      </Link>
+    ),
     sorter: (a, b) => a.name.localeCompare(b.name),
   },
   {

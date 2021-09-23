@@ -15,7 +15,6 @@ const { Sider } = Layout;
 const Sidebar = () => {
   /* Which menu item that is selected is decided by which location/route you are in */
   const location = useLocation();
-
   return (
     <>
       <Sider
