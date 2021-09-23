@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Layout, Tabs, Table, Spin, Button } from "antd";
+import { Layout, Tabs, Table, Spin, Button, Checkbox, message } from "antd";
 import NavBar from "../../../components/NavBar";
 import Sidebar from "../../../components/Sidebar";
 import "./RawMaterial.css";
@@ -17,6 +17,7 @@ const { TabPane } = Tabs;
 const RawMaterial = (props) => {
   const [materialData, setMaterialData] = useState([]);
   const [materialName, setMaterialName] = useState([]);
+  const [reStock, setReStock] = useState();
   const [logistics, setLogistics] = useState([]);
 
   useEffect(() => {
@@ -25,6 +26,8 @@ const RawMaterial = (props) => {
         const response = await axios.get(`/inventory/${props.match.params.id}`);
         setMaterialData(response.data);
         setMaterialName(response.data.map((data) => data.material_name));
+        console.log(response.data.map((data) => data.shopping_list)[0]);
+        setReStock(response.data.map((data) => data.shopping_list)[0]);
       } catch (err) {
         console.log(`Error: ${err.message}`);
       }
@@ -43,6 +46,14 @@ const RawMaterial = (props) => {
     };
     fetchLogistics();
   }, [props.match.params.id]);
+
+  const handleReStock = async () => {
+    setReStock(!reStock);
+    await axios.put(`/inventory/${props.match.params.id}/restock`);
+    reStock
+      ? message.warning("Item removed from Shopping List")
+      : message.success("Item added to Shopping List");
+  };
 
   return (
     <Layout className="sidebar-header-layout">
@@ -82,13 +93,17 @@ const RawMaterial = (props) => {
                 size={"large"}
                 style={{ marginBottom: 32 }}
                 /* type="card" */
-                tabPosition="right"
+                tabPosition="top"
               >
                 <TabPane tab="Information" key="1">
                   <div className="material-header">
                     <div className="item-photo">
-                      <div className="photo-frame"></div>
-                      <div></div>
+                      <div className="photo-frame">Image</div>
+                      <div>
+                        <Checkbox checked={reStock} onChange={handleReStock}>
+                          Add to Shopping List
+                        </Checkbox>
+                      </div>
                     </div>
                     <div className="material-information">
                       <div className="table-section-header">
@@ -119,7 +134,7 @@ const RawMaterial = (props) => {
                     </div>
                   </div>
                 </TabPane>
-                                <TabPane tab="Products" key="2"></TabPane>
+                <TabPane tab="Products" key="2"></TabPane>
                 <TabPane tab="History" key="3"></TabPane>
               </Tabs>
             </div>

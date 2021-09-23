@@ -14,6 +14,11 @@ const editMenu = (
 
 export const raw_material_columns = [
   {
+    title: "ID",
+    dataIndex: "id",
+    key:"id",
+  },
+  {
     title: "Item name",
     dataIndex: "name",
     key: "name",

@@ -2,8 +2,10 @@ import { Button, message, Popconfirm } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import "./ShoppingTable";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
-const confirm = () => {
+const confirm = async () => {
+  /* await axios.put(`/inventory/${props.match.params.id}/restock`); */
   message.success("Item removed from list");
 };
 
