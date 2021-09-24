@@ -56,8 +56,6 @@ const FilterComponent = ({
         }
       }
     };
-    fetchCompanies();
-
     const fetchCountries = async () => {
       try {
         const response = await axios.get("/brands/raw_material_countries");
@@ -68,8 +66,6 @@ const FilterComponent = ({
         }
       }
     };
-    fetchCountries();
-
     const fetchForms = async () => {
       try {
         const response = await axios.get("/material_forms");
@@ -80,16 +76,13 @@ const FilterComponent = ({
             name: item.form,
           });
         });
-        formsArray.sort((a, b) => a.name.localeCompare(b.name));
-        setForms(formsArray);
+        setForms(formsArray.sort((a, b) => a.name.localeCompare(b.name)));
       } catch (err) {
         if (err.response) {
           console.log(`Error: ${err.message}`);
         }
       }
     };
-    fetchForms();
-
     const fetchLocations = async () => {
       try {
         const response = await axios.get("/stored_locations");
@@ -100,8 +93,9 @@ const FilterComponent = ({
             name: item.location,
           });
         });
-        locationArray.sort((a, b) => a.name.localeCompare(b.name));
-        setLocations(locationArray);
+        setLocations(
+          locationArray.sort((a, b) => a.name.localeCompare(b.name))
+        );
       } catch (err) {
         if (err.response) {
           console.log(`Error: ${err.message}`);
@@ -109,6 +103,9 @@ const FilterComponent = ({
       }
     };
     fetchLocations();
+    fetchForms();
+    fetchCountries();
+    fetchCompanies();
   }, []);
 
   /* Resets all input fields */

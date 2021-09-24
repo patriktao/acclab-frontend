@@ -10,63 +10,32 @@ import { useState, useEffect } from "react";
 const axios = require("axios");
 
 const DashboardCards = () => {
-  /* Total Materials */
+  const [ExpiredMaterials, setExpiredMaterials] = useState([]);
   const [TotalMaterials, setTotalMaterials] = useState([]);
+
+  /* Total Materials */
   useEffect(() => {
     const fetchTotalMaterials = async () => {
       try {
-        setTotalMaterials([0])
+        setTotalMaterials([0]);
         const response = await axios.get("/total_materials");
         setTotalMaterials(response.data.map((data) => data.total));
       } catch (err) {
         console.log(`Error: ${err.message}`);
       }
     };
-    fetchTotalMaterials();
-  }, []);
-
-  /* Total Expired Materials*/
-  const [ExpiredMaterials, setExpiredMaterials] = useState([]);
-  useEffect(() => {
     const fetchExpiredMaterials = async () => {
       try {
-        setExpiredMaterials([0])
+        setExpiredMaterials([0]);
         const response = await axios.get("/total_expired_materials");
         setExpiredMaterials(response.data.map((data) => data.total));
       } catch (err) {
         console.log(`Error: ${err.message}`);
       }
     };
+    fetchTotalMaterials();
     fetchExpiredMaterials();
   }, []);
-
-  /* TBD: Total Ongoing Reports*/
-  const [OngoingReports, setOngoingReports] = useState([]);
-  useEffect(() => {
-    const fetchOngoingReports = async () => {
-      try {
-        const response = await axios.get("/ongoing_reports");
-        setOngoingReports(response.data.map((data) => data.total));
-      } catch (err) {
-        console.log(`Error: ${err.message}`);
-      }
-    };
-    fetchOngoingReports();
-  }, []);
-
-    /* TBD: Finished Reports */
-    const [FinishedReports, setFinishedReports] = useState([]);
-    useEffect(() => {
-      const fetchFinishedReports = async () => {
-        try {
-          const response = await axios.get("/fnished_reports");
-          setOngoingReports(response.data.map((data) => data.total));
-        } catch (err) {
-          console.log(`Error: ${err.message}`);
-        }
-      };
-      fetchFinishedReports();
-    }, []);
 
   return (
     <div className="site-card-wrapper">

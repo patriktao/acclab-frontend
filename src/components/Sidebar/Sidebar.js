@@ -13,8 +13,8 @@ import "./Sidebar.css";
 const { Sider } = Layout;
 
 const Sidebar = () => {
-  /* Which menu item that is selected is decided by which location/route you are in */
-  const location = useLocation();
+  const location = useLocation().pathname;
+
   return (
     <>
       <Sider
@@ -33,39 +33,39 @@ const Sidebar = () => {
           className="sidebar-menu"
           theme="dark"
           mode="inline"
-          selectedKeys={location.pathname}
+          selectedKeys={location.split("/")[1]}
         >
           <Menu.Item
             className="sidebar-item"
-            key="/dashboard"
+            key="dashboard"
             icon={<PieChartFilled />}
           >
             <Link to="/dashboard">Dashboard</Link>
           </Menu.Item>
           <Menu.Item
             className="sidebar-item"
-            key="/inventory"
+            key="inventory"
             icon={<SnippetsFilled />}
           >
             <Link to="/inventory">Inventory</Link>
           </Menu.Item>
           <Menu.Item
             className="sidebar-item"
-            key="/products"
+            key="products"
             icon={<ProfileFilled />}
           >
             Products
           </Menu.Item>
           <Menu.Item
             className="sidebar-item"
-            key="/reports"
+            key="reports"
             icon={<ReconciliationFilled />}
           >
             Reports
           </Menu.Item>
           <Menu.Item
             className="sidebar-item"
-            key="/history"
+            key="history"
             icon={<ClockCircleFilled />}
           >
             History

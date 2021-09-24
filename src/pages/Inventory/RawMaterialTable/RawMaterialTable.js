@@ -5,6 +5,7 @@ import { Table, Spin, Input, Button, AutoComplete, Tooltip } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import FilterComponent from "./FilterComponent";
 import moment from "moment";
+import AddMaterial from "./AddMaterial";
 
 const { Search } = Input;
 
@@ -17,6 +18,7 @@ const RawMaterialTable = () => {
   const [tableLoading, setTableLoading] = useState({ tableLoading: true });
   const [filterVisible, setFilterVisible] = useState(false);
   const [counter, setCounter] = useState(0);
+  const [addVisible, setAddVisible] = useState(false)
 
   /* Fetch Table Data */
   useEffect(() => {
@@ -36,7 +38,6 @@ const RawMaterialTable = () => {
     fetchTable();
   }, []);
 
-  /* Search Bar */
   const handleSearch = (input) => {
     setSearchText(input);
     const filtered_table = data.filter((item) =>
@@ -45,22 +46,30 @@ const RawMaterialTable = () => {
     setTable(filtered_table);
   };
 
-  /* Resets table */
   const handleClear = () => {
     setTable(data);
     setSearchText("");
     setCounter(0);
   };
 
-  /* Opens Filter Modal */
   const openFilter = () => {
     setFilterVisible(true);
   };
 
-  /* Closes Filter Modal */
   const closeFilter = (e) => {
     e.stopPropagation();
     setFilterVisible(false);
+  };
+  
+  /* Opens Add Drawer */
+  const openAdd = () => {
+    setAddVisible(true);
+  };
+
+  /* Closes Drawer */
+  const closeAdd = (e) => {
+    e.stopPropagation();
+    setAddVisible(false);
   };
 
   /* Check the item date and if requirements are satisfied, return the date in string format */
@@ -79,15 +88,13 @@ const RawMaterialTable = () => {
   /* Actions when you press "OK" in the Filter Module */
   const handleFilter = (e) => {
     const states = e;
-
-    /* If state is null, convert to empty string so that table can interpret */
     let count = 0;
+    
+    /* If state is null, convert to empty string so that table can interpret */
     for (const [key, value] of e.entries()) {
-      if (value == null || value === "Invalid date" || value === "") {
-        states.set(key, "");
-      } else {
-        count++;
-      }
+      value == null || value === "Invalid date" || value === ""
+        ? states.set(key, "")
+        : setCounter(count++);
     }
     setCounter(count);
 
@@ -185,8 +192,10 @@ const RawMaterialTable = () => {
                   type="primary"
                   size="large"
                   icon={<PlusOutlined />}
+                  onClick={openAdd}
                 >
                   Add Raw Material
+                  <AddMaterial visible={addVisible} open={openAdd} close={closeAdd} />
                 </Button>
               </div>
             </div>
@@ -198,7 +207,9 @@ const RawMaterialTable = () => {
           className="table-header"
           columns={raw_material_columns.filter(
             (col) =>
-              col.dataIndex !== "form" && col.dataIndex !== "received_date"
+              col.dataIndex !== "form" &&
+              col.dataIndex !== "received_date" &&
+              col.dataIndex !== "id"
           )}
           dataSource={table}
           pagination={{ pageSize: 8, position: ["bottomCenter"] }}

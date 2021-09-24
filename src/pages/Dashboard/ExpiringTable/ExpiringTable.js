@@ -6,16 +6,16 @@ import { Link } from "react-router-dom";
 /* UI Components */
 import { ArrowsAltOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
-import { expiring_columns } from "./ExpiringColumns";
+import ExpiringColumns from "./ExpiringColumns";
 import { Table, Tooltip, Button } from "antd";
 
 const axios = require("axios");
 
 const ExpiringTable = () => {
   const [tableLoading, setTableLoading] = useState({ tableLoading: true });
+  const [data, setData] = useState([]);
 
   /* Fetching all ingredients in ascending order */
-  const [data, setData] = useState([]);
   useEffect(() => {
     const fetchIngredients = async () => {
       try {
@@ -24,10 +24,6 @@ const ExpiringTable = () => {
         setTableLoading(false);
       } catch (err) {
         if (err.response) {
-          console.log(err.response.data);
-          console.log(err.response.status);
-          console.log(err.response.headers);
-        } else {
           console.log(`Error: ${err.message}`);
         }
         setTableLoading(true);
@@ -57,7 +53,7 @@ const ExpiringTable = () => {
       <Spin spinning={tableLoading} tip="Loading..." size="medium">
         <Table
           className="table-header"
-          columns={expiring_columns}
+          columns={ExpiringColumns.filter((col) => col.dataIndex !== "id")}
           dataSource={data}
           pagination={{ pageSize: 8 }}
         />

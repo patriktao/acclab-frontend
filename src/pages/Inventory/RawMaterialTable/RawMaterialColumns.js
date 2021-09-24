@@ -22,8 +22,8 @@ export const raw_material_columns = [
     title: "Item name",
     dataIndex: "name",
     key: "name",
-    render: (name) => (
-      <Link to={"/inventory/" + name.replace(/\s/g, "").toLowerCase()}>
+    render: (name, record) => (
+      <Link to={"/inventory/" + record.id + '/' + name.replace(/\s/g, "").toLowerCase()}> 
         {name}
       </Link>
     ),

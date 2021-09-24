@@ -38,6 +38,7 @@ const SidebarDrawer = () => {
           onClose={closeDrawer}
           placement="left"
           title="Accelerator Lab"
+          width={270}
         >
           <div>
             <Menu

@@ -6,10 +6,6 @@
   border-color: #00bdf2;
 }
 
-.ant-drawer-content-wrapper {
-  width: 270px !important;
-}
-
 @media (min-width: 1060px) {
   .menu-button {
     display: none !important;

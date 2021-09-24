@@ -2,7 +2,7 @@ import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import Dashboard from "./pages/Dashboard/";
 import Login from "./pages/Login/";
 import Inventory from "./pages/Inventory/";
-import RawMaterial from "./pages/Inventory/RawMaterial";
+import RawMaterial from "./pages/RawMaterial";
 
 const App = () => {
   return (

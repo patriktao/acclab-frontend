@@ -1,12 +1,28 @@
 import moment from "moment";
+import { Link } from "react-router-dom";
 
-
-export const expiring_columns = [
+const ExpiringColumns = [
+  {
+    title: "ID",
+    dataIndex: "id",
+    key: "id",
+  },
   {
     title: "Item name",
     dataIndex: "name",
     key: "name",
-    render: (text) => <a>{text}</a>,
+    render: (name, record) => (
+      <Link
+        to={
+          "/inventory/" +
+          record.id +
+          "/" +
+          name.replace(/\s/g, "").toLowerCase()
+        }
+      >
+        {name}
+      </Link>
+    ),
   },
   {
     title: "Brand",
@@ -44,3 +60,5 @@ export const expiring_columns = [
     ), */
   },
 ];
+
+export default ExpiringColumns;

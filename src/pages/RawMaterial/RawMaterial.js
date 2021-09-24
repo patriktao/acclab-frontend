@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Layout, Tabs, Table, Spin, Button, Checkbox, message } from "antd";
-import NavBar from "../../../components/NavBar";
-import Sidebar from "../../../components/Sidebar";
+import NavBar from "../../components/NavBar";
+import Sidebar from "../../components/Sidebar";
 import "./RawMaterial.css";
 import {
   general_columns,
@@ -20,20 +20,18 @@ const RawMaterial = (props) => {
   const [reStock, setReStock] = useState();
   const [logistics, setLogistics] = useState([]);
 
+  /* Fetch Data from API */
   useEffect(() => {
     const fetchMaterial = async () => {
       try {
         const response = await axios.get(`/inventory/${props.match.params.id}`);
         setMaterialData(response.data);
         setMaterialName(response.data.map((data) => data.material_name));
-        console.log(response.data.map((data) => data.shopping_list)[0]);
         setReStock(response.data.map((data) => data.shopping_list)[0]);
       } catch (err) {
         console.log(`Error: ${err.message}`);
       }
     };
-    fetchMaterial();
-
     const fetchLogistics = async () => {
       try {
         const response = await axios.get(
@@ -44,9 +42,11 @@ const RawMaterial = (props) => {
         console.log(`Error: ${err.message}`);
       }
     };
+    fetchMaterial();
     fetchLogistics();
   }, [props.match.params.id]);
 
+  /* Functions */
   const handleReStock = async () => {
     setReStock(!reStock);
     await axios.put(`/inventory/${props.match.params.id}/restock`);
