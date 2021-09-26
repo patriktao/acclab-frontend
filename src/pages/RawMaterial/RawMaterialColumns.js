@@ -1,4 +1,5 @@
 import moment from "moment";
+import { Tooltip } from "antd";
 
 export const general_columns = [
   {
@@ -37,9 +38,10 @@ export const general_columns = [
     key: "location",
   },
   {
-    title: "Priority of Usage",
+    title: "Priority",
     dataIndex: "priority",
     key: "priority",
+    render: (priority) => <Tooltip title="Priority of Usage">{priority}</Tooltip>,
   },
 ];
 

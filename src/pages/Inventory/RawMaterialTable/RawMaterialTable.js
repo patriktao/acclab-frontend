@@ -6,6 +6,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import FilterComponent from "./FilterComponent";
 import moment from "moment";
 import AddMaterial from "./AddMaterial";
+import TooltipComponent from "../../../components/TooltipComponent";
 
 const { Search } = Input;
 
@@ -15,10 +16,10 @@ const RawMaterialTable = () => {
   const [data, setData] = useState([]);
   const [table, setTable] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [tableLoading, setTableLoading] = useState({ tableLoading: true });
+  const [tableLoading, setTableLoading] = useState(true);
   const [filterVisible, setFilterVisible] = useState(false);
   const [counter, setCounter] = useState(0);
-  const [addVisible, setAddVisible] = useState(false)
+  const [addVisible, setAddVisible] = useState(false);
 
   /* Fetch Table Data */
   useEffect(() => {
@@ -32,7 +33,6 @@ const RawMaterialTable = () => {
         if (err.response) {
           console.log(`Error: ${err.message}`);
         }
-        setTableLoading(true);
       }
     };
     fetchTable();
@@ -60,14 +60,17 @@ const RawMaterialTable = () => {
     e.stopPropagation();
     setFilterVisible(false);
   };
-  
+
   /* Opens Add Drawer */
-  const openAdd = () => {
+  const openAdd = (e) => {
+    console.log("Opens Add");
+    e.stopPropagation();
     setAddVisible(true);
   };
 
   /* Closes Drawer */
   const closeAdd = (e) => {
+    console.log("closing");
     e.stopPropagation();
     setAddVisible(false);
   };
@@ -89,7 +92,7 @@ const RawMaterialTable = () => {
   const handleFilter = (e) => {
     const states = e;
     let count = 0;
-    
+
     /* If state is null, convert to empty string so that table can interpret */
     for (const [key, value] of e.entries()) {
       value == null || value === "Invalid date" || value === ""
@@ -147,15 +150,18 @@ const RawMaterialTable = () => {
           </div>
           <div className="table-buttons">
             <div>
-              <Tooltip title="Clear search and filters" color="#00bdf2">
-                <Button
-                  className="table-clear"
-                  size="large"
-                  onClick={handleClear}
-                >
-                  Clear
-                </Button>
-              </Tooltip>
+              <TooltipComponent
+                text="Clear search and filters"
+                component={
+                  <Button
+                    className="table-clear"
+                    size="large"
+                    onClick={handleClear}
+                  >
+                    Clear
+                  </Button>
+                }
+              />
               <Button
                 className="table-filter"
                 type="primary"
@@ -195,7 +201,7 @@ const RawMaterialTable = () => {
                   onClick={openAdd}
                 >
                   Add Raw Material
-                  <AddMaterial visible={addVisible} open={openAdd} close={closeAdd} />
+                  <AddMaterial visible={addVisible} close={closeAdd} />
                 </Button>
               </div>
             </div>

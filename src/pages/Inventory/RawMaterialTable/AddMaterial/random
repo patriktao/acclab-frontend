@@ -1,0 +1,120 @@
+              <div className="modal-columns">
+                <div name="Brand" className="header-field-component">
+                  <span className="modal-sub-header">Brand</span>
+                  <Form.Item>
+                    <AutoComplete
+                      dataSource={companies.map((e) => e.company)}
+                      filterOption={(inputValue, option) =>
+                        option.v/*  */alue
+                          .toUpperCase()
+                          .indexOf(inputValue.toUpperCase()) !== -1
+                      }
+                      onChange={(e) => setBrand(e)}
+                      value={brand}
+                    >
+                      <Input
+                        allowClear
+                        className="input-autocomplete"
+                        placeholder="All brands..."
+                        suffix={<SearchOutlined style={{ fontSize: "1rem" }} />}
+                      />{/*  */}
+                    </AutoComplete>
+                  </Form.Item>
+                </div>
+                <div name="Country" className="header-field-component">
+                  <span className="modal-sub-header">Country</span>
+                  <Form.Item>
+                    <AutoComplete
+                      dataSource={countries.map((e) => e.country)}
+                      filterOption={(inputValue, option) =>
+                        option.value
+                          .toUpperCase()
+                          .indexOf(inputValue.toUpperCase()) !== -1
+                      }
+                      onChange={(e) => setCountry(e)}
+                      value={country}
+                    >
+                      <Input
+                        allowClear
+                        className="input-autocomplete"
+                        placeholder="All countries..."
+                        suffix={<SearchOutlined style={{ fontSize: "1rem" }} />}
+                      />
+                    </AutoComplete>
+                  </Form.Item>
+                </div>
+              </div>
+              <div className="modal-columns">
+                <div name="Location" className="header-field-component">
+                  <span className="modal-sub-header">Stored Location</span>
+                  <Form.Item>
+                    <Select
+                      allowClear
+                      options={locations}
+                      value={location}
+                      placeholder="All locations..."
+                      onChange={(e) => setLocation(e)}
+                    />
+                  </Form.Item>
+                </div>
+                <div name="Form" className="header-field-component">
+                  <span className="modal-sub-header">Material Form</span>
+                  <Form.Item>
+                    <Select
+                      allowClear
+                      options={forms}
+                      placeholder="All forms..."
+                      onChange={(e) => setForm(e)}
+                      value={form}
+                    />
+                  </Form.Item>
+                </div>
+              </div>
+              <div className="modal-columns">
+                <div className="header-field-component">
+                  <span className="modal-sub-header">Received Date</span>
+                  <DatePicker
+                    allowClear
+                    showToday
+                    className="date-component"
+                    format={"MMM D, YYYY"}
+                    value={receivedDate}
+                    onChange={(e) => setReceivedDate(e)}
+                  />
+                </div>
+                <div name="expiration-date" className="header-field-component">
+                  <span className="modal-sub-header">Expiration Date</span>
+                  <DatePicker
+                    allowClear
+                    showToday
+                    className="date-component"
+                    format={"MMM D, YYYY"}
+                    onChange={(e) => setExpirationDate(e)}
+                    value={expirationDate}
+                  />
+                </div>
+              </div>
+              <div>
+                <Dragger
+                  name="file"
+                  multiple="false"
+                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                  onChange={handleUpload}
+                  onDrop={(e) => handleDrop(e)}
+                >
+                  <p className="ant-upload-drag-icon">
+                    <InboxOutlined />
+                  </p>
+                  <p className="ant-upload-text">
+                    Click or drag file to this area to upload
+                  </p>
+                  <p className="ant-upload-hint">
+                    Only JPEG and PNG files are supported
+                  </p>
+                </Dragger>
+              </div>
+              <div>
+                <Button type="dashed" onClick={resetFields}>
+                  Reset
+                </Button>
+              </div>

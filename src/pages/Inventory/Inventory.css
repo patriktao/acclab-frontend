@@ -1,5 +1,6 @@
-/* Text */
-.sub-header {
-  color: #777777;
-  font-weight: 500;
+@media (min-width: 0px) {
+  .sub-header {
+    color: #777777;
+    font-weight: 500;
+  }
 }

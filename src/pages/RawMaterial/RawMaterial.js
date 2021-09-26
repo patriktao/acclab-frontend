@@ -1,5 +1,15 @@
 import { useState, useEffect } from "react";
-import { Layout, Tabs, Table, Spin, Button, Checkbox, message } from "antd";
+import {
+  Layout,
+  Tabs,
+  Table,
+  Spin,
+  Button,
+  Checkbox,
+  message,
+  Avatar,
+  Tooltip,
+} from "antd";
 import NavBar from "../../components/NavBar";
 import Sidebar from "../../components/Sidebar";
 import "./RawMaterial.css";
@@ -8,8 +18,13 @@ import {
   nuitrition_columns,
   stocks_columns,
 } from "./RawMaterialColumns";
-import { PlusOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  PlusOutlined,
+  EditOutlined,
+  InfoCircleOutlined,
+} from "@ant-design/icons";
 import axios from "axios";
+import TooltipComponent from "../../components/TooltipComponent";
 
 const { Content, Footer } = Layout;
 const { TabPane } = Tabs;
@@ -19,6 +34,8 @@ const RawMaterial = (props) => {
   const [materialName, setMaterialName] = useState([]);
   const [reStock, setReStock] = useState();
   const [logistics, setLogistics] = useState([]);
+  const [tableLoading1, setTableLoading1] = useState(true);
+  const [tableLoading2, setTableLoading2] = useState(true);
 
   /* Fetch Data from API */
   useEffect(() => {
@@ -28,6 +45,7 @@ const RawMaterial = (props) => {
         setMaterialData(response.data);
         setMaterialName(response.data.map((data) => data.material_name));
         setReStock(response.data.map((data) => data.shopping_list)[0]);
+        setTableLoading1(false);
       } catch (err) {
         console.log(`Error: ${err.message}`);
       }
@@ -38,6 +56,7 @@ const RawMaterial = (props) => {
           `/inventory/${props.match.params.id}/logistics`
         );
         setLogistics(response.data);
+        setTableLoading2(false);
       } catch (err) {
         console.log(`Error: ${err.message}`);
       }
@@ -64,7 +83,15 @@ const RawMaterial = (props) => {
           <div className="content-wrapper">
             <div className="content-header">
               <div>
-                <h1 className="blue-text"> Inventory </h1>
+                <div className="header-information">
+                  <h1 className="blue-text"> Inventory </h1>
+                  <TooltipComponent
+                    text={
+                      "Create, edit and retrieve information of a raw material"
+                    }
+                    component={<InfoCircleOutlined />}
+                  />
+                </div>
                 <span className="sub-header">{materialName}</span>
               </div>
               <div>
@@ -92,46 +119,70 @@ const RawMaterial = (props) => {
                 defaultActiveKey="1"
                 size={"large"}
                 style={{ marginBottom: 32 }}
-                /* type="card" */
                 tabPosition="top"
               >
                 <TabPane tab="Information" key="1">
                   <div className="material-header">
-                    <div className="item-photo">
-                      <div className="photo-frame">Image</div>
-                      <div>
+                    <section className="item-image">
+                      <div name="image">
+                        <Avatar
+                          size={325}
+                          shape="square"
+                          alt="Company Logotype"
+                        />
+                      </div>
+                      <div className="shopping-list">
                         <Checkbox checked={reStock} onChange={handleReStock}>
                           Add to Shopping List
                         </Checkbox>
                       </div>
-                    </div>
-                    <div className="material-information">
+                    </section>
+                    <section className="material-information">
                       <div className="table-section-header">
                         <h3> General Information </h3>
-                        <Table
-                          columns={general_columns}
-                          dataSource={materialData}
-                          pagination={false}
-                        />
+                        <Spin
+                          spinning={tableLoading1}
+                          tip="Loading..."
+                          size="medium"
+                        >
+                          <Table
+                            columns={general_columns}
+                            dataSource={materialData}
+                            pagination={false}
+                            scroll={{ x: "400px" }}
+                          />
+                        </Spin>
                       </div>
                       <div className="table-section-header">
                         <h3> Nuitritional Facts (per 100g) </h3>
-                        <Table
-                          columns={nuitrition_columns}
-                          dataSource={materialData}
-                          pagination={false}
-                        />
+                        <Spin
+                          spinning={tableLoading1}
+                          tip="Loading..."
+                          size="medium"
+                        >
+                          <Table
+                            columns={nuitrition_columns}
+                            dataSource={materialData}
+                            pagination={false}
+                          />
+                        </Spin>
                       </div>
                       <div className="table-section-header">
                         <h3> In Stock </h3>
-                        <Table
-                          className="table-logistics"
-                          columns={stocks_columns}
-                          dataSource={logistics}
-                          pagination={{ pageSize: 5 }}
-                        />
+                        <Spin
+                          spinning={tableLoading2}
+                          tip="Loading..."
+                          size="medium"
+                        >
+                          <Table
+                            className="table-logistics"
+                            columns={stocks_columns}
+                            dataSource={logistics}
+                            pagination={{ pageSize: 5 }}
+                          />
+                        </Spin>
                       </div>
-                    </div>
+                    </section>
                   </div>
                 </TabPane>
                 <TabPane tab="Products" key="2"></TabPane>

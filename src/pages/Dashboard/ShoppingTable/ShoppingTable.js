@@ -22,7 +22,6 @@ const ShoppingTable = () => {
         if (err.response) {
           console.log(`Error: ${err.message}`);
         }
-        setTableLoading(true);
       }
     };
     fetchShoppingList();

@@ -7,7 +7,8 @@ import { Link } from "react-router-dom";
 import { ArrowsAltOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 import ExpiringColumns from "./ExpiringColumns";
-import { Table, Tooltip, Button } from "antd";
+import { Table, Button } from "antd";
+import TooltipComponent from "../../../components/TooltipComponent";
 
 const axios = require("axios");
 
@@ -26,7 +27,6 @@ const ExpiringTable = () => {
         if (err.response) {
           console.log(`Error: ${err.message}`);
         }
-        setTableLoading(true);
       }
     };
     fetchIngredients();
@@ -41,13 +41,16 @@ const ExpiringTable = () => {
           <h4 className="main-header-table">Expiring Materials</h4>
         </div>
         <div className="expand-button">
-          <Tooltip title="Show inventory" color="#2db7f5">
-            <Button shape="circle" size="large">
-              <Link to="/inventory">
-                <ArrowsAltOutlined />
-              </Link>
-            </Button>
-          </Tooltip>
+          <TooltipComponent
+            text="Show inventory"
+            component={
+              <Button shape="circle" size="large">
+                <Link to="/inventory">
+                  <ArrowsAltOutlined />
+                </Link>
+              </Button>
+            }
+          />
         </div>
       </div>
       <Spin spinning={tableLoading} tip="Loading..." size="medium">

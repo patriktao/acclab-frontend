@@ -6,18 +6,13 @@ import { useLocation, Link } from "react-router-dom";
 import { MenuOutlined } from "@ant-design/icons";
 
 const SidebarDrawer = () => {
-  /* Which menu item that is selected is decided by which location/route you are in */
-  const location = useLocation();
-
-  // The drawer is invisible by default
   const [isVisible, setIsVisible] = useState(false);
+  const location = useLocation().pathname;
 
-  // trigger this function to open the drawer
   const showDrawer = () => {
     setIsVisible(true);
   };
 
-  // close the drawer
   const closeDrawer = () => {
     setIsVisible(false);
   };
@@ -42,24 +37,23 @@ const SidebarDrawer = () => {
         >
           <div>
             <Menu
-              /* selectedKeys={[location.pathname]} */
-              defaultSelectedKeys={location.pathname}
+              selectedKeys={location.split("/")[1]}
               mode="inline"
               theme="light"
             >
-              <Menu.Item className="drawer-item" key="/dashboard">
+              <Menu.Item className="drawer-item" key="dashboard">
                 <Link to="/dashboard">Dashboard</Link>
               </Menu.Item>
-              <Menu.Item className="drawer-item" key="/inventory">
+              <Menu.Item className="drawer-item" key="inventory">
                 <Link to="/inventory">Inventory</Link>
               </Menu.Item>
-              <Menu.Item className="drawer-item" key="/products">
+              <Menu.Item className="drawer-item" key="products">
                 Products
               </Menu.Item>
-              <Menu.Item className="drawer-item" key="/reports">
+              <Menu.Item className="drawer-item" key="reports">
                 Reports
               </Menu.Item>
-              <Menu.Item className="drawer-item" key="/history">
+              <Menu.Item className="drawer-item" key="history">
                 History
               </Menu.Item>
             </Menu>
