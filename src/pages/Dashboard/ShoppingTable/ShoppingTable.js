@@ -11,7 +11,7 @@ const ShoppingTable = () => {
   const [tableLoading, setTableLoading] = useState({ tableLoading: true });
   const [shoppingList, setShoppingList] = useState([]);
 
-  /* Fetching all items with Shopping_List set to True */
+  /* Fetching all items with "true" in shopping_list */
   useEffect(() => {
     const fetchShoppingList = async () => {
       try {

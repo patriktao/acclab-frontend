@@ -2,23 +2,19 @@ import React from "react";
 import "./ExpiringTable.css";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
-/* UI Components */
 import { ArrowsAltOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 import ExpiringColumns from "./ExpiringColumns";
 import { Table, Button } from "antd";
 import TooltipComponent from "../../../components/TooltipComponent";
-
-const axios = require("axios");
+import axios from "axios";
 
 const ExpiringTable = () => {
-  const [tableLoading, setTableLoading] = useState({ tableLoading: true });
+  const [tableLoading, setTableLoading] = useState(true);
   const [data, setData] = useState([]);
 
-  /* Fetching all ingredients in ascending order */
   useEffect(() => {
-    const fetchIngredients = async () => {
+    const fetchExpiringMaterials = async () => {
       try {
         const response = await axios.get("/expiring_materials");
         setData(response.data);
@@ -29,7 +25,7 @@ const ExpiringTable = () => {
         }
       }
     };
-    fetchIngredients();
+    fetchExpiringMaterials();
   }, []);
 
   return (

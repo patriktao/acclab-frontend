@@ -11,18 +11,6 @@
     outline: none;
   }
 
-  .ant-btn > .anticon {
-    line-height: 0;
-  }
-
-  .ant-table {
-    font-size: 14px;
-  }
-
-  .ant-table-thead > tr > th {
-    font-size: 14px;
-  }
-
   .table-text {
     display: grid;
     align-items: center;

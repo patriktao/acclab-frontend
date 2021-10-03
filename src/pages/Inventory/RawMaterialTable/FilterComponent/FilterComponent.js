@@ -9,12 +9,17 @@ import {
   Button,
 } from "antd";
 import PropTypes from "prop-types";
-import "./FilterComponent.css";
+import "./FilterComponent.scss";
 import { SearchOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
+import {
+  fetchCompanies,
+  fetchCountries,
+  fetchForms,
+  fetchLocations,
+} from "../../../../api";
 
 const { RangePicker } = DatePicker;
-const axios = require("axios");
 
 const FilterComponent = ({
   filterVisible,
@@ -46,66 +51,10 @@ const FilterComponent = ({
 
   /* Fetches Data, the select components have data types {value, name} and require different method to handle */
   useEffect(() => {
-    const fetchCompanies = async () => {
-      try {
-        const response = await axios.get("/brands/raw_material_companies");
-        setCompanies(response.data);
-      } catch (err) {
-        if (err.response) {
-          console.log(`Error: ${err.message}`);
-        }
-      }
-    };
-    const fetchCountries = async () => {
-      try {
-        const response = await axios.get("/brands/raw_material_countries");
-        setCountries(response.data);
-      } catch (err) {
-        if (err.response) {
-          console.log(`Error: ${err.message}`);
-        }
-      }
-    };
-    const fetchForms = async () => {
-      try {
-        const response = await axios.get("/material_forms");
-        const formsArray = [];
-        response.data.forEach((item) => {
-          formsArray.push({
-            value: item.form,
-            name: item.form,
-          });
-        });
-        setForms(formsArray.sort((a, b) => a.name.localeCompare(b.name)));
-      } catch (err) {
-        if (err.response) {
-          console.log(`Error: ${err.message}`);
-        }
-      }
-    };
-    const fetchLocations = async () => {
-      try {
-        const response = await axios.get("/stored_locations");
-        const locationArray = [];
-        response.data.forEach((item) => {
-          locationArray.push({
-            value: item.location,
-            name: item.location,
-          });
-        });
-        setLocations(
-          locationArray.sort((a, b) => a.name.localeCompare(b.name))
-        );
-      } catch (err) {
-        if (err.response) {
-          console.log(`Error: ${err.message}`);
-        }
-      }
-    };
-    fetchLocations();
-    fetchForms();
-    fetchCountries();
-    fetchCompanies();
+    fetchCompanies().then((res) => setCompanies(res));
+    fetchCountries().then((res) => setCountries(res));
+    fetchLocations().then((res) => setLocations(res));
+    fetchForms().then((res) => setForms(res));
   }, []);
 
   /* Resets all input fields */
@@ -120,17 +69,17 @@ const FilterComponent = ({
     handleClear();
   };
 
-  /* Passes all states to parent component */
+  /* Passes all states and data to parent component */
   const passStatesToParent = async (e) => {
-    const stateMap = new Map();
-    stateMap.set("brand", brand);
-    stateMap.set("country", country);
-    stateMap.set("location", location);
-    stateMap.set("form", form);
-    stateMap.set("receivedDate", receivedDate);
-    stateMap.set("expirationDate", expirationDate);
-    stateMap.set("priority", priority);
-    await handleFilter(stateMap);
+    const dataMap = new Map();
+    dataMap.set("brand", brand);
+    dataMap.set("country", country);
+    dataMap.set("location", location);
+    dataMap.set("form", form);
+    dataMap.set("receivedDate", receivedDate);
+    dataMap.set("expirationDate", expirationDate);
+    dataMap.set("priority", priority);
+    await handleFilter(dataMap);
     closeFilter(e);
   };
 
@@ -146,19 +95,19 @@ const FilterComponent = ({
   return (
     <>
       <Modal
-        className="filter-component"
         visible={filterVisible}
         onOk={passStatesToParent}
         onCancel={closeFilter}
         maskClosable={false}
+        width={"650px"}
       >
-        <span className="modal-sub-header"> What are you looking for?</span>
-        <h1 style={{ paddingBottom: "1rem" }}>Choose your filters</h1>
-        <section className="modal-rows">
-          <div className="modal-columns">
-            <div name="Brand" className="header-field-component">
-              <span className="modal-sub-header">Brand</span>
-              <Form.Item>
+        <section className="FilterComponent">
+          <span className="sub-header"> What are you looking for?</span>
+          <h1 style={{ paddingBottom: "1rem" }}>Choose your filters</h1>
+          <section className="rows">
+            <div className="columns">
+              <div name="Brand" className="header-field-wrapper">
+                <span className="sub-header">Brand</span>
                 <AutoComplete
                   dataSource={companies.map((e) => e.company)}
                   filterOption={(inputValue, option) =>
@@ -171,16 +120,14 @@ const FilterComponent = ({
                 >
                   <Input
                     allowClear
-                    className="input-autocomplete"
+                    className="input-text"
                     placeholder="All brands..."
                     suffix={<SearchOutlined style={{ fontSize: "1rem" }} />}
                   />
                 </AutoComplete>
-              </Form.Item>
-            </div>
-            <div name="Country" className="header-field-component">
-              <span className="modal-sub-header">Country</span>
-              <Form.Item>
+              </div>
+              <div name="Country" className="header-field-wrapper">
+                <span className="sub-header">Country</span>
                 <AutoComplete
                   dataSource={countries.map((e) => e.country)}
                   filterOption={(inputValue, option) =>
@@ -193,18 +140,16 @@ const FilterComponent = ({
                 >
                   <Input
                     allowClear
-                    className="input-autocomplete"
+                    className="input-text"
                     placeholder="All countries..."
                     suffix={<SearchOutlined style={{ fontSize: "1rem" }} />}
                   />
                 </AutoComplete>
-              </Form.Item>
+              </div>
             </div>
-          </div>
-          <div className="modal-columns">
-            <div name="Location" className="header-field-component">
-              <span className="modal-sub-header">Stored Location</span>
-              <Form.Item>
+            <div className="columns">
+              <div name="Location" className="header-field-wrapper">
+                <span className="sub-header">Stored Location</span>
                 <Select
                   allowClear
                   options={locations}
@@ -212,11 +157,9 @@ const FilterComponent = ({
                   placeholder="All locations..."
                   onChange={(e) => setLocation(e)}
                 />
-              </Form.Item>
-            </div>
-            <div name="Form" className="header-field-component">
-              <span className="modal-sub-header">Material Form</span>
-              <Form.Item>
+              </div>
+              <div name="Form" className="header-field-wrapper">
+                <span className="sub-header">Material Form</span>
                 <Select
                   allowClear
                   options={forms}
@@ -224,61 +167,65 @@ const FilterComponent = ({
                   onChange={(e) => setForm(e)}
                   value={form}
                 />
-              </Form.Item>
+              </div>
             </div>
-          </div>
-          <div className="modal-columns">
-            <div className="header-field-component">
-              <span className="modal-sub-header">Received Date</span>
-              <RangePicker
-                allowClear
-                showToday
-                className="date-component"
-                format={"MMM D, YYYY"}
-                value={receivedDate}
-                onChange={(e) => setReceivedDate(e)}
-              />
+            <div className="columns">
+              <div className="header-field-wrapper">
+                <span className="sub-header">Received Date</span>
+                <RangePicker
+                  allowClear
+                  showToday
+                  className="input-date"
+                  format={"MMM D, YYYY"}
+                  value={receivedDate}
+                  onChange={(e) => setReceivedDate(e)}
+                />
+              </div>
+              <div name="expiration-date" className="header-field-wrapper">
+                <span className="sub-header">Expiration Date</span>
+                <RangePicker
+                  allowClear
+                  showToday
+                  className="input-date"
+                  format={"MMM D, YYYY"}
+                  onChange={(e) => setExpirationDate(e)}
+                  value={expirationDate}
+                />
+              </div>
             </div>
-            <div name="expiration-date" className="header-field-component">
-              <span className="modal-sub-header">Expiration Date</span>
-              <RangePicker
-                allowClear
-                showToday
-                className="date-component"
-                format={"MMM D, YYYY"}
-                onChange={(e) => setExpirationDate(e)}
-                value={expirationDate}
-              />
-            </div>
-          </div>
 
-          <div className="priority-clear">
-            <div name="priority" className="header-field-component">
-              <span className="modal-sub-header">Priority for Usage</span>
-              <Radio.Group defaultValue="" value={priority} buttonStyle="solid">
-                <Radio.Button value="" onClick={handlePriority}>
-                  All
-                </Radio.Button>
-                <Radio.Button value="low" onClick={handlePriority}>
-                  Low
-                </Radio.Button>
-                <Radio.Button value="normal" onClick={handlePriority}>
-                  Normal
-                </Radio.Button>
-                <Radio.Button value="high" onClick={handlePriority}>
-                  High
-                </Radio.Button>
-                <Radio.Button value="expired" onClick={handlePriority}>
-                  Expired
-                </Radio.Button>
-              </Radio.Group>
+            <div className="priority-clear">
+              <div name="priority" className="header-field-wrapper">
+                <span className="sub-header">Priority for Usage</span>
+                <Radio.Group
+                  defaultValue=""
+                  value={priority}
+                  buttonStyle="solid"
+                >
+                  <Radio.Button value="" onClick={handlePriority}>
+                    All
+                  </Radio.Button>
+                  <Radio.Button value="low" onClick={handlePriority}>
+                    Low
+                  </Radio.Button>
+                  <Radio.Button value="normal" onClick={handlePriority}>
+                    Normal
+                  </Radio.Button>
+                  <Radio.Button value="high" onClick={handlePriority}>
+                    High
+                  </Radio.Button>
+                  <Radio.Button value="expired" onClick={handlePriority}>
+                    Expired
+                  </Radio.Button>
+                </Radio.Group>
+              </div>
+              <div>
+                <Button type="dashed" onClick={resetFields}>
+                  Reset
+                </Button>
+              </div>
             </div>
-            <div>
-              <Button type="dashed" onClick={resetFields}>
-                Reset
-              </Button>
-            </div>
-          </div>
+          </section>
         </section>
       </Modal>
     </>

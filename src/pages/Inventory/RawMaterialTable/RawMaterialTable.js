@@ -1,11 +1,11 @@
 import "./RawMaterialTable";
 import { useState, useEffect } from "react";
 import { raw_material_columns } from "./RawMaterialColumns";
-import { Table, Spin, Input, Button, AutoComplete, Tooltip } from "antd";
+import { Table, Spin, Input, Button, AutoComplete, Tooltip, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import FilterComponent from "./FilterComponent";
 import moment from "moment";
-import AddMaterial from "./AddMaterial";
+import AddRawMaterial from "./AddRawMaterial";
 import TooltipComponent from "../../../components/TooltipComponent";
 
 const { Search } = Input;
@@ -17,13 +17,13 @@ const RawMaterialTable = () => {
   const [table, setTable] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [tableLoading, setTableLoading] = useState(true);
-  const [filterVisible, setFilterVisible] = useState(false);
   const [counter, setCounter] = useState(0);
-  const [addVisible, setAddVisible] = useState(false);
+  const [filterVisible, setFilterVisible] = useState(false);
+  const [createModalVisible, setCreateModalVisible] = useState(false);
 
   /* Fetch Table Data */
   useEffect(() => {
-    const fetchTable = async () => {
+    const fetchRawMaterials = async () => {
       try {
         const response = await axios.get("/raw_material_table");
         setData(response.data);
@@ -35,7 +35,7 @@ const RawMaterialTable = () => {
         }
       }
     };
-    fetchTable();
+    fetchRawMaterials();
   }, []);
 
   const handleSearch = (input) => {
@@ -61,18 +61,13 @@ const RawMaterialTable = () => {
     setFilterVisible(false);
   };
 
-  /* Opens Add Drawer */
-  const openAdd = (e) => {
-    console.log("Opens Add");
-    e.stopPropagation();
-    setAddVisible(true);
+  const openCreateModal = () => {
+    setCreateModalVisible(true);
   };
 
-  /* Closes Drawer */
-  const closeAdd = (e) => {
-    console.log("closing");
+  const closeCreateModal = (e) => {
     e.stopPropagation();
-    setAddVisible(false);
+    setCreateModalVisible(false);
   };
 
   /* Check the item date and if requirements are satisfied, return the date in string format */
@@ -163,6 +158,7 @@ const RawMaterialTable = () => {
                 }
               />
               <Button
+                name="Filter Table"
                 className="table-filter"
                 type="primary"
                 size="large"
@@ -184,24 +180,28 @@ const RawMaterialTable = () => {
                   dataSource={table.map((item) => item.name)}
                 >
                   <Search
-                    id="search-bar"
+                    className="table-search"
                     placeholder="Search for a raw material..."
                     allowClear
-                    className="table-search"
                     size="large"
                     value={searchText}
                     onSearch={handleSearch}
                   />
                 </AutoComplete>
                 <Button
+                  name="Add Raw Material"
                   className="table-add"
                   type="primary"
                   size="large"
                   icon={<PlusOutlined />}
-                  onClick={openAdd}
+                  onClick={openCreateModal}
                 >
                   Add Raw Material
-                  <AddMaterial visible={addVisible} close={closeAdd} />
+                  <AddRawMaterial
+                    visible={createModalVisible}
+                    close={closeCreateModal}
+                    style={{ margin: "0 auto" }}
+                  />
                 </Button>
               </div>
             </div>

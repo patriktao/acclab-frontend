@@ -45,6 +45,17 @@ code {
   background: #f6f6f6;
 }
 
+/* Modal */
+.ant-modal-content {
+  border-radius: 4px !important;
+}
+
+/* Removing margins from each form */
+.ant-form-item {
+  margin-bottom: 0;
+}
+
+/* Fonts */
 .blue-text {
   color: #00bdf2;
 }
@@ -53,71 +64,40 @@ code {
   color: #023f88;
 }
 
-/* .ant-btn-primary{
-  background: #00bdf2;
-  border-color: #00bdf2;
-}
-
-.ant-btn-primary:hover{
-  background: rgb(23, 205, 255);
-  border-color: rgb(23, 205, 255);
-}
-
-.ant-btn-primary:active{
-  background: rgb(23, 205, 255);
-  border-color: rgb(23, 205, 255);
-} */
-
-/* Common Font Headers */
 .sub-header {
   color: #777777;
   font-weight: 500;
 }
 
-/* Table */
-.ant-table {
-  font-weight: 400;
+h1 {
+  font-weight: 700;
+  font-size: 32px;
+  margin-bottom: 0;
+  color: black;
+}
+
+h2 {
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 0;
   color: #404040;
 }
 
-.ant-table-thead > tr > th {
-  background: white;
-  color: #777777;
-  font-weight: 600;
+h3 {
+  font-weight: 500;
+  font-size: 16px;
+  margin-bottom: 0;
+  color: #404040;
 }
 
-/* Responsive Fonts */
-@media (min-width: 0px) {
-  h1 {
-    font-weight: 700;
-    font-size: 32px;
-    margin-bottom: 0;
-    color: black;
-  }
-
-  h2 {
-    font-weight: 700;
-    font-size: 16px;
-    margin-bottom: 0;
-    color: #404040;
-  }
-
-  h3 {
-    font-weight: 500;
-    font-size: 16px;
-    margin-bottom: 0;
-    color: #404040;
-  }
-
-  h4 {
-    font-weight: 700;
-    font-size: 18px;
-    margin-bottom: 0;
-    color: #404040;
-  }
+h4 {
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 0;
+  color: #404040;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 600px) {
   h1 {
     font-size: 22px;
   }
@@ -127,7 +107,7 @@ code {
   }
 }
 
-@media (min-width: 1366px) {
+@media (min-width: 1000px) {
   h1 {
     font-size: 28px;
   }

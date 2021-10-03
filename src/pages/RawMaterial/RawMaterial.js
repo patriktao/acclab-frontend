@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState, useEffect } from "react";
 import {
   Layout,
@@ -8,11 +9,10 @@ import {
   Checkbox,
   message,
   Avatar,
-  Tooltip,
 } from "antd";
 import NavBar from "../../components/NavBar";
 import Sidebar from "../../components/Sidebar";
-import "./RawMaterial.css";
+import "./RawMaterial.scss";
 import {
   general_columns,
   nuitrition_columns,
@@ -23,8 +23,9 @@ import {
   EditOutlined,
   InfoCircleOutlined,
 } from "@ant-design/icons";
-import axios from "axios";
 import TooltipComponent from "../../components/TooltipComponent";
+import { fetchMaterial, fetchMaterialLogistics } from "../../api";
+import EditRawMaterial from "./EditRawMaterial";
 
 const { Content, Footer } = Layout;
 const { TabPane } = Tabs;
@@ -36,42 +37,70 @@ const RawMaterial = (props) => {
   const [logistics, setLogistics] = useState([]);
   const [tableLoading1, setTableLoading1] = useState(true);
   const [tableLoading2, setTableLoading2] = useState(true);
+  const [showEdit, setShowEdit] = useState(false);
+
+  const id = props.match.params.id;
 
   /* Fetch Data from API */
   useEffect(() => {
-    const fetchMaterial = async () => {
-      try {
-        const response = await axios.get(`/inventory/${props.match.params.id}`);
-        setMaterialData(response.data);
-        setMaterialName(response.data.map((data) => data.material_name));
-        setReStock(response.data.map((data) => data.shopping_list)[0]);
-        setTableLoading1(false);
-      } catch (err) {
-        console.log(`Error: ${err.message}`);
-      }
-    };
-    const fetchLogistics = async () => {
-      try {
-        const response = await axios.get(
-          `/inventory/${props.match.params.id}/logistics`
-        );
-        setLogistics(response.data);
-        setTableLoading2(false);
-      } catch (err) {
-        console.log(`Error: ${err.message}`);
-      }
-    };
-    fetchMaterial();
-    fetchLogistics();
-  }, [props.match.params.id]);
+    fetchMaterial(id).then((res) => {
+      setMaterialData(res);
+      setMaterialName(res[0].material_name);
+      setReStock(res[0].shopping_list);
+      setTableLoading1(false);
+    });
+
+    fetchMaterialLogistics(id).then((res) => {
+      setLogistics(res);
+      setTableLoading2(false);
+    });
+  }, [id]);
 
   /* Functions */
   const handleReStock = async () => {
     setReStock(!reStock);
-    await axios.put(`/inventory/${props.match.params.id}/restock`);
+    await axios.put(`/inventory/${id}/restock`);
     reStock
       ? message.warning("Item removed from Shopping List")
       : message.success("Item added to Shopping List");
+  };
+
+  const openEdit = () => {
+    setShowEdit(true);
+  };
+
+  const closeEdit = (e) => {
+    e.stopPropagation();
+    setShowEdit(false);
+  };
+
+  const handleEdit = (data) => {
+    const edited_data = [
+      {
+        raw_material_id: materialData[0].raw_material_id,
+        material_name: data.get("name"),
+        total_amount: materialData[0].total_amount,
+        content: data.get("content"),
+        unit: data.get("unit"),
+        fat: data.get("fat"),
+        carbohydrate: data.get("carbohydrate"),
+        protein: data.get("protein"),
+        salt: data.get("salt"),
+        fiber: data.get("fiber"),
+        sugar: data.get("sugar"),
+        priority: materialData[0].priority,
+        image: "",
+        country: data.get("country"),
+        company: data.get("brand"),
+        location: data.get("location"),
+        form: data.get("form"),
+        shopping_list: materialData[0].shopping_list,
+        deleted: materialData[0].deleted,
+      },
+    ];
+    console.log(edited_data[0]);
+    setMaterialName(data.get("name"));
+    setMaterialData(edited_data);
   };
 
   return (
@@ -100,8 +129,15 @@ const RawMaterial = (props) => {
                   type="primary"
                   size="large"
                   icon={<EditOutlined />}
+                  onClick={openEdit}
                 >
                   Edit
+                  <EditRawMaterial
+                    visible={showEdit}
+                    close={closeEdit}
+                    data={materialData[0]}
+                    handleEdit={handleEdit}
+                  />
                 </Button>
                 <Button
                   className="table-add"

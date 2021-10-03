@@ -1,6 +1,4 @@
-import "./Dashboard.css";
-
-/* Importing UI-Components */
+import "./Dashboard.scss";
 import { Layout, Row, Col } from "antd";
 import NavBar from "../../components/NavBar";
 import Sidebar from "../../components/Sidebar";

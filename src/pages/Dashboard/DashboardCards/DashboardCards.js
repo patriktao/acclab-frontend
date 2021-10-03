@@ -24,7 +24,7 @@ const DashboardCards = () => {
         console.log(`Error: ${err.message}`);
       }
     };
-    const fetchExpiredMaterials = async () => {
+    const fetchTotalExpiredMaterials = async () => {
       try {
         setExpiredMaterials([0]);
         const response = await axios.get("/total_expired_materials");
@@ -34,7 +34,7 @@ const DashboardCards = () => {
       }
     };
     fetchTotalMaterials();
-    fetchExpiredMaterials();
+    fetchTotalExpiredMaterials();
   }, []);
 
   return (

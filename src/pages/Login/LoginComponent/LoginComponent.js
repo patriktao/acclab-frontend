@@ -2,7 +2,7 @@ import React from "react";
 import { Form, Input, Button } from "antd";
 import { MailOutlined, EyeOutlined } from "@ant-design/icons";
 import "./LoginComponent.css";
-import { Redirect } from 'react-router';
+import { Redirect } from "react-router";
 
 const LoginComponent = () => {
   const onFinish = (values) => {
@@ -10,8 +10,8 @@ const LoginComponent = () => {
   };
 
   const Login = () => {
-    console.log('Successful');
-    <Redirect to="/dashboard" />
+    console.log("Successful");
+    <Redirect to="/dashboard" />;
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -30,7 +30,6 @@ const LoginComponent = () => {
       >
         <div className="login-form">
           <Form.Item
-            /*         label="Username" */
             name="email"
             rules={[
               {
@@ -39,12 +38,15 @@ const LoginComponent = () => {
               },
             ]}
           >
-            <Input prefix={<MailOutlined />} placeholder="Enter your email" className="username-input"/>
+            <Input
+              prefix={<MailOutlined />}
+              placeholder="Enter your email"
+              className="username-input"
+            />
           </Form.Item>
 
           <Form.Item
             className="input-bar"
-            /* label="Password" */
             name="password"
             rules={[
               {
