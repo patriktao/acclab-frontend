@@ -38,6 +38,7 @@ const RawMaterial = (props) => {
   const [tableLoading1, setTableLoading1] = useState(true);
   const [tableLoading2, setTableLoading2] = useState(true);
   const [showEdit, setShowEdit] = useState(false);
+  const [image, setImage] = useState("");
 
   const id = props.match.params.id;
 
@@ -46,6 +47,7 @@ const RawMaterial = (props) => {
     fetchMaterial(id).then((res) => {
       setMaterialData(res);
       setMaterialName(res[0].material_name);
+      setImage(res[0].image);
       setReStock(res[0].shopping_list);
       setTableLoading1(false);
     });
@@ -103,6 +105,10 @@ const RawMaterial = (props) => {
     setMaterialData(edited_data);
   };
 
+  const handleImage = (img) => {
+
+  }
+
   return (
     <Layout className="sidebar-header-layout">
       <Sidebar />
@@ -137,6 +143,7 @@ const RawMaterial = (props) => {
                     close={closeEdit}
                     data={materialData[0]}
                     handleEdit={handleEdit}
+                    handleImage={handleImage}
                   />
                 </Button>
                 <Button
@@ -165,6 +172,7 @@ const RawMaterial = (props) => {
                           size={325}
                           shape="square"
                           alt="Company Logotype"
+                          src={image}
                         />
                       </div>
                       <div className="shopping-list">

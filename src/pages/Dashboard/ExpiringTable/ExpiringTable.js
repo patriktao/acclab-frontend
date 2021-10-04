@@ -1,5 +1,5 @@
 import React from "react";
-import "./ExpiringTable.css";
+import "./ExpiringTable.scss";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowsAltOutlined } from "@ant-design/icons";
@@ -29,7 +29,7 @@ const ExpiringTable = () => {
   }, []);
 
   return (
-    <div className="expiring-table">
+    <div className="table">
       <div className="table-headers">
         <div>
           <span className="sub-header-table">TODAY, JULY 6 2021</span>
