@@ -8,17 +8,33 @@
 .input-text {
   padding: 0.85rem 1rem 0.85rem 1rem;
   border-radius: 12px;
-  width:100%;
+  width: 100%;
+}
+
+/* Input Number */
+.input-number {
+  padding: 0.85rem 1rem 0.85rem 1rem;
+  border-radius: 12px;
+  width: 100%;
+}
+
+.ant-input-number-input {
+  padding: 0;
+  height: 25px;
+}
+
+.ant-input-number-handler-wrap {
+  border-radius: 12px;
 }
 
 /* List Selection */
 .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
   display: flex;
   align-items: center;
-  height: 50px;
+  height: 53px;
   border-radius: 12px;
   width: 100%;
-  padding-left: 1rem;
+  padding: 0.85rem 1rem 0.85rem 1rem;
 }
 
 /* Arrow Icon for List Selection */

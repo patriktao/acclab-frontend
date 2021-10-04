@@ -2,15 +2,15 @@ import React from "react";
 import { Tooltip } from "antd";
 import PropTypes from "prop-types";
 
-const TooltipComponent = ({ component, text }) => {
+const TooltipComponent = ({ children, text }) => {
   TooltipComponent.propTypes = {
     text: PropTypes.string,
-    component: PropTypes.any,
+    children: PropTypes.any,
   };
 
   return (
     <Tooltip title={text} color="#00bdf2" placement="top">
-      {component}
+      {children}
     </Tooltip>
   );
 };
