@@ -53,7 +53,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
   const [fiber, setFiber] = useState();
   const [content, setContent] = useState();
   const [imageLoading, setImageLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState("");
+  const [image, setImage] = useState("");
 
   useEffect(() => {
     if (data != null) {
@@ -114,39 +114,30 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
       file.type === "image/jpeg" ||
       file.type === "image/png" ||
       file.type === "image/jpg";
+    const size = file.size < 7e6;
     if (!isJpgOrPng) {
       message.error("You can only upload JPG/PNG file!");
     }
-    const size = file.size / 1024 / 1024 < 5;
     if (!size) {
-      message.error("Image must smaller than 5MB!");
+      message.error("Image must smaller than 7MB!");
     }
     return isJpgOrPng && size;
   }
 
-  function readFile(img, callback) {
-    const reader = new FileReader();
-    reader.addEventListener("load", () => callback(reader.result));
-    reader.readAsDataURL(img);
-  }
-
   const uploadImage = (info) => {
-    const { status } = info.file;
-    if (status !== "uploading") {
-      setImageLoading(true);
+    console.log(info.file.linkProps);
+    /* const status = info.file.status;
+    if (status === "uploading") {
       console.log(info.file, info.fileList);
       return;
     }
     if (status === "done") {
-      readFile(info.file.originFileObj, (imageUrl) => {
-        setImageUrl(imageUrl);
-        setImageLoading(false);
-        handleImage();
-      });
+      setImage(info.file.uid);
+      handleImage(info.file.uid);
       message.success(`${info.file.name} file uploaded successfully.`);
     } else if (status === "error") {
       message.error(`${info.file.name} file upload failed.`);
-    }
+    } */
   };
 
   const onFinish = (values) => {
@@ -290,11 +281,11 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
                     name="file"
                     maxCount={1}
                     onDrop={(e) => {
-                      setImageUrl("");
+                      setImage("");
                       console.log("Dropped files", e.dataTransfer.files);
                     }}
                     onChange={uploadImage}
-                    beforeUpload={beforeUpload}
+                    /* beforeUpload={beforeUpload} */
                   >
                     <p className="ant-upload-drag-icon">
                       <InboxOutlined />

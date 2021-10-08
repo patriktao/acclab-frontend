@@ -26,6 +26,7 @@ import {
 import TooltipComponent from "../../components/TooltipComponent";
 import { fetchMaterial, fetchMaterialLogistics } from "../../api";
 import EditRawMaterial from "./EditRawMaterial";
+import AddReduceRawMaterial from "./AddReduceRawMaterial";
 
 const { Content, Footer } = Layout;
 const { TabPane } = Tabs;
@@ -38,7 +39,9 @@ const RawMaterial = (props) => {
   const [tableLoading1, setTableLoading1] = useState(true);
   const [tableLoading2, setTableLoading2] = useState(true);
   const [showEdit, setShowEdit] = useState(false);
+  const [showAddReduce, setShowAddReduce] = useState(false);
   const [image, setImage] = useState("");
+  const [unit, setUnit] = useState("");
 
   const id = props.match.params.id;
 
@@ -47,6 +50,7 @@ const RawMaterial = (props) => {
     fetchMaterial(id).then((res) => {
       setMaterialData(res);
       setMaterialName(res[0].material_name);
+      setUnit(res[0].unit);
       setImage(res[0].image);
       setReStock(res[0].shopping_list);
       setTableLoading1(false);
@@ -91,7 +95,6 @@ const RawMaterial = (props) => {
         fiber: data.get("fiber"),
         sugar: data.get("sugar"),
         priority: materialData[0].priority,
-        image: "",
         country: data.get("country"),
         company: data.get("brand"),
         location: data.get("location"),
@@ -106,8 +109,17 @@ const RawMaterial = (props) => {
   };
 
   const handleImage = (img) => {
+    setImage(img);
+  };
 
-  }
+  const openAddReduce = () => {
+    setShowAddReduce(true);
+  };
+
+  const closeAddReduce = (e) => {
+    e.stopPropagation();
+    setShowAddReduce(false);
+  };
 
   return (
     <Layout className="sidebar-header-layout">
@@ -151,8 +163,15 @@ const RawMaterial = (props) => {
                   type="primary"
                   size="large"
                   icon={<PlusOutlined />}
+                  onClick={openAddReduce}
                 >
                   Add/Reduce
+                  <AddReduceRawMaterial
+                    close={closeAddReduce}
+                    visible={showAddReduce}
+                    unit={unit}
+                    logistics={logistics}
+                  />
                 </Button>
               </div>
             </div>
@@ -229,8 +248,8 @@ const RawMaterial = (props) => {
                     </section>
                   </div>
                 </TabPane>
-                <TabPane tab="Products" key="2"></TabPane>
-                <TabPane tab="History" key="3"></TabPane>
+                <TabPane tab="Products" key="2" disabled></TabPane>
+                <TabPane tab="History" key="3" disabled></TabPane>
               </Tabs>
             </div>
           </div>
