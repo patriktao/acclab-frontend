@@ -7,6 +7,7 @@ import FilterComponent from "./FilterComponent";
 import moment from "moment";
 import AddRawMaterial from "./AddRawMaterial";
 import TooltipComponent from "../../../components/TooltipComponent";
+import { getPriority } from "../../../components/Priority/Priority";
 
 const { Search } = Input;
 
@@ -125,7 +126,9 @@ const RawMaterialTable = () => {
               states.get("receivedDate")[1]
             )
           ) &&
-        item.priority.toLowerCase().includes(states.get("priority"))
+        getPriority(item.expiration_date)
+          .toLowerCase()
+          .includes(states.get("priority"))
     );
     setTable(filtered_table);
   };

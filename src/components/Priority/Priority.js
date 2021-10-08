@@ -1,8 +1,21 @@
 import moment from "moment";
 import "./Priority.scss";
 
+export const getPriority = (expirationDate) => {
+  const difference = moment(expirationDate).diff(moment(), "days");
+  if (difference < 0) {
+    return "expired";
+  } else if (difference < 30) {
+    return "high";
+  } else if (difference < 90) {
+    return "normal";
+  } else {
+    return "low";
+  }
+};
+
 /* Handles expiration date and returns icon */
-const getPriorityIcon = (expirationDate) => {
+export const getPriorityIcon = (expirationDate) => {
   const difference = moment(expirationDate).diff(moment(), "days");
   console.log(difference);
   if (difference < 0) {
@@ -47,5 +60,3 @@ const PriorityIcon = (priority) => {
     </div>
   );
 };
-
-export default getPriorityIcon;

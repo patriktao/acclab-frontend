@@ -1,6 +1,6 @@
 import moment from "moment";
 import { Tooltip } from "antd";
-import getPriorityIcon from "../../components/Priority";
+import { getPriorityIcon } from "../../components/Priority/Priority";
 
 export const general_columns = [
   {

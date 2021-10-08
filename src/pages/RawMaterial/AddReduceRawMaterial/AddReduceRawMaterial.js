@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import "./AddReduceRawMaterial.scss";
 import moment from "moment";
-import getPriorityIcon from "../../../components/Priority";
+import { getPriorityIcon } from "../../../components/Priority/Priority";
 
 const { TabPane } = Tabs;
 

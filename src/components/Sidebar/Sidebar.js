@@ -8,7 +8,7 @@ import {
   ClockCircleFilled,
   ExperimentFilled,
 } from "@ant-design/icons";
-import "./Sidebar.css";
+import "./Sidebar.scss";
 
 const { Sider } = Layout;
 

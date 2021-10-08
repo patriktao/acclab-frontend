@@ -1,6 +1,6 @@
 import moment from "moment";
 import { Link } from "react-router-dom";
-import getPriorityIcon from "../../../components/Priority";
+import { getPriorityIcon } from "../../../components/Priority/Priority";
 
 const ExpiringColumns = [
   {

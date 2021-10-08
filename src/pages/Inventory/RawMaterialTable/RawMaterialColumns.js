@@ -3,7 +3,7 @@ import { Button, Tooltip, Dropdown, Menu } from "antd";
 import { Link } from "react-router-dom";
 import { EllipsisOutlined } from "@ant-design/icons";
 import "./RawMaterialTable.css";
-import getPriorityIcon from "../../../components/Priority";
+import { getPriorityIcon } from "../../../components/Priority/Priority";
 
 const editMenu = (
   <Menu style={{ borderRadius: "4px" }}>
@@ -96,7 +96,8 @@ export const raw_material_columns = [
     dataIndex: "priority",
     key: "priority",
     sorter: (a, b) => a.priority.localeCompare(b.priority),
-    render: (priority, record) => getPriorityIcon(record.expiration_date),
+    render: (priority, record) =>
+      getPriorityIcon(record.expiration_date),
   },
   {
     title: "Edit",
