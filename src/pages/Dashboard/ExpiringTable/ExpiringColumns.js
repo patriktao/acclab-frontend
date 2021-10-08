@@ -1,5 +1,6 @@
 import moment from "moment";
 import { Link } from "react-router-dom";
+import getPriorityIcon from "../../../components/Priority";
 
 const ExpiringColumns = [
   {
@@ -48,16 +49,7 @@ const ExpiringColumns = [
     title: "Priority",
     dataIndex: "priority",
     key: "priority",
-    /* render: (priority) => (
-      <div
-        style={{
-          display: "grid",
-          justifyContent: "left",
-          alignContent: "center",
-        }}
-      >
-      </div>
-    ), */
+    render: (priority, record) => getPriorityIcon(record.expiration_date),
   },
 ];
 

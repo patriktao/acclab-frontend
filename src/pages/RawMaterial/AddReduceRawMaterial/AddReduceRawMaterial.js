@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import "./AddReduceRawMaterial.scss";
 import moment from "moment";
-import Priority from "../../../helper/Priority";
+import getPriorityIcon from "../../../components/Priority";
 
 const { TabPane } = Tabs;
 
@@ -90,7 +90,7 @@ const AddReduceRawMaterial = ({ close, visible, unit, logistics }) => {
       title: "Priority of Usage",
       dataIndex: "priority",
       key: "priority",
-      render: (priority, record) => Priority.getPriorityIcon(record),
+      render: (priority, record) => getPriorityIcon(record.expiration_date),
     },
   ];
 
