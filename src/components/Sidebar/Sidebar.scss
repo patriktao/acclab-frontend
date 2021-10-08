@@ -14,7 +14,7 @@
 .sidebar-header {
   color: white;
   text-align: left;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   font-weight: 600;
 }
 
@@ -23,15 +23,16 @@
 }
 
 .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
-  background-color: rgba(221, 226, 255, 0.1);
+  /* background-color: rgba(221, 226, 255, 0.1); */
+  background-color: #00bdf2;
 }
 
 .ant-menu-dark .ant-menu-item-selected > a,
 .ant-menu-dark .ant-menu-item-selected > span > a,
 .ant-menu-dark .ant-menu-item-selected > a:hover,
 .ant-menu-dark .ant-menu-item-selected > span > a:hover {
-   color: #dde2ff;
-/*   color: #ffffff; */
+/*    color: #dde2ff; */
+  color: #ffffff;
 }
 
 .ant-menu-dark .ant-menu-item-selected .ant-menu-item-icon,
@@ -41,8 +42,8 @@
   .ant-menu-item-selected
   .ant-menu-item-icon,
 .ant-menu-dark .ant-menu-item-selected .anticon {
-  color: #dde2ff;
-/*   color: #ffffff; */
+/*   color: #dde2ff; */
+  color: #ffffff;
 }
 
 .sidebar-item .anticon {

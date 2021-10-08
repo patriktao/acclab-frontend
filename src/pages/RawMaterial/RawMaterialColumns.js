@@ -1,6 +1,6 @@
 import moment from "moment";
-import { Tooltip } from "antd";
 import { getPriorityIcon } from "../../components/Priority/Priority";
+import TooltipComponent from "../../components/TooltipComponent";
 
 export const general_columns = [
   {
@@ -40,12 +40,13 @@ export const general_columns = [
   },
   {
     title: "Priority",
-    dataIndex: "priority",
+    dataIndex: "expiration_date",
     key: "priority",
-    render: (priority, record) => (
-      <Tooltip title="Priority of Usage">
-        {getPriorityIcon(record.expiration_date)}
-      </Tooltip>
+    render: (expiration_date) => (
+      <TooltipComponent
+        title="Priority of Usage"
+        component={getPriorityIcon(expiration_date)}
+      />
     ),
   },
 ];

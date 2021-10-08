@@ -17,7 +17,6 @@ export const getPriority = (expirationDate) => {
 /* Handles expiration date and returns icon */
 export const getPriorityIcon = (expirationDate) => {
   const difference = moment(expirationDate).diff(moment(), "days");
-  console.log(difference);
   if (difference < 0) {
     return PriorityIcon("Expired");
   } else if (difference < 30) {
@@ -34,7 +33,6 @@ export const getPriorityIcon = (expirationDate) => {
 const PriorityIcon = (priority) => {
   let choice = priority.toLowerCase();
   let color = "";
-  console.log(choice);
   switch (choice) {
     case (choice = "expired"):
       color = "#ff4d4f";

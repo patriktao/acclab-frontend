@@ -103,7 +103,6 @@ const RawMaterial = (props) => {
         deleted: materialData[0].deleted,
       },
     ];
-    console.log(edited_data[0]);
     setMaterialName(data.get("name"));
     setMaterialData(edited_data);
   };

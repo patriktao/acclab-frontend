@@ -97,7 +97,7 @@ const AddReduceRawMaterial = ({ close, visible, unit, logistics }) => {
   return (
     <Modal width={950} visible={visible} onCancel={close}>
       <section className="AddReduceRawMaterial">
-        <Tabs>
+        <Tabs tabPosition={"left"}>
           <TabPane tab="Add" key="1">
             <section className="add">
               <h1>Add Amount</h1>
@@ -151,6 +151,7 @@ const AddReduceRawMaterial = ({ close, visible, unit, logistics }) => {
                   className="input-select"
                   options={reasons}
                   defaultValue={reason}
+                  style={{ width: "450px" }}
                   onSelect={(e) => setReason(e)}
                 />
               </div>
