@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { EllipsisOutlined } from "@ant-design/icons";
 import "./RawMaterialTable.css";
 import { getPriorityIcon } from "../../../components/Priority/Priority";
+import { useState } from "react";
 
 const editMenu = (
   <Menu style={{ borderRadius: "4px" }}>
@@ -96,8 +97,7 @@ export const raw_material_columns = [
     dataIndex: "priority",
     key: "priority",
     sorter: (a, b) => a.priority.localeCompare(b.priority),
-    render: (priority, record) =>
-      getPriorityIcon(record.expiration_date),
+    render: (priority, record) => getPriorityIcon(record.expiration_date),
   },
   {
     title: "Edit",

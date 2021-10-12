@@ -1,13 +1,30 @@
 import "./RawMaterialTable";
 import { useState, useEffect } from "react";
-import { raw_material_columns } from "./RawMaterialColumns";
-import { Table, Spin, Input, Button, AutoComplete, Tooltip, Modal } from "antd";
+import { Link } from "react-router-dom";
+import {
+  Table,
+  Spin,
+  Input,
+  Button,
+  AutoComplete,
+  Tooltip,
+  Modal,
+  Dropdown,
+  Menu,
+} from "antd";
+import { EllipsisOutlined } from "@ant-design/icons";
 import { PlusOutlined } from "@ant-design/icons";
 import FilterComponent from "./FilterComponent";
 import moment from "moment";
 import AddRawMaterial from "./AddRawMaterial";
 import TooltipComponent from "../../../components/TooltipComponent";
-import { getPriority } from "../../../components/Priority/Priority";
+import {
+  getPriority,
+  getPriorityIcon,
+} from "../../../components/Priority/Priority";
+import EditRawMaterial from "../../RawMaterial/EditRawMaterial/EditRawMaterial";
+import { fetchMaterial } from "../../../api";
+import { raw_material_columns } from "./RawMaterialColumns";
 
 const { Search } = Input;
 
@@ -21,6 +38,7 @@ const RawMaterialTable = () => {
   const [counter, setCounter] = useState(0);
   const [filterVisible, setFilterVisible] = useState(false);
   const [createModalVisible, setCreateModalVisible] = useState(false);
+  const [editVisible, setEditVisible] = useState(false);
 
   /* Fetch Table Data */
   useEffect(() => {
@@ -67,6 +85,15 @@ const RawMaterialTable = () => {
   };
 
   const closeCreateModal = (e) => {
+    e.stopPropagation();
+    setCreateModalVisible(false);
+  };
+
+  const openEdit = () => {
+    setCreateModalVisible(true);
+  };
+
+  const closeEdit = (e) => {
     e.stopPropagation();
     setCreateModalVisible(false);
   };

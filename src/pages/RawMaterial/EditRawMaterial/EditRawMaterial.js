@@ -21,6 +21,7 @@ import {
   fetchForms,
   fetchLocations,
 } from "../../../api";
+import RawMaterialClass from "../../../classes/RawMaterialClass";
 
 const { Dragger } = Upload;
 const { TextArea } = Input;
@@ -54,6 +55,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
   const [content, setContent] = useState();
   const [imageLoading, setImageLoading] = useState(false);
   const [image, setImage] = useState("");
+  const [rawMaterialForm, setRawMaterialForm] = useState();
 
   useEffect(() => {
     if (data != null) {
@@ -70,12 +72,14 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
       setSugar(data.sugar);
       setFiber(data.fiber);
       setContent(data.content);
+      setRawMaterialForm(new RawMaterialClass()) &&
+        rawMaterialForm.jsonToRawMaterial(data);
     }
     fetchCompanies().then((res) => setCompanies(res));
     fetchCountries().then((res) => setCountries(res));
     fetchLocations().then((res) => setLocations(res));
     fetchForms().then((res) => setForms(res));
-  }, [data]);
+  }, [data, rawMaterialForm]);
 
   const units = [
     {
@@ -109,7 +113,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
   };
 
   /* Functions */
-  function beforeUpload(file) {
+  /*   function beforeUpload(file) {
     const isJpgOrPng =
       file.type === "image/jpeg" ||
       file.type === "image/png" ||
@@ -122,7 +126,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
       message.error("Image must smaller than 7MB!");
     }
     return isJpgOrPng && size;
-  }
+  } */
 
   const uploadImage = (info) => {
     console.log(info.file.linkProps);
@@ -151,13 +155,35 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
   };
 
   /* Api Requests */
-  const handleForm = async (e) => {};
+  const handleForm = async (e) => {
+    console.log(rawMaterialForm.toArray());
+    /*     rawMaterialForm
+      .setName(name)
+      .setBrand(brand)
+      .setCountry(country)
+      .setUnit(unit)
+      .setForm(form)
+      .setLocation(location)
+      .setFat(fat)
+      .setCarb(carbohydrate)
+      .setProtein(protein)
+      .setSalt(salt)
+      .setSugar(sugar)
+      .setFiber(fiber)
+      .setContent(content)
+      .toArray(); */
+  };
+
+  const handleOk = (e) => {
+    sendDataToParent(e);
+    handleForm(e);
+  };
 
   return (
     <Modal
       centered
       visible={visible}
-      onOk={sendDataToParent}
+      onOk={(e) => handleOk(e)}
       onCancel={close}
       width={"950px"}
     >
