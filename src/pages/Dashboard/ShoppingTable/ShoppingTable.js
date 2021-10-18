@@ -4,6 +4,7 @@ import { DeleteOutlined } from "@ant-design/icons";
 import "./ShoppingTable.css";
 import { Spin } from "antd";
 import { Link } from "react-router-dom";
+import { API } from "../../../api";
 
 const axios = require("axios");
 
@@ -11,17 +12,13 @@ const ShoppingTable = () => {
   const [tableLoading, setTableLoading] = useState({ tableLoading: true });
   const [shoppingList, setShoppingList] = useState([]);
 
-  /* Fetching all items with "true" in shopping_list */
   useEffect(() => {
     const fetchShoppingList = async () => {
-      try {
-        const response = await axios.get("/shopping_list");
-        setShoppingList(response.data);
+      const shoppingData = await API.dashboard
+        .fetchShoppingList()
+        .then((res) => setShoppingList(res));
+      if (!(shoppingData instanceof Error)) {
         setTableLoading(false);
-      } catch (err) {
-        if (err.response) {
-          console.log(`Error: ${err.message}`);
-        }
       }
     };
     fetchShoppingList();
@@ -29,7 +26,7 @@ const ShoppingTable = () => {
 
   const handleRemove = async (id) => {
     setShoppingList(shoppingList.filter((item) => item.id !== id));
-    await axios.put(`/inventory/${id}/restock`);
+    API.rawMaterial.handleRestock(id);
     message.success("Item removed from list");
   };
 

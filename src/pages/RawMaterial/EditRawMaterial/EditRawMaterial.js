@@ -15,13 +15,9 @@ import {
   Upload,
   message,
 } from "antd";
-import {
-  fetchCompanies,
-  fetchCountries,
-  fetchForms,
-  fetchLocations,
-} from "../../../api";
+import { API } from "../../../api";
 import RawMaterialClass from "../../../classes/RawMaterialClass";
+import BrandModal from "./BrandModal";
 
 const { Dragger } = Upload;
 const { TextArea } = Input;
@@ -31,7 +27,11 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
     visible: PropTypes.bool,
     close: PropTypes.func,
     data: PropTypes.object,
+    handleEdit: PropTypes.func,
   };
+
+  /* Modal States */
+  const [brandModalVisible, setBrandModalVisible] = useState(false);
 
   /* Data States */
   const [companies, setCompanies] = useState([]);
@@ -47,7 +47,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
   const [form, setForm] = useState();
   const [location, setLocation] = useState();
   const [fat, setFat] = useState();
-  const [carbohydrate, setCarbohydrate] = useState();
+  const [carb, setCarb] = useState();
   const [protein, setProtein] = useState();
   const [salt, setSalt] = useState();
   const [sugar, setSugar] = useState();
@@ -57,30 +57,38 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
   const [image, setImage] = useState("");
   const [rawMaterialForm, setRawMaterialForm] = useState();
 
+  /* Hooks */
   useEffect(() => {
-    if (data != null) {
-      setName(data.material_name);
-      setBrand(data.company);
-      setCountry(data.country);
-      setUnit(data.unit);
-      setForm(data.form);
-      setLocation(data.location);
-      setFat(data.fat);
-      setCarbohydrate(data.carbohydrate);
-      setProtein(data.protein);
-      setSalt(data.salt);
-      setSugar(data.sugar);
-      setFiber(data.fiber);
-      setContent(data.content);
-      setRawMaterialForm(new RawMaterialClass()) &&
-        rawMaterialForm.jsonToRawMaterial(data);
-    }
-    fetchCompanies().then((res) => setCompanies(res));
-    fetchCountries().then((res) => setCountries(res));
-    fetchLocations().then((res) => setLocations(res));
-    fetchForms().then((res) => setForms(res));
-  }, [data, rawMaterialForm]);
+    const fetchData = () => {
+      API.brands.fetchAllCompanies().then((res) => setCompanies(res));
+      API.brands.fetchAllCountries().then((res) => setCountries(res));
+      API.rawMaterial.fetchLocations().then((res) => setLocations(res));
+      API.rawMaterial.fetchForms().then((res) => setForms(res));
+    };
 
+    const setData = () => {
+      if (data != null) {
+        setName(data.material_name);
+        setBrand(data.company);
+        setCountry(data.country);
+        setUnit(data.unit);
+        setForm(data.form);
+        setLocation(data.location);
+        setFat(data.fat);
+        setCarb(data.carbohydrate);
+        setProtein(data.protein);
+        setSalt(data.salt);
+        setSugar(data.sugar);
+        setFiber(data.fiber);
+        setContent(data.content);
+        setRawMaterialForm(new RawMaterialClass(data));
+      }
+    };
+    fetchData();
+    setData();
+  }, [data]);
+
+  /* Column */
   const units = [
     {
       value: "g",
@@ -92,24 +100,45 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
     },
   ];
 
-  /* Passes all states and data to parent component */
-  const sendDataToParent = async (e) => {
-    const dataMap = new Map();
-    dataMap.set("name", name);
-    dataMap.set("brand", brand);
-    dataMap.set("country", country);
-    dataMap.set("unit", unit);
-    dataMap.set("location", location);
-    dataMap.set("form", form);
-    dataMap.set("fat", fat);
-    dataMap.set("protein", protein);
-    dataMap.set("salt", salt);
-    dataMap.set("carbohydrate", carbohydrate);
-    dataMap.set("sugar", sugar);
-    dataMap.set("fiber", fiber);
-    dataMap.set("content", content);
-    await handleEdit(dataMap);
+  /* Functions */
+  const handleOk = (e) => {
+    sendDataToParent();
+    sendDataToAPI();
     close(e);
+  };
+
+  const sendDataToParent = async () => {
+    rawMaterialForm.name = name;
+    rawMaterialForm.brand = brand;
+    rawMaterialForm.country = country;
+    rawMaterialForm.unit = unit;
+    rawMaterialForm.location = location;
+    rawMaterialForm.form = form;
+    rawMaterialForm.fat = fat;
+    rawMaterialForm.protein = protein;
+    rawMaterialForm.salt = salt;
+    rawMaterialForm.carb = carb;
+    rawMaterialForm.sugar = sugar;
+    rawMaterialForm.fiber = fiber;
+    rawMaterialForm.content = content;
+    rawMaterialForm.image = image;
+    await handleEdit(rawMaterialForm);
+  };
+
+  const sendDataToAPI = async () => {
+    API.rawMaterial.editMaterial(
+      data.raw_material_id,
+      rawMaterialForm.toJsonObject()[0]
+    );
+  };
+
+  const openBrandModal = () => {
+    setBrandModalVisible(true);
+  };
+
+  const closeBrandModal = (e) => {
+    e.stopPropagation();
+    setBrandModalVisible(false);
   };
 
   /* Functions */
@@ -154,33 +183,9 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
     message.success("Failed editing raw material");
   };
 
-  /* Api Requests */
-  const handleForm = async (e) => {
-    console.log(rawMaterialForm.toArray());
-    /*     rawMaterialForm
-      .setName(name)
-      .setBrand(brand)
-      .setCountry(country)
-      .setUnit(unit)
-      .setForm(form)
-      .setLocation(location)
-      .setFat(fat)
-      .setCarb(carbohydrate)
-      .setProtein(protein)
-      .setSalt(salt)
-      .setSugar(sugar)
-      .setFiber(fiber)
-      .setContent(content)
-      .toArray(); */
-  };
-
-  const handleOk = (e) => {
-    sendDataToParent(e);
-    handleForm(e);
-  };
-
   return (
     <Modal
+      maskClosable={false}
       centered
       visible={visible}
       onOk={(e) => handleOk(e)}
@@ -216,7 +221,9 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
                       >
                         <Input
                           className="input-text"
-                          onChange={(e) => setName(e.target.value)}
+                          onChange={(e) =>
+                            e.target.value !== name && setName(e.target.value)
+                          }
                           value={name}
                           placeholder="Enter material name..."
                           required
@@ -238,13 +245,14 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
                           ]}
                         >
                           <AutoComplete
+                            /* DataSource is deprecated */
                             dataSource={companies.map((e) => e.company)}
                             filterOption={(inputValue, option) =>
                               option.value
                                 .toUpperCase()
                                 .indexOf(inputValue.toUpperCase()) !== -1
                             }
-                            onChange={(e) => setBrand(e)}
+                            onChange={(e) => e !== brand && setBrand(e)}
                             value={brand}
                             allowClear
                           >
@@ -257,14 +265,25 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
                             />
                           </AutoComplete>
                         </Form.Item>
-                        <TooltipComponent
+                        {/*                         <TooltipComponent
                           text="Add a new brand"
                           component={
-                            <Button className="button">
+                            <Button className="button" onClick={openBrandModal}>
                               <PlusOutlined />
+                              <BrandModal
+                                visible={brandModalVisible}
+                                close={closeBrandModal}
+                              />
                             </Button>
                           }
-                        />
+                        /> */}
+                        <Button className="button" onClick={openBrandModal}>
+                          <PlusOutlined />
+                          <BrandModal
+                            visible={brandModalVisible}
+                            close={closeBrandModal}
+                          />
+                        </Button>
                       </div>
                     </div>
                     <div className="header-field-wrapper">
@@ -285,7 +304,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
                               .toUpperCase()
                               .indexOf(inputValue.toUpperCase()) !== -1
                           }
-                          onChange={(e) => setCountry(e)}
+                          onChange={(e) => e !== country && setCountry(e)}
                           value={country}
                           allowClear
                         >
@@ -310,7 +329,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
                       setImage("");
                       console.log("Dropped files", e.dataTransfer.files);
                     }}
-                    onChange={uploadImage}
+                    onChange={(e) => e !== image && uploadImage}
                     /* beforeUpload={beforeUpload} */
                   >
                     <p className="ant-upload-drag-icon">
@@ -331,7 +350,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
                   <Select
                     options={units}
                     placeholder="Select here..."
-                    onChange={(e) => setUnit(e)}
+                    onChange={(e) => e !== unit && setUnit(e)}
                     value={unit}
                   />
                 </div>
@@ -340,7 +359,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
                   <Select
                     options={forms}
                     placeholder="Select here..."
-                    onChange={(e) => setForm(e)}
+                    onChange={(e) => e !== form && setForm(e)}
                     value={form}
                   />
                 </div>
@@ -351,7 +370,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
                       options={locations}
                       value={location}
                       placeholder="Select here..."
-                      onChange={(e) => setLocation(e)}
+                      onChange={(e) => e !== location && setLocation(e)}
                     />
                     <TooltipComponent
                       text="Add a new location"
@@ -372,14 +391,14 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
               <div className="column-4">
                 <div className="header-field-wrapper">
                   <span className="sub-header">Fat</span>
-                  <InputNumber value={fat} onChange={(e) => setFat(e)} />
+                  <InputNumber
+                    value={fat}
+                    onChange={(e) => e !== fat && setFat(e)}
+                  />
                 </div>
                 <div className="header-field-wrapper">
                   <span className="sub-header">Carbohydrate</span>
-                  <InputNumber
-                    value={carbohydrate}
-                    onChange={(e) => setCarbohydrate(e)}
-                  />
+                  <InputNumber value={carb} onChange={(e) => setCarb(e)} />
                 </div>
                 <div className="header-field-wrapper">
                   <span className="sub-header">Protein</span>

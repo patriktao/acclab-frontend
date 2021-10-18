@@ -94,9 +94,9 @@ export const raw_material_columns = [
   },
   {
     title: "Priority",
-    dataIndex: "priority",
-    key: "priority",
-    sorter: (a, b) => a.priority.localeCompare(b.priority),
+    sorter: (a, b) =>
+      moment(a.expiration_date).format("YYYYMMDD") -
+      moment(b.expiration_date).format("YYYYMMDD"),
     render: (priority, record) => getPriorityIcon(record.expiration_date),
   },
   {

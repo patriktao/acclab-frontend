@@ -12,12 +12,7 @@ import PropTypes from "prop-types";
 import "./FilterComponent.scss";
 import { SearchOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import {
-  fetchCompanies,
-  fetchCountries,
-  fetchForms,
-  fetchLocations,
-} from "../../../../api";
+import { API } from "../../../../api";
 
 const { RangePicker } = DatePicker;
 
@@ -51,10 +46,10 @@ const FilterComponent = ({
 
   /* Fetches Data, the select components have data types {value, name} and require different method to handle */
   useEffect(() => {
-    fetchCompanies().then((res) => setCompanies(res));
-    fetchCountries().then((res) => setCountries(res));
-    fetchLocations().then((res) => setLocations(res));
-    fetchForms().then((res) => setForms(res));
+    API.rawMaterial.fetchCompanies().then((res) => setCompanies(res));
+    API.rawMaterial.fetchCountries().then((res) => setCountries(res));
+    API.rawMaterial.fetchLocations().then((res) => setLocations(res));
+    API.rawMaterial.fetchForms().then((res) => setForms(res));
   }, []);
 
   /* Resets all input fields */

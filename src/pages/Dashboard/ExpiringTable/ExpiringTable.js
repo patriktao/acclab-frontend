@@ -7,7 +7,7 @@ import { Spin } from "antd";
 import ExpiringColumns from "./ExpiringColumns";
 import { Table, Button } from "antd";
 import TooltipComponent from "../../../components/TooltipComponent";
-import axios from "axios";
+import { API } from "../../../api";
 
 const ExpiringTable = () => {
   const [tableLoading, setTableLoading] = useState(true);
@@ -15,14 +15,13 @@ const ExpiringTable = () => {
 
   useEffect(() => {
     const fetchExpiringMaterials = async () => {
-      try {
-        const response = await axios.get("/expiring_materials");
-        setData(response.data);
+      const expiringMaterials = await API.dashboard
+        .fetchExpiringMaterials()
+        .then((res) => {
+          setData(res);
+        });
+      if (!(expiringMaterials instanceof Error)) {
         setTableLoading(false);
-      } catch (err) {
-        if (err.response) {
-          console.log(`Error: ${err.message}`);
-        }
       }
     };
     fetchExpiringMaterials();

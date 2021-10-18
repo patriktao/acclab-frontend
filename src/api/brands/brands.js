@@ -1,0 +1,37 @@
+import axios from "axios";
+import { message } from "antd";
+
+export const fetchAllCompanies = async () => {
+  try {
+    const response = await axios.get("/brands/all_companies");
+    return response.data;
+  } catch (err) {
+    if (err.response) {
+      console.log(`Error: ${err.message}`);
+      return [];
+    }
+  }
+};
+
+export const fetchAllCountries = async () => {
+  try {
+    const response = await axios.get("/brands/all_countries");
+    return response.data;
+  } catch (err) {
+    if (err.response) {
+      console.log(`Error: ${err.message}`);
+      return [];
+    }
+  }
+};
+
+export const deleteCompany = async (company) => {
+  await axios
+    .delete("/brands/delete_company", [{ company: company }])
+    .then(message.success(company + " has been removed."))
+    .catch((err) => {
+      if (err.response) {
+        console.log(`Error: ${err.message}`);
+      }
+    });
+};

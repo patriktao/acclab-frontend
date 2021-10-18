@@ -95,7 +95,13 @@ const AddReduceRawMaterial = ({ close, visible, unit, logistics }) => {
   ];
 
   return (
-    <Modal width={950} visible={visible} onCancel={close}>
+    <Modal
+      centered
+      maskClosable={false}
+      width={950}
+      visible={visible}
+      onCancel={close}
+    >
       <section className="AddReduceRawMaterial">
         <Tabs tabPosition={"left"}>
           <TabPane tab="Add" key="1">

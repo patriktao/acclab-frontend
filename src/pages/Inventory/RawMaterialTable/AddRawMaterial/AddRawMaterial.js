@@ -6,12 +6,7 @@ import "./AddRawMaterial.scss";
 import TooltipComponent from "../../../../components/TooltipComponent";
 import { Upload, message } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
-import {
-  fetchCompanies,
-  fetchCountries,
-  fetchForms,
-  fetchLocations,
-} from "../../../../api";
+import { API } from "../../../../api";
 
 const { Dragger } = Upload;
 const { TextArea } = Input;
@@ -39,10 +34,10 @@ const AddRawMaterial = ({ visible, close }) => {
 
   /* Fetch */
   useEffect(() => {
-    fetchCompanies().then((res) => setCompanies(res));
-    fetchCountries().then((res) => setCountries(res));
-    fetchLocations().then((res) => setLocations(res));
-    fetchForms().then((res) => setForms(res));
+    API.rawMaterial.fetchCompanies().then((res) => setCompanies(res));
+    API.rawMaterial.fetchCountries().then((res) => setCountries(res));
+    API.rawMaterial.fetchLocations().then((res) => setLocations(res));
+    API.rawMaterial.fetchForms().then((res) => setForms(res));
   }, []);
 
   const units = [

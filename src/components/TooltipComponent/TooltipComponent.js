@@ -9,7 +9,12 @@ const TooltipComponent = ({ component, text }) => {
   };
 
   return (
-    <Tooltip title={text} color="#00bdf2" placement="top">
+    <Tooltip
+      disableTriggerFocus={true}
+      title={text}
+      color="#00bdf2"
+      placement="top"
+    >
       {component}
     </Tooltip>
   );

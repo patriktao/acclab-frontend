@@ -7,31 +7,26 @@ import {
   FileDoneOutlined,
 } from "@ant-design/icons";
 import { useState, useEffect } from "react";
-const axios = require("axios");
+import { API } from "../../../api";
 
 const DashboardCards = () => {
-  const [ExpiredMaterials, setExpiredMaterials] = useState([]);
-  const [TotalMaterials, setTotalMaterials] = useState([]);
+  const [ExpiredMaterials, setExpiredMaterials] = useState();
+  const [TotalMaterials, setTotalMaterials] = useState();
 
   /* Total Materials */
   useEffect(() => {
     const fetchTotalMaterials = async () => {
-      try {
-        setTotalMaterials([0]);
-        const response = await axios.get("/total_materials");
-        setTotalMaterials(response.data.map((data) => data.total));
-      } catch (err) {
-        console.log(`Error: ${err.message}`);
-      }
+      setTotalMaterials(0);
+      API.statistics
+        .fetchTotalMaterials()
+        .then((res) => setTotalMaterials(res));
     };
+
     const fetchTotalExpiredMaterials = async () => {
-      try {
-        setExpiredMaterials([0]);
-        const response = await axios.get("/total_expired_materials");
-        setExpiredMaterials(response.data.map((data) => data.total));
-      } catch (err) {
-        console.log(`Error: ${err.message}`);
-      }
+      setExpiredMaterials(0);
+      await API.statistics
+        .fetchTotalExpiredMaterials()
+        .then((res) => setExpiredMaterials(res));
     };
     fetchTotalMaterials();
     fetchTotalExpiredMaterials();

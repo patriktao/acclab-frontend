@@ -2,7 +2,7 @@
 import PropTypes from "prop-types";
 import { checkString, checkNumber } from "../helper/Checker";
 
-class RawMaterialClass /*  extends React.Component  */ {
+class RawMaterialClass {
   static propTypes = {
     name: PropTypes.string,
     brand: PropTypes.string,
@@ -11,7 +11,7 @@ class RawMaterialClass /*  extends React.Component  */ {
     form: PropTypes.string,
     location: PropTypes.string,
     fat: PropTypes.number,
-    carbohydrate: PropTypes.number,
+    carb: PropTypes.number,
     protein: PropTypes.number,
     salt: PropTypes.number,
     fiber: PropTypes.number,
@@ -19,174 +19,265 @@ class RawMaterialClass /*  extends React.Component  */ {
     image: PropTypes.string,
   };
 
-  #name;
-  #brand;
-  #country;
-  #unit;
-  #form;
-  #location;
-  #fat;
-  #carbohydrate;
-  #protein;
-  #salt;
-  #sugar;
-  #fiber;
-  #content;
-  #image;
-
+  #name = "";
+  #brand = "";
+  #country = "";
+  #unit = "";
+  #form = "";
+  #location = "";
+  #fat = 0;
+  #carb = 0;
+  #protein = 0;
+  #salt = 0;
+  #sugar = 0;
+  #fiber = 0;
+  #content = "";
+  #image = "";
+  #data;
   /* Constructor */
 
-  constructor() {
-    this.name = "";
-    this.#brand = "";
-    this.#country = "";
-    this.#unit = "";
-    this.#form = "";
-    this.#location = "";
-    this.#fat = 0;
-    this.#carbohydrate = 0;
-    this.#protein = 0;
-    this.#salt = 0;
-    this.#sugar = 0;
-    this.#fiber = 0;
-    this.#content = "";
-    this.#image = "";
+  constructor(data) {
+    if (data !== null) {
+      this.#data = data;
+      this.#name = data.material_name;
+      this.#brand = data.company;
+      this.#country = data.country;
+      this.#unit = data.unit;
+      this.#form = data.form;
+      this.#location = data.location;
+      this.#fat = data.fat;
+      this.#carb = data.carbohydrate;
+      this.#protein = data.protein;
+      this.#salt = data.salt;
+      this.#sugar = data.sugar;
+      this.#fiber = data.fiber;
+      this.#content = data.content;
+      this.#image = data.image;
+    }
   }
 
-  /* Return an array of the data */
+  /* Return an Json Object of the data */
 
-  toArray() {
+  toJsonObject() {
     return [
-      this.#name,
-      this.#brand,
-      this.#country,
-      this.#unit,
-      this.#form,
-      this.#location,
-      this.#fat,
-      this.#carbohydrate,
-      this.#protein,
-      this.#salt,
-      this.#sugar,
-      this.#fiber,
-      this.#content,
-      this.#image,
+      {
+        name: this.#name,
+        company: this.#brand,
+        country: this.#country,
+        unit: this.#unit,
+        form: this.#form,
+        location: this.#location,
+        fat: this.#fat,
+        carb: this.#carb,
+        protein: this.#protein,
+        salt: this.#salt,
+        sugar: this.#sugar,
+        fiber: this.#fiber,
+        content: this.#content,
+        image: this.image,
+      },
     ];
   }
 
-  /* Create a Raw Material out of a JSON object*/
+  /* 
+    Returns the private variables
+  */
 
-  jsonToRawMaterial(data) {
-    this.#name = data.material_name;
-    this.#brand = data.company;
-    this.#country = data.country;
-    this.#unit = data.unit;
-    this.#form = data.form;
-    this.#location = data.location;
-    this.#fat = data.fat;
-    this.#carbohydrate = data.carbohydrate;
-    this.#protein = data.protein;
-    this.#salt = data.salt;
-    this.#sugar = data.sugar;
-    this.#fiber = data.fiber;
-    this.#content = data.content;
-    this.#image = data.image;
+  get name() {
+    return this.#name;
   }
 
-  setName(props) {
-    if (checkString(props, this.name)) {
-      this.#name = props;
+  get brand() {
+    return this.#brand;
+  }
+
+  get country() {
+    return this.#country;
+  }
+
+  get unit() {
+    return this.#unit;
+  }
+
+  get form() {
+    return this.#form;
+  }
+
+  get location() {
+    return this.#location;
+  }
+
+  get fat() {
+    return this.#fat;
+  }
+
+  get carb() {
+    return this.#carb;
+  }
+
+  get protein() {
+    return this.#protein;
+  }
+
+  get salt() {
+    return this.#salt;
+  }
+
+  get sugar() {
+    return this.#sugar;
+  }
+
+  get fiber() {
+    return this.#fiber;
+  }
+
+  get content() {
+    return this.#content;
+  }
+
+  get image() {
+    return this.#image;
+  }
+
+  /* 
+    Set functions
+  */
+  set name(input) {
+    this.propTypes = {
+      input: PropTypes.string,
+    };
+    if (checkString(input, this.name)) {
+      this.#name = input;
     }
     return this;
   }
 
-  setBrand(props) {
-    if (checkString(props, this.#brand)) {
-      this.#brand = props;
+  set brand(input) {
+    this.propTypes = {
+      input: PropTypes.string,
+    };
+    if (checkString(input, this.#brand)) {
+      this.#brand = input;
     }
     return this;
   }
 
-  setCountry(props) {
-    if (checkString(props, this.#country)) {
-      this.#country = props;
+  set country(input) {
+    this.propTypes = {
+      props: PropTypes.string,
+    };
+    if (checkString(input, this.#country)) {
+      this.#country = input;
     }
     return this;
   }
 
-  setUnit(props) {
-    if (checkString(props, this.#unit)) {
-      this.#unit = props;
+  set unit(input) {
+    this.propTypes = {
+      input: PropTypes.string,
+    };
+    if (checkString(input, this.#unit)) {
+      this.#unit = input;
     }
     return this;
   }
 
-  setForm(props) {
-    if (checkString(props, this.#form)) {
-      this.#form = props;
+  set form(input) {
+    this.propTypes = {
+      input: PropTypes.string,
+    };
+    if (checkString(input, this.#form)) {
+      this.#form = input;
     }
     return this;
   }
 
-  setLocation(props) {
-    if (checkString(props, this.#location)) {
-      this.#location = props;
+  set location(input) {
+    this.propTypes = {
+      input: PropTypes.string,
+    };
+    if (checkString(input, this.#location)) {
+      this.#location = input;
     }
     return this;
   }
 
-  setFat(props) {
-    if (checkNumber(props, this.#fat)) {
-      this.#fat = props;
+  set fat(input) {
+    this.propTypes = {
+      input: PropTypes.number,
+    };
+    if (checkNumber(input, this.#fat)) {
+      this.#fat = input;
     }
     return this;
   }
 
-  setCarb(props) {
-    if (checkNumber(props, this.#carbohydrate)) {
-      this.#carbohydrate = props;
+  set carb(input) {
+    this.propTypes = {
+      input: PropTypes.number,
+    };
+    if (checkNumber(input, this.#carb)) {
+      this.#carb = input;
     }
     return this;
   }
 
-  setProtein(props) {
-    if (checkNumber(props, this.#protein)) {
-      this.#protein = props;
+  set protein(input) {
+    this.propTypes = {
+      input: PropTypes.number,
+    };
+    if (checkNumber(input, this.#protein)) {
+      this.#protein = input;
     }
     return this;
   }
 
-  setSalt(props) {
-    if (checkNumber(props, this.#salt)) {
-      this.#salt = props;
+  set salt(input) {
+    this.propTypes = {
+      input: PropTypes.number,
+    };
+    if (checkNumber(input, this.#salt)) {
+      this.#salt = input;
     }
     return this;
   }
 
-  setSugar(props) {
-    if (checkNumber(props, this.#sugar)) {
-      this.#sugar = props;
+  set sugar(input) {
+    this.propTypes = {
+      input: PropTypes.number,
+    };
+    if (checkNumber(input, this.#sugar)) {
+      this.#sugar = input;
     }
     return this;
   }
 
-  setFiber(props) {
-    if (checkNumber(props, this.#fiber)) {
-      this.#fiber = props;
+  set fiber(input) {
+    this.propTypes = {
+      input: PropTypes.number,
+    };
+    if (checkNumber(input, this.#fiber)) {
+      this.#fiber = input;
     }
     return this;
   }
 
-  setContent(props) {
-    if (checkString(props, this.#content)) {
-      this.#content = props;
+  set content(input) {
+    this.propTypes = {
+      input: PropTypes.string,
+    };
+    if (checkString(input, this.#content)) {
+      this.#content = input;
     }
     return this;
   }
 
-  setImage(props) {
-    if (checkString(props, this.#image)) {
-      this.#image = props;
+  set image(input) {
+    this.propTypes = {
+      input: PropTypes.setImage,
+    };
+    if (checkString(input, this.#image)) {
+      this.#image = input;
     }
     return this;
   }

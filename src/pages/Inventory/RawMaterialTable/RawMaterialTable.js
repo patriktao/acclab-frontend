@@ -12,23 +12,17 @@ import {
   Dropdown,
   Menu,
 } from "antd";
-import { EllipsisOutlined } from "@ant-design/icons";
 import { PlusOutlined } from "@ant-design/icons";
 import FilterComponent from "./FilterComponent";
 import moment from "moment";
 import AddRawMaterial from "./AddRawMaterial";
 import TooltipComponent from "../../../components/TooltipComponent";
-import {
-  getPriority,
-  getPriorityIcon,
-} from "../../../components/Priority/Priority";
-import EditRawMaterial from "../../RawMaterial/EditRawMaterial/EditRawMaterial";
-import { fetchMaterial } from "../../../api";
+import { getPriority } from "../../../components/Priority/Priority";
+import EditRawMaterial from "../../RawMaterial/EditRawMaterial";
+import { API } from "../../../api";
 import { raw_material_columns } from "./RawMaterialColumns";
 
 const { Search } = Input;
-
-const axios = require("axios");
 
 const RawMaterialTable = () => {
   const [data, setData] = useState([]);
@@ -40,29 +34,31 @@ const RawMaterialTable = () => {
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [editVisible, setEditVisible] = useState(false);
 
-  /* Fetch Table Data */
+  /* Fetching Table Data */
   useEffect(() => {
-    const fetchRawMaterials = async () => {
-      try {
-        const response = await axios.get("/raw_material_table");
-        setData(response.data);
-        setTable(response.data);
+    const fetchAll = async () => {
+      const rawMaterialTable = await API.rawMaterial.fetchAll().then((res) => {
+        setData(res);
+        setTable(res);
+      });
+      if (!(rawMaterialTable instanceof Error)) {
         setTableLoading(false);
-      } catch (err) {
-        if (err.response) {
-          console.log(`Error: ${err.message}`);
-        }
       }
     };
-    fetchRawMaterials();
+    fetchAll();
   }, []);
+  
+  /* 
+    Function
+   */
 
   const handleSearch = (input) => {
     setSearchText(input);
-    const filtered_table = data.filter((item) =>
-      item.name.toLowerCase().includes(input.toLowerCase())
+    setTable(
+      data.filter((item) =>
+        item.name.toLowerCase().includes(input.toLowerCase())
+      )
     );
-    setTable(filtered_table);
   };
 
   const handleClear = () => {
@@ -111,7 +107,6 @@ const RawMaterialTable = () => {
     }
   };
 
-  /* Actions when you press "OK" in the Filter Module */
   const handleFilter = (e) => {
     const states = e;
     let count = 0;
@@ -160,7 +155,6 @@ const RawMaterialTable = () => {
     setTable(filtered_table);
   };
 
-  /* Render */
   return (
     <div className="raw-material-table">
       <div className="table-headers">

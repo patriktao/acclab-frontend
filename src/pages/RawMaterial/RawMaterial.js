@@ -10,23 +10,19 @@ import {
   message,
   Avatar,
 } from "antd";
-import NavBar from "../../components/NavBar";
-import Sidebar from "../../components/Sidebar";
-import "./RawMaterial.scss";
-import {
-  general_columns,
-  nuitrition_columns,
-  stocks_columns,
-} from "./RawMaterialColumns";
 import {
   PlusOutlined,
   EditOutlined,
   InfoCircleOutlined,
 } from "@ant-design/icons";
+import * as Columns from "./RawMaterialColumns";
+import NavBar from "../../components/NavBar";
+import Sidebar from "../../components/Sidebar";
 import TooltipComponent from "../../components/TooltipComponent";
-import { fetchMaterial, fetchMaterialLogistics } from "../../api";
 import EditRawMaterial from "./EditRawMaterial";
 import AddReduceRawMaterial from "./AddReduceRawMaterial";
+import { API } from "../../api";
+import "./RawMaterial.scss";
 
 const { Content, Footer } = Layout;
 const { TabPane } = Tabs;
@@ -47,7 +43,7 @@ const RawMaterial = (props) => {
 
   /* Fetch Data from API */
   useEffect(() => {
-    fetchMaterial(id).then((res) => {
+    API.rawMaterial.fetchMaterial(id).then((res) => {
       setMaterialData(res);
       setMaterialName(res[0].material_name);
       setUnit(res[0].unit);
@@ -56,16 +52,16 @@ const RawMaterial = (props) => {
       setTableLoading1(false);
     });
 
-    fetchMaterialLogistics(id).then((res) => {
+    API.rawMaterial.fetchLogistics(id).then((res) => {
       setLogistics(res);
       setTableLoading2(false);
     });
   }, [id]);
 
   /* Functions */
-  const handleReStock = async () => {
+  const handleRestock = async () => {
     setReStock(!reStock);
-    await axios.put(`/inventory/${id}/restock`);
+    API.rawMaterial.handleRestock(id);
     reStock
       ? message.warning("Item removed from Shopping List")
       : message.success("Item added to Shopping List");
@@ -80,31 +76,22 @@ const RawMaterial = (props) => {
     setShowEdit(false);
   };
 
-  const handleEdit = (data) => {
-    const edited_data = [
-      {
-        raw_material_id: materialData[0].raw_material_id,
-        material_name: data.get("name"),
-        total_amount: materialData[0].total_amount,
-        content: data.get("content"),
-        unit: data.get("unit"),
-        fat: data.get("fat"),
-        carbohydrate: data.get("carbohydrate"),
-        protein: data.get("protein"),
-        salt: data.get("salt"),
-        fiber: data.get("fiber"),
-        sugar: data.get("sugar"),
-        priority: materialData[0].priority,
-        country: data.get("country"),
-        company: data.get("brand"),
-        location: data.get("location"),
-        form: data.get("form"),
-        shopping_list: materialData[0].shopping_list,
-        deleted: materialData[0].deleted,
-      },
-    ];
-    setMaterialName(data.get("name"));
-    setMaterialData(edited_data);
+  const handleEdit = (form) => {
+    materialData[0].material_name = form.name;
+    materialData[0].content = form.content;
+    materialData[0].unit = form.unit;
+    materialData[0].fat = form.fat;
+    materialData[0].carbohydrate = form.carb;
+    materialData[0].protein = form.protein;
+    materialData[0].salt = form.salt;
+    materialData[0].fiber = form.fiber;
+    materialData[0].sugar = form.sugar;
+    materialData[0].country = form.country;
+    materialData[0].company = form.brand;
+    materialData[0].location = form.location;
+    materialData[0].form = form.form;
+    materialData[0].image = form.image;
+    setMaterialName(form.name);
   };
 
   const handleImage = (img) => {
@@ -194,7 +181,7 @@ const RawMaterial = (props) => {
                         />
                       </div>
                       <div className="shopping-list">
-                        <Checkbox checked={reStock} onChange={handleReStock}>
+                        <Checkbox checked={reStock} onChange={handleRestock}>
                           Add to Shopping List
                         </Checkbox>
                       </div>
@@ -208,7 +195,7 @@ const RawMaterial = (props) => {
                           size="medium"
                         >
                           <Table
-                            columns={general_columns}
+                            columns={Columns.general_columns}
                             dataSource={materialData}
                             pagination={false}
                             scroll={{ x: "400px" }}
@@ -223,7 +210,7 @@ const RawMaterial = (props) => {
                           size="medium"
                         >
                           <Table
-                            columns={nuitrition_columns}
+                            columns={Columns.nuitrition_columns}
                             dataSource={materialData}
                             pagination={false}
                           />
@@ -238,7 +225,7 @@ const RawMaterial = (props) => {
                         >
                           <Table
                             className="table-logistics"
-                            columns={stocks_columns}
+                            columns={Columns.stocks_columns}
                             dataSource={logistics}
                             pagination={{ pageSize: 5 }}
                           />
