@@ -47,7 +47,12 @@ code {
 
 /* Modal */
 .ant-modal-content {
-  border-radius: 4px !important;
+  border-radius: 8px !important;
+}
+
+/* Popover */
+.ant-popover {
+  border-radius: 8px !important;
 }
 
 /* Removing margins from each form */

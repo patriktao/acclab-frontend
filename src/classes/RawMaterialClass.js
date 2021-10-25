@@ -139,6 +139,10 @@ class RawMaterialClass {
     return this.#image;
   }
 
+  get data(){
+    return this.#data;
+  }
+
   /* 
     Set functions
   */
@@ -284,3 +288,4 @@ class RawMaterialClass {
 }
 
 export default RawMaterialClass;
+  

@@ -32,3 +32,16 @@
     }
   }
 }
+
+.popover {
+  display: flex;
+  column-gap: 1rem;
+  row-gap: 1rem;
+  width: 300px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+
+  .ant-btn{
+    width: 80px;
+  }
+}
