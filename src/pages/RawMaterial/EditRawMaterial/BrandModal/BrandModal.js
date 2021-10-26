@@ -13,13 +13,23 @@ import { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import { API } from "../../../../api";
 import "./BrandModal.scss";
+import { sortCompanies } from "../../../../helper/Sort";
 
 const { Link } = Typography;
 
-const BrandModal = ({ visible, close }) => {
+const BrandModal = ({
+  visible,
+  close,
+  companies,
+  addBrandToParent,
+  deleteBrandFromParent,
+}) => {
   BrandModal.propTypes = {
     visible: PropTypes.bool,
     close: PropTypes.func,
+    companies: PropTypes.array,
+    addBrandToParent: PropTypes.func,
+    deleteBrandFromParent: PropTypes.func,
   };
 
   const [companyList, setCompanyList] = useState([]);
@@ -28,14 +38,9 @@ const BrandModal = ({ visible, close }) => {
   const [brandName, setBrandName] = useState("");
 
   useEffect(() => {
-    const fetchCompanies = async () => {
-      const companies = await API.brands.fetchAllCompanies();
-      setCompanyList(companies);
-      setData(companies);
-    };
-
-    fetchCompanies();
-  }, []);
+    setCompanyList(companies);
+    setData(companies);
+  }, [companies]);
 
   const handleSearch = (e) => {
     setSearchInput(e);
@@ -45,29 +50,47 @@ const BrandModal = ({ visible, close }) => {
     setCompanyList(filter);
   };
 
-  const handleAdd = () => {
-    const newList = companyList.concat({ company: brandName });
-    setCompanyList(newList);
-    API.brands.addCompany(brandName);
-  };
+  /* 
+    Popover
+  */
 
-  const handleDelete = (company) => {
-    API.brands.deleteCompany(company);
-    const filter = companyList.filter(
-      (item) => !item.company.toLowerCase().includes(company.toLowerCase())
+  const addPopover = () => {
+    return (
+      <div className="popover">
+        <Input
+          value={brandName}
+          onChange={(e) => setBrandName(e.target.value)}
+          className="input-text"
+          placeholder="Type brand name..."
+          onPressEnter={addBrand}
+        />
+        <Button type="primary" onClick={addBrand}>
+          Add
+        </Button>
+      </div>
     );
-    setCompanyList(filter);
   };
 
-  const addBrandName = async () => {
+  /* 
+    Adds a new brand to brand list and for selection in parent component
+  */
+
+  const addBrand = () => {
     if (brandName === "") {
       message.warning("Please enter a brand name.");
     } else if (brandChecker()) {
       message.warning("The brand already exists.");
     } else {
-      handleAdd();
+      const newList = companyList.concat({ company: brandName });
+      setCompanyList(sortCompanies(newList));
+      addBrandToParent(brandName);
+      API.brands.addCompany(brandName);
     }
   };
+
+  /* 
+    Checks if brand already exists in the list
+  */
 
   const brandChecker = () => {
     for (let i = 0; i < companyList.length; i++) {
@@ -78,21 +101,16 @@ const BrandModal = ({ visible, close }) => {
     return false;
   };
 
-  const addPopover = () => {
-    return (
-      <div className="popover">
-        <Input
-          value={brandName}
-          onChange={(e) => setBrandName(e.target.value)}
-          className="input-text"
-          placeholder="Type brand name..."
-          onPressEnter={addBrandName}
-        />
-        <Button type="primary" onClick={addBrandName}>
-          Add
-        </Button>
-      </div>
+  /* 
+    Deletes a selected company
+  */
+  const handleDelete = (company) => {
+    API.brands.deleteCompany(company);
+    const filter = companyList.filter(
+      (item) => item.company.toLowerCase() !== company.toLowerCase()
     );
+    deleteBrandFromParent(company);
+    setCompanyList(filter);
   };
 
   return (

@@ -16,6 +16,7 @@ import {
   message,
 } from "antd";
 import { API } from "../../../api";
+import { sortCompanies } from "../../../helper/Sort";
 import RawMaterialClass from "../../../classes/RawMaterialClass";
 import BrandModal from "./BrandModal";
 
@@ -56,6 +57,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
   const [imageLoading, setImageLoading] = useState(false);
   const [image, setImage] = useState("");
   const [rawMaterialForm, setRawMaterialForm] = useState();
+  const [oldRawMaterial, setOldRawMaterial] = useState();
 
   /* Hooks */
   useEffect(() => {
@@ -82,6 +84,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
         setFiber(data.fiber);
         setContent(data.content);
         setRawMaterialForm(new RawMaterialClass(data));
+        setOldRawMaterial(new RawMaterialClass(data));
       }
     };
     fetchData();
@@ -100,14 +103,11 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
     },
   ];
 
-  /* Functions */
-  const handleOk = (e) => {
-    sendDataToParent();
-    sendDataToAPI();
-    close(e);
-  };
+  /* 
+    When OK button is pressed
+  */
 
-  const sendDataToParent = async () => {
+  const handleOk = (e) => {
     rawMaterialForm.name = name;
     rawMaterialForm.brand = brand;
     rawMaterialForm.country = country;
@@ -122,10 +122,25 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
     rawMaterialForm.fiber = fiber;
     rawMaterialForm.content = content;
     rawMaterialForm.image = image;
-    await handleEdit(rawMaterialForm);
+    if (!rawMaterialForm === oldRawMaterial) {
+      sendDataToParent();
+      sendDataToAPI();
+    }
+    close(e);
   };
 
-  const sendDataToAPI = async () => {
+  /* 
+    Sends data to Raw Material Page
+  */
+
+  const sendDataToParent = () => {
+    handleEdit(rawMaterialForm);
+  };
+
+  /* 
+    Sends data to API
+  */
+  const sendDataToAPI = () => {
     API.rawMaterial.editMaterial(
       data.raw_material_id,
       rawMaterialForm.toJsonObject()[0]
@@ -181,6 +196,26 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
     message.success("Failed editing raw material");
+  };
+
+  /* 
+    Adds a brand to the list 
+  */
+  const addBrandForSelection = (brand) => {
+    const newList = companies.concat({ company: brand });
+    setCompanies(sortCompanies(newList));
+  };
+
+  /* 
+    Deletes a brand from the list
+  */
+
+  const deleteBrandForSelection = (brand) => {
+    setCompanies(
+      companies.filter(
+        (item) => item.company.toLowerCase() !== brand.toLowerCase()
+      )
+    );
   };
 
   return (
@@ -282,6 +317,9 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
                           <BrandModal
                             visible={brandModalVisible}
                             close={closeBrandModal}
+                            companies={companies}
+                            addBrandToParent={addBrandForSelection}
+                            deleteBrandFromParent={deleteBrandForSelection}
                           />
                         </Button>
                       </div>

@@ -27,22 +27,20 @@ export const fetchAllCountries = async () => {
 
 export const deleteCompany = async (company) => {
   await axios
-    .delete("/brands/delete_company", { company: company })
-    .then(message.success(company + " has been removed."))
+    .delete("/brands/delete_company", { data: { company: company } })
     .catch((err) => {
       if (err.response) {
         console.log(`Error: ${err.message}`);
       }
     });
+  message.success(company + " has been succesfully removed.");
 };
 
 export const addCompany = async (company) => {
-  await axios
-    .delete("/brands/add_company", { company: company })
-    .then(message.success(company + " has been added."))
-    .catch((err) => {
-      if (err.response) {
-        console.log(`Error: ${err.message}`);
-      }
-    });
+  await axios.post("/brands/add_company", { company: company }).catch((err) => {
+    if (err.response) {
+      console.log(`Error: ${err.message}`);
+    }
+  });
+  message.success(company + " has been added.");
 };
