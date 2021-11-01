@@ -38,17 +38,17 @@ export const general_columns = [
     dataIndex: "location",
     key: "location",
   },
-  {
-    title: "Priority",
-    dataIndex: "expiration_date",
-    key: "priority",
-    render: (expiration_date) => (
-      <TooltipComponent
-        title="Priority of Usage"
-        component={getPriorityIcon(expiration_date)}
-      />
-    ),
-  },
+    {
+      title: "Priority",
+      dataIndex: "expiration_date",
+      key: "priority",
+      render: (expiration_date) => (
+        <TooltipComponent
+          title="Priority of Usage"
+          component={getPriorityIcon(expiration_date)}
+        />
+      ),
+    },
 ];
 
 export const nuitrition_columns = [

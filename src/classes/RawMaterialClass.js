@@ -262,7 +262,7 @@ class RawMaterialClass {
     if (checkNumber(input, this.#fiber)) {
       this.#fiber = input;
     }
-    return this;
+    return this; 
   }
 
   set content(input) {

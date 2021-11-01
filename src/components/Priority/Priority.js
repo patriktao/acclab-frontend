@@ -1,57 +1,47 @@
 import moment from "moment";
 import "./Priority.scss";
 
+/* 
+  Calculates the priority of an expiration date
+*/
+
 export const getPriority = (expirationDate) => {
   const difference = moment(expirationDate).diff(moment(), "days");
-  if (difference < 0) {
-    return "expired";
-  } else if (difference < 30) {
-    return "high";
-  } else if (difference < 90) {
-    return "normal";
-  } else {
-    return "low";
+  switch (difference) {
+    case difference < 0:
+      return "expired";
+    case difference < 30:
+      return "high";
+    case difference < 90:
+      return "normal";
+    default:
+      return "low";
   }
 };
 
 /* Handles expiration date and returns icon */
 export const getPriorityIcon = (expirationDate) => {
   const difference = moment(expirationDate).diff(moment(), "days");
-  if (difference < 0) {
-    return PriorityIcon("Expired");
-  } else if (difference < 30) {
-    return PriorityIcon("High");
-  } else if (difference < 90) {
-    return PriorityIcon("Normal");
-  } else {
-    return PriorityIcon("Low");
-  }
-};
-
-/* Helper */
-
-const PriorityIcon = (priority) => {
-  let choice = priority.toLowerCase();
   let color = "";
-  switch (choice) {
-    case (choice = "expired"):
+  let priority = "";
+    if(difference < 0){
+      priority = "Expired";
       color = "#ff4d4f";
-      break;
-    case (choice = "high"):
+    }
+    else if(difference < 30){
+      priority = "High";
       color = "#F2C94C";
-      break;
-    case (choice = "normal"):
+    }
+    else if(difference < 90){
+      priority = "Normal";
       color = "#29CC97";
-      break;
-    case (choice = "low"):
+    }
+    else {
+      priority = "Low";
       color = "#9A9DA5";
-      break;
-    default:
-      color = "";
-      break;
-  }
+    }
   return (
-    <div className="priority-icon">
+    <div className="Priority">
       <div className="priority-design" style={{ background: `${color}` }}>
         {priority.toUpperCase()}
       </div>
