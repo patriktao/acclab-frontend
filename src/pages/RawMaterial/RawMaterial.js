@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
 import {
   Layout,
@@ -161,7 +160,7 @@ const RawMaterial = (props) => {
                 </Button>
               </div>
             </div>
-            <div></div>
+            <div />
             <div className="tabs">
               <Tabs
                 defaultActiveKey="1"
@@ -199,6 +198,7 @@ const RawMaterial = (props) => {
                             dataSource={materialData}
                             pagination={false}
                             scroll={{ x: "400px" }}
+                            rowKey={"key"}
                           />
                         </Spin>
                       </div>
@@ -213,6 +213,7 @@ const RawMaterial = (props) => {
                             columns={Columns.nuitrition_columns}
                             dataSource={materialData}
                             pagination={false}
+                            rowKey={"key"}
                           />
                         </Spin>
                       </div>
@@ -228,6 +229,7 @@ const RawMaterial = (props) => {
                             columns={Columns.stocks_columns}
                             dataSource={logistics}
                             pagination={{ pageSize: 5 }}
+                            rowKey={"key"}
                           />
                         </Spin>
                       </div>

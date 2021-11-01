@@ -6,8 +6,6 @@ import { Spin } from "antd";
 import { Link } from "react-router-dom";
 import { API } from "../../../api";
 
-const axios = require("axios");
-
 const ShoppingTable = () => {
   const [tableLoading, setTableLoading] = useState({ tableLoading: true });
   const [shoppingList, setShoppingList] = useState([]);
@@ -101,6 +99,7 @@ const ShoppingTable = () => {
           columns={ShoppingColumns.filter((col) => col.dataIndex !== "id")}
           dataSource={shoppingList}
           pagination={{ pageSize: 8 }}
+          rowKey={'id'}
         />
       </Spin>
     </div>

@@ -47,7 +47,7 @@ const RawMaterialTable = () => {
     };
     fetchAll();
   }, []);
-  
+
   /* 
     Function
    */
@@ -242,6 +242,7 @@ const RawMaterialTable = () => {
               col.dataIndex !== "id"
           )}
           dataSource={table}
+          rowKey={"id"}
           pagination={{ pageSize: 8, position: ["bottomCenter"] }}
         />
       </Spin>

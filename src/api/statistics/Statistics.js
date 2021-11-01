@@ -6,6 +6,7 @@ export const fetchTotalMaterials = async () => {
     return response.data.map((data) => data.total);
   } catch (err) {
     console.log(`Error: ${err.message}`);
+    return 0;
   }
 };
 
@@ -15,5 +16,6 @@ export const fetchTotalExpiredMaterials = async () => {
     return response.data.map((data) => data.total);
   } catch (err) {
     console.log(`Error: ${err.message}`);
+    return 0;
   }
 };

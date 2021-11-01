@@ -19,7 +19,7 @@ const ExpiringTable = () => {
         .fetchExpiringMaterials()
         .then((res) => {
           setData(res);
-        });
+        })
       if (!(expiringMaterials instanceof Error)) {
         setTableLoading(false);
       }
@@ -54,6 +54,7 @@ const ExpiringTable = () => {
           columns={ExpiringColumns.filter((col) => col.dataIndex !== "id")}
           dataSource={data}
           pagination={{ pageSize: 8 }}
+          rowKey={'name'}
         />
       </Spin>
     </div>

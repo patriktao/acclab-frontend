@@ -10,8 +10,8 @@ import { useState, useEffect } from "react";
 import { API } from "../../../api";
 
 const DashboardCards = () => {
-  const [ExpiredMaterials, setExpiredMaterials] = useState();
-  const [TotalMaterials, setTotalMaterials] = useState();
+  const [ExpiredMaterials, setExpiredMaterials] = useState(0);
+  const [TotalMaterials, setTotalMaterials] = useState(0);
 
   /* Total Materials */
   useEffect(() => {
@@ -34,7 +34,7 @@ const DashboardCards = () => {
 
   return (
     <div className="site-card-wrapper">
-      <Row gutter={(50, 24)}>
+      <Row gutter={50, 24}>
         <Col span={6}>
           <Card className="card" bordered={false}>
             <div className="card-container">

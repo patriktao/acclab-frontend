@@ -53,6 +53,8 @@ const ExpiringColumns = [
   },
   {
     title: "Priority",
+    dataIndex: 'priority',
+    key: 'priority',
     sorter: (a, b) =>
       moment(a.expiration_date).format("YYYYMMDD") -
       moment(b.expiration_date).format("YYYYMMDD"),
