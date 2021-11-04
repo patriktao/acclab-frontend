@@ -5,6 +5,7 @@ import "./EditRawMaterial.scss";
 import TooltipComponent from "../../../components/TooltipComponent";
 import InputNumber from "../../../components/InputNumber";
 import { InboxOutlined } from "@ant-design/icons";
+import { isEqual } from "lodash/fp";
 import {
   Modal,
   Input,
@@ -59,7 +60,6 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
   const [rawMaterialForm, setRawMaterialForm] = useState();
   const [oldRawMaterial, setOldRawMaterial] = useState();
 
-  /* Hooks */
   useEffect(() => {
     const fetchData = () => {
       API.brands.fetchAllCompanies().then((res) => setCompanies(res));
@@ -91,7 +91,6 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
     setData();
   }, [data]);
 
-  /* Column */
   const units = [
     {
       value: "g",
@@ -104,7 +103,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
   ];
 
   /* 
-    When OK button is pressed
+    When OK button is pressed, only send data if something has been edited.
   */
 
   const handleOk = (e) => {
@@ -122,7 +121,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
     rawMaterialForm.fiber = fiber;
     rawMaterialForm.content = content;
     rawMaterialForm.image = image;
-    if (!rawMaterialForm === oldRawMaterial) {
+    if (!isEqual(rawMaterialForm, oldRawMaterial)) {
       sendDataToParent();
       sendDataToAPI();
     }
@@ -130,16 +129,13 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
   };
 
   /* 
-    Sends data to Raw Material Page
+    Sends data to the Raw Material Page
   */
 
   const sendDataToParent = () => {
     handleEdit(rawMaterialForm);
   };
 
-  /* 
-    Sends data to API
-  */
   const sendDataToAPI = () => {
     API.rawMaterial.editMaterial(
       data.raw_material_id,
@@ -156,7 +152,36 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
     setBrandModalVisible(false);
   };
 
-  /* Functions */
+  const onFinish = (values) => {
+    console.log("Success:", values);
+    message.success("Succesfully edited raw material");
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+    message.success("Failed editing raw material");
+  };
+
+  /* 
+    Adds a brand to the list 
+  */
+  const addBrandForSelection = (brand) => {
+    const newList = companies.concat({ company: brand });
+    setCompanies(sortCompanies(newList));
+  };
+
+  /* 
+    Deletes a brand from the list
+  */
+  const deleteBrandForSelection = (brand) => {
+    setCompanies(
+      companies.filter(
+        (item) => item.company.toLowerCase() !== brand.toLowerCase()
+      )
+    );
+  };
+
+  /* Image Upload */
   /*   function beforeUpload(file) {
     const isJpgOrPng =
       file.type === "image/jpeg" ||
@@ -186,36 +211,6 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
     } else if (status === "error") {
       message.error(`${info.file.name} file upload failed.`);
     } */
-  };
-
-  const onFinish = (values) => {
-    console.log("Success:", values);
-    message.success("Succesfully edited raw material");
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-    message.success("Failed editing raw material");
-  };
-
-  /* 
-    Adds a brand to the list 
-  */
-  const addBrandForSelection = (brand) => {
-    const newList = companies.concat({ company: brand });
-    setCompanies(sortCompanies(newList));
-  };
-
-  /* 
-    Deletes a brand from the list
-  */
-
-  const deleteBrandForSelection = (brand) => {
-    setCompanies(
-      companies.filter(
-        (item) => item.company.toLowerCase() !== brand.toLowerCase()
-      )
-    );
   };
 
   return (

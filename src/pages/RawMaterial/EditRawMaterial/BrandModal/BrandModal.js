@@ -11,6 +11,7 @@ import {
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroller";
+import { sortBy } from 'lodash/fp';
 import { API } from "../../../../api";
 import "./BrandModal.scss";
 import { sortCompanies } from "../../../../helper/Sort";
@@ -155,7 +156,7 @@ const BrandModal = ({
           <div className="list">
             <InfiniteScroll initialLoad={false} pageStart={0} useWindow={false}>
               <List
-                dataSource={companyList}
+                dataSource={sortBy('company.company', companyList || [])}
                 renderItem={(item) => (
                   <List.Item className="row" key={item.id}>
                     <List.Item.Meta className="item" title={item.company} />

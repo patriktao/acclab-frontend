@@ -33,7 +33,6 @@ class RawMaterialClass {
   #content = "";
   #image = "";
   #data;
-  /* Constructor */
 
   constructor(data) {
     if (data !== null) {

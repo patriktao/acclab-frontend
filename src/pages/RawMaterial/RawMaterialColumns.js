@@ -38,7 +38,7 @@ export const general_columns = [
     dataIndex: "location",
     key: "location",
   },
-    {
+/*     {
       title: "Priority",
       dataIndex: "expiration_date",
       key: "priority",
@@ -48,7 +48,7 @@ export const general_columns = [
           component={getPriorityIcon(expiration_date)}
         />
       ),
-    },
+    }, */
 ];
 
 export const nuitrition_columns = [
