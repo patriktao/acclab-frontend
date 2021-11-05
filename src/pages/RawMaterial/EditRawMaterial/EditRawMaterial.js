@@ -19,7 +19,7 @@ import {
 import { API } from "../../../api";
 import { sortCompanies } from "../../../helper/Sort";
 import RawMaterialClass from "../../../classes/RawMaterialClass";
-import BrandModal from "./BrandModal";
+import BrandModal from "../../../components/BrandModal";
 
 const { Dragger } = Upload;
 const { TextArea } = Input;
@@ -312,7 +312,6 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
                           <BrandModal
                             visible={brandModalVisible}
                             close={closeBrandModal}
-                            companies={companies}
                             addBrandToParent={addBrandForSelection}
                             deleteBrandFromParent={deleteBrandForSelection}
                           />

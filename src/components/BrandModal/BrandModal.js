@@ -11,24 +11,22 @@ import {
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroller";
-import { sortBy } from 'lodash/fp';
-import { API } from "../../../../api";
+import { sortBy } from "lodash/fp";
+import { API } from "../../api";
 import "./BrandModal.scss";
-import { sortCompanies } from "../../../../helper/Sort";
+import { sortCompanies } from "../../helper/Sort";
 
-const { Link } = Typography;
+const { Link, Text } = Typography;
 
 const BrandModal = ({
   visible,
   close,
-  companies,
   addBrandToParent,
   deleteBrandFromParent,
 }) => {
   BrandModal.propTypes = {
     visible: PropTypes.bool,
     close: PropTypes.func,
-    companies: PropTypes.array,
     addBrandToParent: PropTypes.func,
     deleteBrandFromParent: PropTypes.func,
   };
@@ -37,11 +35,15 @@ const BrandModal = ({
   const [data, setData] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [brandName, setBrandName] = useState("");
+  const [showEdit, setShowEdit] = useState(false);
+  const [newName, setNewName] = useState("");
 
   useEffect(() => {
-    setCompanyList(companies);
-    setData(companies);
-  }, [companies]);
+    API.brands.fetchAllCompanies().then((res) => {
+      setCompanyList(res);
+      setData(res);
+    });
+  }, []);
 
   const handleSearch = (e) => {
     setSearchInput(e);
@@ -51,10 +53,15 @@ const BrandModal = ({
     setCompanyList(filter);
   };
 
+  /* Handle Company in List */
+  const handleCompany = (company) => {
+    return <Text>{company}</Text>;
+  }
+
+
   /* 
     Popover
   */
-
   const addPopover = () => {
     return (
       <div className="popover">
@@ -136,7 +143,7 @@ const BrandModal = ({
               className="input-text"
               placeholder="Search for a brand name..."
               allowClear
-              enterButton
+              enterbutton="true"
             />
             <Popover
               trigger="click"
@@ -156,13 +163,15 @@ const BrandModal = ({
           <div className="list">
             <InfiniteScroll initialLoad={false} pageStart={0} useWindow={false}>
               <List
-                dataSource={sortBy('company.company', companyList || [])}
+                itemLayout="horizontal"
+                size="middle"
+                dataSource={sortBy("company.company", companyList || [])}
                 renderItem={(item) => (
                   <List.Item className="row" key={item.id}>
-                    <List.Item.Meta className="item" title={item.company} />
+                    <List.Item.Meta className="item" title={() => handleCompany(item.company)}/>
                     <div className="options">
                       <div>
-                        <Link type="primary">Edit</Link>
+                        <Link onClick={() => setShowEdit(!showEdit)} type="primary">Edit</Link>
                       </div>
                       <div>
                         <Popconfirm
