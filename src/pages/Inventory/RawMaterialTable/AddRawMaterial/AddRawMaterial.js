@@ -104,7 +104,7 @@ const AddRawMaterial = ({ visible, close }) => {
                     <span className="sub-header">Brand</span>
                     <div className="field-add-wrapper">
                       <AutoComplete
-                        dataSource={companies.map((e) => e.company)}
+                        options={companies}
                         filterOption={(inputValue, option) =>
                           option.value
                             .toUpperCase()
@@ -135,7 +135,7 @@ const AddRawMaterial = ({ visible, close }) => {
                   <div className="header-field-wrapper">
                     <span className="sub-header">Country</span>
                     <AutoComplete
-                      dataSource={countries.map((e) => e.country)}
+                      options={countries}
                       filterOption={(inputValue, option) =>
                         option.value
                           .toUpperCase()

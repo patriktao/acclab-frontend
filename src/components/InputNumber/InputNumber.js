@@ -5,7 +5,7 @@ import "../../styles/inputfields.scss";
 
 const InputNumber = ({ children, value, onChange }) => {
   InputNumber.propTypes = {
-    value: PropTypes.number,
+    value: PropTypes.string,
     children: PropTypes.any,
     onChange: PropTypes.func,
   };

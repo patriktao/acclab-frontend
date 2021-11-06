@@ -3,7 +3,14 @@ import axios from "axios";
 export const fetchCompanies = async () => {
   try {
     const response = await axios.get("/brands/raw_material_companies");
-    return response.data;
+    const array = [];
+    response.data.forEach((item) => {
+      array.push({
+        value: item.company,
+        name: item.company,
+      });
+    });
+    return array.sort((a, b) => a.name.localeCompare(b.name));
   } catch (err) {
     if (err.response) {
       console.log(`Error: ${err.message}`);
@@ -54,7 +61,14 @@ export const fetchLogistics = async (id) => {
 export const fetchCountries = async () => {
   try {
     const response = await axios.get("/brands/raw_material_countries");
-    return response.data;
+    const array = [];
+    response.data.forEach((item) => {
+      array.push({
+        value: item.country,
+        name: item.country,
+      });
+    });
+    return array.sort((a, b) => a.name.localeCompare(b.name));
   } catch (err) {
     if (err.response) {
       console.log(`Error: ${err.message}`);

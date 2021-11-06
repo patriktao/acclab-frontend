@@ -54,7 +54,7 @@ const BrandModal = ({
   const handleSearch = (e) => {
     setSearchInput(e);
     const filter = data.filter((item) =>
-      item.company.toLowerCase().includes(e.toLowerCase())
+      item.name.toLowerCase().includes(e.toLowerCase())
     );
     setCompanyList(filter);
   };
@@ -102,7 +102,7 @@ const BrandModal = ({
 
   const brandChecker = () => {
     for (let i = 0; i < companyList.length; i++) {
-      if (companyList[i].company.toLowerCase() === brandName.toLowerCase()) {
+      if (companyList[i].name.toLowerCase() === brandName.toLowerCase()) {
         return true;
       }
     }
@@ -115,7 +115,7 @@ const BrandModal = ({
   const handleDelete = (company) => {
     API.brands.deleteCompany(company);
     const filter = companyList.filter(
-      (item) => item.company.toLowerCase() !== company.toLowerCase()
+      (item) => item.name.toLowerCase() !== company.toLowerCase()
     );
     deleteBrandFromParent(company);
     setCompanyList(filter);
@@ -208,7 +208,11 @@ const BrandModal = ({
             </Popover>
           </div>
           <div className="list">
-            <InfiniteScroll initialLoad={false} pageStart={0} useWindow={false}>
+            <InfiniteScroll
+              initialLoad={false}
+              loadMore={() => console.log("infinite scroll")}
+              useWindow={false}
+            >
               <List
                 itemLayout="horizontal"
                 size="middle"

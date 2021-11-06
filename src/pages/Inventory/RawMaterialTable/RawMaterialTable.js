@@ -33,6 +33,7 @@ const RawMaterialTable = () => {
   const [filterVisible, setFilterVisible] = useState(false);
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [editVisible, setEditVisible] = useState(false);
+  const [itemNames, setItemNames] = useState([]);
 
   /* Fetching Table Data */
   useEffect(() => {
@@ -40,13 +41,19 @@ const RawMaterialTable = () => {
       const rawMaterialTable = await API.rawMaterial.fetchAll().then((res) => {
         setData(res);
         setTable(res);
+        res.forEach((item) => {
+          itemNames.push({
+            value: item.name,
+            name: item.id,
+          });
+        });
       });
       if (!(rawMaterialTable instanceof Error)) {
         setTableLoading(false);
       }
     };
     fetchAll();
-  }, []);
+  }, [itemNames]);
 
   /* 
     Function
@@ -199,10 +206,7 @@ const RawMaterialTable = () => {
             </div>
             <div>
               <div className="search-add">
-                <AutoComplete
-                  className="auto-complete"
-                  dataSource={table.map((item) => item.name)}
-                >
+                <AutoComplete className="auto-complete" options={itemNames}>
                   <Search
                     className="table-search"
                     placeholder="Search for a raw material..."

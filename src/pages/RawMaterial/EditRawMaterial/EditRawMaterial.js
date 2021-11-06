@@ -59,7 +59,6 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
   const [image, setImage] = useState("");
   const [rawMaterialForm, setRawMaterialForm] = useState();
   const [oldRawMaterial, setOldRawMaterial] = useState();
-
   useEffect(() => {
     const fetchData = () => {
       API.brands.fetchAllCompanies().then((res) => setCompanies(res));
@@ -275,8 +274,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
                           ]}
                         >
                           <AutoComplete
-                            /* DataSource is deprecated */
-                            dataSource={companies.map((e) => e.company)}
+                            options={companies}
                             filterOption={(inputValue, option) =>
                               option.value
                                 .toUpperCase()
@@ -295,18 +293,6 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
                             />
                           </AutoComplete>
                         </Form.Item>
-                        {/*                         <TooltipComponent
-                          text="Add a new brand"
-                          component={
-                            <Button className="button" onClick={openBrandModal}>
-                              <PlusOutlined />
-                              <BrandModal
-                                visible={brandModalVisible}
-                                close={closeBrandModal}
-                              />
-                            </Button>
-                          }
-                        /> */}
                         <Button className="button" onClick={openBrandModal}>
                           <PlusOutlined />
                           <BrandModal
@@ -330,7 +316,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
                         ]}
                       >
                         <AutoComplete
-                          dataSource={countries.map((e) => e.country)}
+                          options={countries}
                           filterOption={(inputValue, option) =>
                             option.value
                               .toUpperCase()

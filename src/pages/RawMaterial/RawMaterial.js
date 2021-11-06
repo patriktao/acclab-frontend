@@ -198,7 +198,7 @@ const RawMaterial = (props) => {
                             dataSource={materialData}
                             pagination={false}
                             scroll={{ x: "400px" }}
-                            rowKey={"key"}
+                            rowKey={"material_name"}
                           />
                         </Spin>
                       </div>
@@ -213,7 +213,7 @@ const RawMaterial = (props) => {
                             columns={Columns.nuitrition_columns}
                             dataSource={materialData}
                             pagination={false}
-                            rowKey={"key"}
+                            rowKey={"fat"}
                           />
                         </Spin>
                       </div>
@@ -229,7 +229,7 @@ const RawMaterial = (props) => {
                             columns={Columns.stocks_columns}
                             dataSource={logistics}
                             pagination={{ pageSize: 5 }}
-                            rowKey={"key"}
+                            rowKey={"expiration_date"}
                           />
                         </Spin>
                       </div>

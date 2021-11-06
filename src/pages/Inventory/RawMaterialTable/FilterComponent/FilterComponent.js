@@ -103,7 +103,7 @@ const FilterComponent = ({
               <div name="Brand" className="header-field-wrapper">
                 <span className="sub-header">Brand</span>
                 <AutoComplete
-                  dataSource={companies.map((e) => e.company)}
+                  options={companies}
                   filterOption={(inputValue, option) =>
                     option.value
                       .toUpperCase()
@@ -123,7 +123,7 @@ const FilterComponent = ({
               <div name="Country" className="header-field-wrapper">
                 <span className="sub-header">Country</span>
                 <AutoComplete
-                  dataSource={countries.map((e) => e.country)}
+                  options={countries}
                   filterOption={(inputValue, option) =>
                     option.value
                       .toUpperCase()

@@ -4,7 +4,14 @@ import { message } from "antd";
 export const fetchAllCompanies = async () => {
   try {
     const response = await axios.get("/brands/all_companies");
-    return response.data;
+    const array = [];
+    response.data.forEach((item) => {
+      array.push({
+        value: item.company,
+        name: item.company,
+      });
+    });
+    return array.sort((a, b) => a.name.localeCompare(b.name));
   } catch (err) {
     if (err.response) {
       console.log(`Error: ${err.message}`);
@@ -16,7 +23,14 @@ export const fetchAllCompanies = async () => {
 export const fetchAllCountries = async () => {
   try {
     const response = await axios.get("/brands/all_countries");
-    return response.data;
+    const array = [];
+    response.data.forEach((item) => {
+      array.push({
+        value: item.country,
+        name: item.country,
+      });
+    });
+    return array.sort((a, b) => a.name.localeCompare(b.name));
   } catch (err) {
     if (err.response) {
       console.log(`Error: ${err.message}`);
