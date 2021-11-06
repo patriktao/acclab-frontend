@@ -18,6 +18,10 @@ import { sortCompanies } from "../../helper/Sort";
 
 const { Link, Text } = Typography;
 
+const DefaultState = {
+  editing: {}
+};
+
 const BrandModal = ({
   visible,
   close,
@@ -37,11 +41,13 @@ const BrandModal = ({
   const [brandName, setBrandName] = useState("");
   const [showEdit, setShowEdit] = useState(false);
   const [newName, setNewName] = useState("");
+  const [state, setState] = useState(DefaultState);
 
   useEffect(() => {
     API.brands.fetchAllCompanies().then((res) => {
       setCompanyList(res);
       setData(res);
+      console.log(res);
     });
   }, []);
 
@@ -52,12 +58,6 @@ const BrandModal = ({
     );
     setCompanyList(filter);
   };
-
-  /* Handle Company in List */
-  const handleCompany = (company) => {
-    return <Text>{company}</Text>;
-  }
-
 
   /* 
     Popover
@@ -121,6 +121,53 @@ const BrandModal = ({
     setCompanyList(filter);
   };
 
+  /* What to produce in  */
+  const listItems = (item) => {
+  const { editing } = state;
+  return (
+    <List.Item
+      className="row"
+      actions={[
+        <Link onClick={() => setShowEdit(!showEdit)} type="primary">
+          {editing[item.id] ? "Cancel" : "Edit"}
+        </Link>,
+        <Popconfirm
+          title="Are you sure to delete this company?"
+          onConfirm={() => handleDelete(item.company)}
+        >
+          <Link type="danger">Delete</Link>
+        </Popconfirm>
+      ]}
+    >
+      <List.Item.Meta
+        className="item"
+        description={renderItem(item.company)}
+      />
+    </List.Item>
+  )};
+
+  /* Render item field in the list */
+  const renderItem = (company) => {
+    const { editing } = state;
+    if (editing[company]) {
+      return (
+        <Input
+          required
+          defaultValue={`${company}`}
+          onPressEnter={editBrandName}
+        />
+      );
+    }
+    return <Text>{company}</Text>;
+  };
+
+  /* edit Name of Brand */
+  const editBrandName = (e) => {
+    const input = e.target.value;
+    setNewName(input);
+    //Här vill vi ändra i JSON Array som går in i tabellen, vi måste hitta rätt ID.
+  };
+
   return (
     <Modal
       width={"760px"}
@@ -166,25 +213,9 @@ const BrandModal = ({
                 itemLayout="horizontal"
                 size="middle"
                 dataSource={sortBy("company.company", companyList || [])}
-                renderItem={(item) => (
-                  <List.Item className="row" key={item.id}>
-                    <List.Item.Meta className="item" title={() => handleCompany(item.company)}/>
-                    <div className="options">
-                      <div>
-                        <Link onClick={() => setShowEdit(!showEdit)} type="primary">Edit</Link>
-                      </div>
-                      <div>
-                        <Popconfirm
-                          title="Are you sure to delete this company?"
-                          onConfirm={() => handleDelete(item.company)}
-                        >
-                          <Link type="danger">Remove</Link>
-                        </Popconfirm>
-                      </div>
-                    </div>
-                  </List.Item>
-                )}
-              ></List>
+                renderItem={listItems}
+                rowKey={'company'}
+              />
             </InfiniteScroll>
           </div>
         </section>
