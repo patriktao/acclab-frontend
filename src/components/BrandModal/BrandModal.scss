@@ -1,13 +1,13 @@
+
 .BrandModal {
   display: grid;
   row-gap: 1rem;
 
   .list {
-    height: 300px;
+    height: 500px;
     padding: 8px 24px;
     overflow: auto;
     border: 1px solid #e8e8e8;
-    border-radius: 4px;
   }
 
   .body {
@@ -35,13 +35,18 @@
 
 .popover {
   display: flex;
-  column-gap: 1rem;
+  flex-direction: column;
   row-gap: 1rem;
   width: 300px;
   flex-wrap: wrap;
   justify-content: flex-end;
 
-  .ant-btn{
+  .ant-btn {
     width: 80px;
+  }
+
+  .button{
+    display:flex;
+    justify-content: flex-end;
   }
 }

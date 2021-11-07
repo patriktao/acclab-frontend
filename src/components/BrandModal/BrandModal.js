@@ -18,10 +18,6 @@ import { sortCompanies } from "../../helper/Sort";
 
 const { Link, Text } = Typography;
 
-const DefaultState = {
-  editing: {}
-};
-
 const BrandModal = ({
   visible,
   close,
@@ -39,15 +35,12 @@ const BrandModal = ({
   const [data, setData] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [brandName, setBrandName] = useState("");
-  const [showEdit, setShowEdit] = useState(false);
-  const [newName, setNewName] = useState("");
-  const [state, setState] = useState(DefaultState);
+  const [state, setState] = useState({});
 
   useEffect(() => {
     API.brands.fetchAllCompanies().then((res) => {
       setCompanyList(res);
       setData(res);
-      console.log(res);
     });
   }, []);
 
@@ -65,16 +58,21 @@ const BrandModal = ({
   const addPopover = () => {
     return (
       <div className="popover">
-        <Input
-          value={brandName}
-          onChange={(e) => setBrandName(e.target.value)}
-          className="input-text"
-          placeholder="Type brand name..."
-          onPressEnter={addBrand}
-        />
-        <Button type="primary" onClick={addBrand}>
-          Add
-        </Button>
+        <div className="header-field-wrapper">
+          <span>Add a new brand</span>
+          <Input
+            value={brandName}
+            className="input-text"
+            onChange={(e) => setBrandName(e.target.value)}
+            placeholder="Type here..."
+            onPressEnter={addBrand}
+          />
+        </div>
+        <div className="button">
+          <Button type="primary" onClick={addBrand}>
+            Add
+          </Button>
+        </div>
       </div>
     );
   };
@@ -99,7 +97,6 @@ const BrandModal = ({
   /* 
     Checks if brand already exists in the list
   */
-
   const brandChecker = () => {
     for (let i = 0; i < companyList.length; i++) {
       if (companyList[i].name.toLowerCase() === brandName.toLowerCase()) {
@@ -113,59 +110,67 @@ const BrandModal = ({
     Deletes a selected company
   */
   const handleDelete = (company) => {
-    API.brands.deleteCompany(company);
+    console.log(company.toLowerCase());
     const filter = companyList.filter(
       (item) => item.name.toLowerCase() !== company.toLowerCase()
     );
-    deleteBrandFromParent(company);
     setCompanyList(filter);
+    deleteBrandFromParent(company);
+    API.brands.deleteCompany(company);
   };
 
-  /* What to produce in  */
+  /* Render each item in the list */
   const listItems = (item) => {
-  const { editing } = state;
-  return (
-    <List.Item
-      className="row"
-      actions={[
-        <Link onClick={() => setShowEdit(!showEdit)} type="primary">
-          {editing[item.id] ? "Cancel" : "Edit"}
-        </Link>,
-        <Popconfirm
-          title="Are you sure to delete this company?"
-          onConfirm={() => handleDelete(item.company)}
-        >
-          <Link type="danger">Delete</Link>
-        </Popconfirm>
-      ]}
-    >
-      <List.Item.Meta
-        className="item"
-        description={renderItem(item.company)}
-      />
-    </List.Item>
-  )};
+    return (
+      <List.Item
+        className="row"
+        actions={[
+          <Link
+            onClick={() => setState({ [item.name]: !state[item.name] })}
+            type="primary"
+          >
+            {state[item.name] ? "Cancel" : "Edit"}
+          </Link>,
+          <Popconfirm
+            title="Are you sure to delete this company?"
+            onConfirm={() => handleDelete(item.name)}
+          >
+            <Link type="danger">Delete</Link>
+          </Popconfirm>,
+        ]}
+      >
+        <List.Item.Meta className="item" description={renderItem(item.name)} />
+      </List.Item>
+    );
+  };
 
-  /* Render item field in the list */
-  const renderItem = (company) => {
-    const { editing } = state;
-    if (editing[company]) {
+  /* Render the field in each item */
+  const renderItem = (name) => {
+    if (state[name]) {
       return (
         <Input
           required
-          defaultValue={`${company}`}
-          onPressEnter={editBrandName}
+          className="input-text"
+          defaultValue={`${name}`}
+          onPressEnter={(input) => editBrandName(name, input.target.value)}
         />
       );
     }
-    return <Text>{company}</Text>;
+    return <Text>{name}</Text>;
   };
 
-  /* edit Name of Brand */
-  const editBrandName = (e) => {
-    const input = e.target.value;
-    setNewName(input);
-    //Här vill vi ändra i JSON Array som går in i tabellen, vi måste hitta rätt ID.
+  /* Edit name of brand */
+  const editBrandName = (name, input) => {
+    if (name !== input) {
+      companyList.forEach((item) => {
+        if (item.name === name) {
+          item.name = input;
+          item.value = input;
+        }
+      });
+      API.brands.updateCompany(name, input);
+    }
+    setState({ [name]: false });
   };
 
   return (
@@ -192,12 +197,7 @@ const BrandModal = ({
               allowClear
               enterbutton="true"
             />
-            <Popover
-              trigger="click"
-              placement={"bottom"}
-              title="Add a new Brand"
-              content={addPopover}
-            >
+            <Popover trigger="click" placement={"bottom"} content={addPopover}>
               <Button
                 type="primary"
                 style={{ height: "100%", borderRadius: "12px" }}
@@ -214,11 +214,10 @@ const BrandModal = ({
               useWindow={false}
             >
               <List
-                itemLayout="horizontal"
-                size="middle"
+                size="large"
                 dataSource={sortBy("company.company", companyList || [])}
                 renderItem={listItems}
-                rowKey={'company'}
+                rowKey={"company"}
               />
             </InfiniteScroll>
           </div>

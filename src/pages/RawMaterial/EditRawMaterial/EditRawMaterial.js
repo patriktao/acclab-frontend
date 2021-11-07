@@ -175,7 +175,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
   const deleteBrandForSelection = (brand) => {
     setCompanies(
       companies.filter(
-        (item) => item.company.toLowerCase() !== brand.toLowerCase()
+        (item) => item.name.toLowerCase() !== brand.toLowerCase()
       )
     );
   };

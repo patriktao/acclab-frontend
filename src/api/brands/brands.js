@@ -41,7 +41,7 @@ export const fetchAllCountries = async () => {
 
 export const deleteCompany = async (company) => {
   await axios
-    .delete("/brands/delete_company", { data: { company: company } })
+    .delete("/brands/delete_company", { company: company })
     .catch((err) => {
       if (err.response) {
         console.log(`Error: ${err.message}`);
@@ -57,4 +57,18 @@ export const addCompany = async (company) => {
     }
   });
   message.success(company + " has been added.");
+};
+
+export const updateCompany = async (company, new_company) => {
+  await axios
+    .put("/brands/update_company", {
+      company: company,
+      new_company: new_company,
+    })
+    .catch((err) => {
+      if (err.response) {
+        console.log(`Error: ${err.message}`);
+      }
+    });
+  message.success(company + " has been changed to " + new_company);
 };
