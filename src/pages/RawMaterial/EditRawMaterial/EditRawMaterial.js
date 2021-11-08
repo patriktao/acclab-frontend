@@ -164,20 +164,29 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
   /* 
     Adds a brand to the list 
   */
-  const addBrandForSelection = (brand) => {
-    const newList = companies.concat({ company: brand });
-    setCompanies(sortCompanies(newList));
+  const addBrand = (brand) => {
+    setCompanies(sortCompanies(companies.concat({ company: brand })));
   };
 
   /* 
     Deletes a brand from the list
   */
-  const deleteBrandForSelection = (brand) => {
+  const deleteBrand = (brand) => {
     setCompanies(
-      companies.filter(
-        (item) => item.name.toLowerCase() !== brand.toLowerCase()
-      )
+      companies.filter((obj) => obj.name.toLowerCase() !== brand.toLowerCase())
     );
+  };
+
+  /* 
+    Edit a brand in the list
+  */
+  const editBrand = (brand, newBrand) => {
+    companies.forEach((obj) => {
+      if (obj.name === brand) {
+        obj.name = newBrand;
+        obj.value = newBrand;
+      }
+    });
   };
 
   /* Image Upload */
@@ -298,8 +307,9 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
                           <BrandModal
                             visible={brandModalVisible}
                             close={closeBrandModal}
-                            addBrandToParent={addBrandForSelection}
-                            deleteBrandFromParent={deleteBrandForSelection}
+                            addBrandToParent={addBrand}
+                            deleteBrandFromParent={deleteBrand}
+                            editBrandToParent={editBrand}
                           />
                         </Button>
                       </div>

@@ -23,12 +23,14 @@ const BrandModal = ({
   close,
   addBrandToParent,
   deleteBrandFromParent,
+  editBrandToParent,
 }) => {
   BrandModal.propTypes = {
     visible: PropTypes.bool,
     close: PropTypes.func,
     addBrandToParent: PropTypes.func,
     deleteBrandFromParent: PropTypes.func,
+    editBrandToParent: PropTypes.func,
   };
 
   const [companyList, setCompanyList] = useState([]);
@@ -144,7 +146,7 @@ const BrandModal = ({
     );
   };
 
-  /* Render the field in each item */
+  /* Render field in each item */
   const renderItem = (name) => {
     if (state[name]) {
       return (
@@ -159,15 +161,15 @@ const BrandModal = ({
     return <Text>{name}</Text>;
   };
 
-  /* Edit name of brand */
   const editBrandName = (name, input) => {
     if (name !== input) {
-      companyList.forEach((item) => {
-        if (item.name === name) {
-          item.name = input;
-          item.value = input;
+      companyList.forEach((obj) => {
+        if (obj.name === name) {
+          obj.name = input;
+          obj.value = input;
         }
       });
+      editBrandToParent(name, input);
       API.brands.updateCompany(name, input);
     }
     setState({ [name]: false });
@@ -178,8 +180,8 @@ const BrandModal = ({
       width={"760px"}
       centered
       maskClosable={false}
-      onCancel={close}
       visible={visible}
+      cancelButtonProps={{ style: { display: "none" } }}
       onOk={close}
     >
       <section className="BrandModal">

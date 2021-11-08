@@ -60,6 +60,11 @@ code {
   margin-bottom: 0;
 }
 
+/* Lists */
+.ant-list-lg .ant-list-item{
+  padding:16px 12px;
+}
+
 /* Fonts */
 .blue-text {
   color: #00bdf2;

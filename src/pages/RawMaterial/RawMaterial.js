@@ -42,7 +42,12 @@ const RawMaterial = (props) => {
 
   /* Fetch Data from API */
   useEffect(() => {
-    API.rawMaterial.fetchMaterial(id).then((res) => {
+    fetchMaterial();
+    fetchLogistics();
+  });
+
+  const fetchMaterial = async () => {
+    await API.rawMaterial.fetchMaterial(id).then((res) => {
       setMaterialData(res);
       setMaterialName(res[0].material_name);
       setUnit(res[0].unit);
@@ -50,14 +55,17 @@ const RawMaterial = (props) => {
       setReStock(res[0].shopping_list);
       setTableLoading1(false);
     });
+  };
 
-    API.rawMaterial.fetchLogistics(id).then((res) => {
+  const fetchLogistics = async () => {
+    await API.rawMaterial.fetchLogistics(id).then((res) => {
       setLogistics(res);
       setTableLoading2(false);
     });
-  }, [id]);
+  };
 
   /* Functions */
+
   const handleRestock = async () => {
     setReStock(!reStock);
     API.rawMaterial.handleRestock(id);
