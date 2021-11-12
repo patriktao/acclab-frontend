@@ -18,7 +18,7 @@ import moment from "moment";
 import AddRawMaterial from "./AddRawMaterial";
 import TooltipComponent from "../../../components/TooltipComponent";
 import { getPriority } from "../../../components/Priority/Priority";
-import EditRawMaterial from "../../RawMaterial/EditRawMaterial/EditRawMaterial";
+import EditRawMaterial from "../../../components/EditRawMaterial";
 import { API } from "../../../api";
 import { raw_material_columns } from "./RawMaterialColumns";
 

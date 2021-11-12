@@ -2,13 +2,13 @@ import "./Dashboard.scss";
 import { Layout, Row, Col } from "antd";
 import NavBar from "../../components/NavBar";
 import Sidebar from "../../components/Sidebar";
-import ExpiringTable from "./ExpiringTable";
-import ShoppingTable from "./ShoppingTable";
-import DashboardCards from "./DashboardCards";
+import ExpiringTable from "../../components/ExpiringTable";
+import ShoppingTable from "../../components/ShoppingTable";
+import DashboardCards from "../../components/DashboardCards";
 
 const { Content, Footer } = Layout;
 
- const Dashboard = () => {
+const Dashboard = () => {
   return (
       <Layout className="sidebar-header-layout">
         <Sidebar />

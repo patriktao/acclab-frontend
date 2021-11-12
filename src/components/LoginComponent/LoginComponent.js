@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Input, Button } from "antd";
 import { MailOutlined, EyeOutlined } from "@ant-design/icons";
-import "./LoginComponent.css";
+import "./LoginComponent.scss";
 import { Redirect } from "react-router";
 
 const LoginComponent = () => {

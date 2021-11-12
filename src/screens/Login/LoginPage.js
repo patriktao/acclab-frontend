@@ -1,6 +1,6 @@
 import "./LoginPage.scss";
 import Logo from "../../images/tetrapak_logo.png";
-import LoginComponent from "./LoginComponent";
+import LoginComponent from "../../components/LoginComponent";
 
 const login = () => {
   return (

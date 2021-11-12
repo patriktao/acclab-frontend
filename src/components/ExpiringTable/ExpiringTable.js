@@ -6,8 +6,8 @@ import { ArrowsAltOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 import ExpiringColumns from "./ExpiringColumns";
 import { Table, Button } from "antd";
-import TooltipComponent from "../../../components/TooltipComponent";
-import { API } from "../../../api";
+import TooltipComponent from "../../components/TooltipComponent";
+import { API } from "../../api";
 
 const ExpiringTable = () => {
   const [tableLoading, setTableLoading] = useState(true);

@@ -1,5 +1,5 @@
 import { Card, Col, Row, Divider } from "antd";
-import "./DashboardCards.css";
+import "./DashboardCards.scss";
 import {
   SnippetsOutlined,
   FileExclamationOutlined,
@@ -7,7 +7,7 @@ import {
   FileDoneOutlined,
 } from "@ant-design/icons";
 import { useState, useEffect } from "react";
-import { API } from "../../../api";
+import { API } from "../../api";
 
 const DashboardCards = () => {
   const [ExpiredMaterials, setExpiredMaterials] = useState(0);
