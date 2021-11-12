@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import { SearchOutlined, PlusOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import "./AddRawMaterial.scss";
-import TooltipComponent from "../../../../components/TooltipComponent";
+import TooltipComponent from "../../TooltipComponent";
 import { Upload, message } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
-import { API } from "../../../../api";
+import { API } from "../../../api";
 
 const { Dragger } = Upload;
 const { TextArea } = Input;
