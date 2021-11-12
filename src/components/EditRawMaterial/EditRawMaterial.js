@@ -2,8 +2,8 @@ import PropTypes from "prop-types";
 import { SearchOutlined, PlusOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import "./EditRawMaterial.scss";
-import TooltipComponent from "../../../components/TooltipComponent";
-import InputNumber from "../../../components/InputNumber";
+import TooltipComponent from "../TooltipComponent";
+import InputNumber from "../InputNumber";
 import { InboxOutlined } from "@ant-design/icons";
 import { isEqual } from "lodash/fp";
 import {
@@ -16,10 +16,10 @@ import {
   Upload,
   message,
 } from "antd";
-import { API } from "../../../api";
-import { sortCompanies } from "../../../helper/Sort";
-import RawMaterialClass from "../../../classes/RawMaterialClass";
-import BrandModal from "../../../components/BrandModal";
+import { API } from "../../api";
+import { sortCompanies } from "../../helper/Sort";
+import RawMaterialClass from "../../classes/RawMaterialClass";
+import EditBrands from "../EditBrands";
 
 const { Dragger } = Upload;
 const { TextArea } = Input;
@@ -304,7 +304,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
                         </Form.Item>
                         <Button className="button" onClick={openBrandModal}>
                           <PlusOutlined />
-                          <BrandModal
+                          <EditBrands
                             visible={brandModalVisible}
                             close={closeBrandModal}
                             addBrandToParent={addBrand}

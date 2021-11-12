@@ -13,19 +13,19 @@ import { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import { sortBy } from "lodash/fp";
 import { API } from "../../api";
-import "./BrandModal.scss";
+import "./EditBrands.scss";
 import { sortCompanies } from "../../helper/Sort";
 
 const { Link, Text } = Typography;
 
-const BrandModal = ({
+const EditBrands = ({
   visible,
   close,
   addBrandToParent,
   deleteBrandFromParent,
   editBrandToParent,
 }) => {
-  BrandModal.propTypes = {
+  EditBrands.propTypes = {
     visible: PropTypes.bool,
     close: PropTypes.func,
     addBrandToParent: PropTypes.func,
@@ -184,7 +184,7 @@ const BrandModal = ({
       cancelButtonProps={{ style: { display: "none" } }}
       onOk={close}
     >
-      <section className="BrandModal">
+      <section className="EditBrands">
         <section className="header">
           <h1>Edit Brands</h1>
         </section>
@@ -229,4 +229,4 @@ const BrandModal = ({
   );
 };
 
-export default BrandModal;
+export default EditBrands;

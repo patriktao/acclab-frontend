@@ -18,8 +18,8 @@ import * as Columns from "./RawMaterialColumns";
 import NavBar from "../../components/NavBar";
 import Sidebar from "../../components/Sidebar";
 import TooltipComponent from "../../components/TooltipComponent";
-import EditRawMaterial from "./EditRawMaterial";
-import AddReduceRawMaterial from "./AddReduceRawMaterial";
+import EditRawMaterial from "../../components/EditRawMaterial";
+import AddReduceRawMaterial from "../../components/AddReduceRawMaterial";
 import { API } from "../../api";
 import "./RawMaterial.scss";
 
@@ -42,12 +42,7 @@ const RawMaterial = (props) => {
 
   /* Fetch Data from API */
   useEffect(() => {
-    fetchMaterial();
-    fetchLogistics();
-  });
-
-  const fetchMaterial = async () => {
-    await API.rawMaterial.fetchMaterial(id).then((res) => {
+    API.rawMaterial.fetchMaterial(id).then((res) => {
       setMaterialData(res);
       setMaterialName(res[0].material_name);
       setUnit(res[0].unit);
@@ -55,14 +50,12 @@ const RawMaterial = (props) => {
       setReStock(res[0].shopping_list);
       setTableLoading1(false);
     });
-  };
 
-  const fetchLogistics = async () => {
-    await API.rawMaterial.fetchLogistics(id).then((res) => {
+    API.rawMaterial.fetchLogistics(id).then((res) => {
       setLogistics(res);
       setTableLoading2(false);
     });
-  };
+  }, []);
 
   /* Functions */
 
