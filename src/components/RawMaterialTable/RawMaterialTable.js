@@ -16,10 +16,10 @@ import { PlusOutlined } from "@ant-design/icons";
 import FilterComponent from "./FilterComponent";
 import moment from "moment";
 import AddRawMaterial from "./AddRawMaterial";
-import TooltipComponent from "../../../components/TooltipComponent";
-import { getPriority } from "../../../components/Priority/Priority";
-import EditRawMaterial from "../../../components/EditRawMaterial";
-import { API } from "../../../api";
+import TooltipComponent from "../TooltipComponent";
+import { getPriority } from "../Priority/Priority";
+import EditRawMaterial from "../EditRawMaterial";
+import { API } from "../../api";
 import { raw_material_columns } from "./RawMaterialColumns";
 
 const { Search } = Input;

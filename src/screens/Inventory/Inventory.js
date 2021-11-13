@@ -1,7 +1,7 @@
 import { Layout } from "antd";
 import NavBar from "../../components/NavBar";
 import Sidebar from "../../components/Sidebar";
-import RawMaterialTable from "./RawMaterialTable";
+import RawMaterialTable from "../../components/RawMaterialTable";
 /* import SemiFinishedProductTable from "./SemiFinishedProductTable"
  */
 

@@ -39,36 +39,39 @@ export const fetchAllCountries = async () => {
   }
 };
 
-export const deleteCompany = async (company) => {
+export const deleteCompany = async (brand) => {
   await axios
-    .delete("/brands/delete_company", { company: company })
+    .delete("/brands/delete_company", { company: brand })
     .catch((err) => {
       if (err.response) {
         console.log(`Error: ${err.message}`);
       }
+      message.warning(brand + " could not be removed.");
     });
-  message.success(company + " has been succesfully removed.");
+  message.success(brand + " has been succesfully removed.");
 };
 
-export const addCompany = async (company) => {
-  await axios.post("/brands/add_company", { company: company }).catch((err) => {
+export const addCompany = async (brand) => {
+  await axios.post("/brands/add_company", { company: brand }).catch((err) => {
     if (err.response) {
       console.log(`Error: ${err.message}`);
     }
+    message.warning(brand + " could not be added.");
   });
-  message.success(company + " has been added.");
+  message.success(brand + " has been added.");
 };
 
-export const updateCompany = async (company, new_company) => {
+export const updateCompany = async (brand, new_brand) => {
   await axios
     .put("/brands/update_company", {
-      company: company,
-      new_company: new_company,
+      company: brand,
+      new_company: new_brand,
     })
     .catch((err) => {
       if (err.response) {
         console.log(`Error: ${err.message}`);
       }
+      message.warning(brand + " could not be updated.");
     });
-  message.success(company + " has been changed to " + new_company);
+  message.success(brand + " has been changed to " + new_brand);
 };

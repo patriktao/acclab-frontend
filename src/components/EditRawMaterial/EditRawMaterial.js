@@ -284,11 +284,11 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
                         >
                           <AutoComplete
                             options={companies}
-                            filterOption={(inputValue, option) =>
+/*                             filterOption={(inputValue, option) =>
                               option.value
                                 .toUpperCase()
                                 .indexOf(inputValue.toUpperCase()) !== -1
-                            }
+                            } */
                             onChange={(e) => e !== brand && setBrand(e)}
                             value={brand}
                             allowClear

@@ -89,8 +89,9 @@ const EditBrands = ({
     } else if (brandChecker()) {
       message.warning("The brand already exists.");
     } else {
-      const newList = companyList.concat({ company: brandName });
-      setCompanyList(sortCompanies(newList));
+      const newList = companyList.concat({ value: brandName, name: brandName });
+      const temp = sortCompanies(newList);
+      setCompanyList(temp);
       addBrandToParent(brandName);
       API.brands.addCompany(brandName);
     }
@@ -112,7 +113,6 @@ const EditBrands = ({
     Deletes a selected company
   */
   const handleDelete = (company) => {
-    console.log(company.toLowerCase());
     const filter = companyList.filter(
       (item) => item.name.toLowerCase() !== company.toLowerCase()
     );
@@ -179,9 +179,8 @@ const EditBrands = ({
     <Modal
       width={"760px"}
       centered
-      maskClosable={false}
       visible={visible}
-      cancelButtonProps={{ style: { display: "none" } }}
+      onCancel={close}
       onOk={close}
     >
       <section className="EditBrands">

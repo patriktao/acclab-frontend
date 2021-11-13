@@ -3,7 +3,7 @@ import { Button, Tooltip, Dropdown, Menu } from "antd";
 import { Link } from "react-router-dom";
 import { EllipsisOutlined } from "@ant-design/icons";
 import "./RawMaterialTable.css";
-import { getPriorityIcon } from "../../../components/Priority/Priority";
+import { getPriorityIcon } from "../Priority/Priority";
 
 const editMenu = (
   <Menu style={{ borderRadius: "4px" }}>
