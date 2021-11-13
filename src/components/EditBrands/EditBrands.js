@@ -98,6 +98,7 @@ const EditBrands = ({ visible, close, sendEditToParent }) => {
       ]);
       const sortedCompanies = sortCompanies(addTolist);
       setCompanyList(sortedCompanies);
+      setData(sortedCompanies);
       sendEditToParent(sortedCompanies);
       API.brands.addCompany(brandName);
     }
@@ -111,6 +112,7 @@ const EditBrands = ({ visible, close, sendEditToParent }) => {
       (item) => item.name.toLowerCase() !== company.toLowerCase()
     );
     setCompanyList(filter);
+    setData(filter);
     sendEditToParent(filter);
     API.brands.deleteCompany(company);
   };
@@ -125,6 +127,7 @@ const EditBrands = ({ visible, close, sendEditToParent }) => {
         }
       });
       sendEditToParent(companyList);
+      setData(companyList);
       API.brands.updateCompany(name, input);
     }
     setState({ [name]: false });
