@@ -1,0 +1,36 @@
+.menu-button .ant-btn-primary {
+  margin-left: 1.5rem;
+  width: 35px;
+  height: 35px;
+  background: #00bdf2;
+  border-color: #00bdf2;
+}
+
+@media (min-width: 0px) {
+  .ant-menu-dark,
+  .ant-menu-inline-collapsed {
+    background: #363740 !important;
+  }
+}
+
+@media (min-width: 1060px) {
+  .menu-button {
+    display: none !important;
+  }
+}
+
+@media (min-width: 960px) {
+  .ant-menu,
+  .ant-menu-dark,
+  .ant-menu-inline-collapsed {
+    background: #363740 !important;
+  }
+}
+
+.button {
+  color: #777777;
+}
+
+.drawer-item {
+  height: 3rem !important;
+}

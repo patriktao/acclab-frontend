@@ -1,6 +1,6 @@
 import "antd/dist/antd.css";
 import React, { useState } from "react";
-import "./SidebarDrawer.css";
+import "./SidebarDrawer.scss";
 import { Menu, Drawer, Button } from "antd";
 import { useLocation, Link } from "react-router-dom";
 import { MenuOutlined } from "@ant-design/icons";
