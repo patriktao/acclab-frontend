@@ -83,16 +83,17 @@ const EditBrands = ({
     Adds a new brand to brand list and for selection in parent component
   */
 
-  const addBrand = () => {
+  const addBrand = async () => {
     if (brandName === "") {
       message.warning("Please enter a brand name.");
     } else if (brandChecker()) {
       message.warning("The brand already exists.");
     } else {
-      const newList = companyList.concat({ value: brandName, name: brandName });
-      const temp = sortCompanies(newList);
-      setCompanyList(temp);
-      addBrandToParent(brandName);
+      const newBrand = [{ value: brandName, name: brandName }];
+      const addTolist = companyList.concat(newBrand);
+      const sortedCompanies = sortCompanies(addTolist);
+      setCompanyList(sortedCompanies);
+      addBrandToParent(sortedCompanies);
       API.brands.addCompany(brandName);
     }
   };

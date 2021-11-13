@@ -42,13 +42,13 @@ export const fetchAllCountries = async () => {
 export const deleteCompany = async (brand) => {
   await axios
     .delete("/brands/delete_company", { company: brand })
+    .then(message.success(brand + " has been succesfully removed."))
     .catch((err) => {
       if (err.response) {
         console.log(`Error: ${err.message}`);
       }
       message.warning(brand + " could not be removed.");
     });
-  message.success(brand + " has been succesfully removed.");
 };
 
 export const addCompany = async (brand) => {

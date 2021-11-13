@@ -164,8 +164,8 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
   /* 
     Adds a brand to the list 
   */
-  const addBrand = (brand) => {
-    setCompanies(sortCompanies(companies.concat({ company: brand })));
+  const addBrand = (ListWithNewBrand) => {
+    setCompanies(ListWithNewBrand);
   };
 
   /* 
@@ -284,7 +284,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
                         >
                           <AutoComplete
                             options={companies}
-/*                             filterOption={(inputValue, option) =>
+                            /*                             filterOption={(inputValue, option) =>
                               option.value
                                 .toUpperCase()
                                 .indexOf(inputValue.toUpperCase()) !== -1

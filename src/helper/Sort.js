@@ -4,5 +4,7 @@ export const sortCompanies = (array) => {
   sortCompanies.propTypes = {
     array: PropTypes.array,
   };
-  return array.sort((a, b) => a.name - b.name);
+  array.forEach((a) => console.log(a));
+  const sortedList = array.sort((a, b) => a.name.localeCompare(b.name));
+  return sortedList;
 };
