@@ -36,7 +36,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
   const [brandModalVisible, setBrandModalVisible] = useState(false);
 
   /* Data States */
-  const [companies, setCompanies] = useState([]);
+  const [brands, setBrands] = useState([]);
   const [countries, setCountries] = useState([]);
   const [forms, setForms] = useState([]);
   const [locations, setLocations] = useState([]);
@@ -61,7 +61,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
   const [oldRawMaterial, setOldRawMaterial] = useState();
   useEffect(() => {
     const fetchData = () => {
-      API.brands.fetchAllCompanies().then((res) => setCompanies(res));
+      API.brands.fetchAllCompanies().then((res) => setBrands(res));
       API.brands.fetchAllCountries().then((res) => setCountries(res));
       API.rawMaterial.fetchLocations().then((res) => setLocations(res));
       API.rawMaterial.fetchForms().then((res) => setForms(res));
@@ -162,31 +162,10 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
   };
 
   /* 
-    Adds a brand to the list 
+    Sets a new list, used for adding, deleting and editing a brand from EditBrands.
   */
-  const addBrand = (ListWithNewBrand) => {
-    setCompanies(ListWithNewBrand);
-  };
-
-  /* 
-    Deletes a brand from the list
-  */
-  const deleteBrand = (brand) => {
-    setCompanies(
-      companies.filter((obj) => obj.name.toLowerCase() !== brand.toLowerCase())
-    );
-  };
-
-  /* 
-    Edit a brand in the list
-  */
-  const editBrand = (brand, newBrand) => {
-    companies.forEach((obj) => {
-      if (obj.name === brand) {
-        obj.name = newBrand;
-        obj.value = newBrand;
-      }
-    });
+  const setCurrentBrands = (list) => {
+    setBrands(list);
   };
 
   /* Image Upload */
@@ -283,7 +262,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
                           ]}
                         >
                           <AutoComplete
-                            options={companies}
+                            options={brands}
                             /*                             filterOption={(inputValue, option) =>
                               option.value
                                 .toUpperCase()
@@ -307,9 +286,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
                           <EditBrands
                             visible={brandModalVisible}
                             close={closeBrandModal}
-                            addBrandToParent={addBrand}
-                            deleteBrandFromParent={deleteBrand}
-                            editBrandToParent={editBrand}
+                            sendEditToParent={setCurrentBrands}
                           />
                         </Button>
                       </div>

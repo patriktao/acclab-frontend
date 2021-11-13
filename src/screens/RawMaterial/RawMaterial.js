@@ -55,7 +55,7 @@ const RawMaterial = (props) => {
       setLogistics(res);
       setTableLoading2(false);
     });
-  }, []);
+  }, [id]);
 
   /* Functions */
 

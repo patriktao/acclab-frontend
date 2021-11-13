@@ -18,19 +18,11 @@ import { sortCompanies } from "../../helper/Sort";
 
 const { Link, Text } = Typography;
 
-const EditBrands = ({
-  visible,
-  close,
-  addBrandToParent,
-  deleteBrandFromParent,
-  editBrandToParent,
-}) => {
+const EditBrands = ({ visible, close, sendEditToParent }) => {
   EditBrands.propTypes = {
     visible: PropTypes.bool,
     close: PropTypes.func,
-    addBrandToParent: PropTypes.func,
-    deleteBrandFromParent: PropTypes.func,
-    editBrandToParent: PropTypes.func,
+    sendEditToParent: PropTypes.func,
   };
 
   const [companyList, setCompanyList] = useState([]);
@@ -80,25 +72,6 @@ const EditBrands = ({
   };
 
   /* 
-    Adds a new brand to brand list and for selection in parent component
-  */
-
-  const addBrand = async () => {
-    if (brandName === "") {
-      message.warning("Please enter a brand name.");
-    } else if (brandChecker()) {
-      message.warning("The brand already exists.");
-    } else {
-      const newBrand = [{ value: brandName, name: brandName }];
-      const addTolist = companyList.concat(newBrand);
-      const sortedCompanies = sortCompanies(addTolist);
-      setCompanyList(sortedCompanies);
-      addBrandToParent(sortedCompanies);
-      API.brands.addCompany(brandName);
-    }
-  };
-
-  /* 
     Checks if brand already exists in the list
   */
   const brandChecker = () => {
@@ -111,6 +84,26 @@ const EditBrands = ({
   };
 
   /* 
+    Adds a brand
+  */
+
+  const addBrand = () => {
+    if (brandName === "") {
+      message.warning("Please enter a brand name.");
+    } else if (brandChecker()) {
+      message.warning("The brand already exists.");
+    } else {
+      const addTolist = companyList.concat([
+        { value: brandName, name: brandName },
+      ]);
+      const sortedCompanies = sortCompanies(addTolist);
+      setCompanyList(sortedCompanies);
+      sendEditToParent(sortedCompanies);
+      API.brands.addCompany(brandName);
+    }
+  };
+
+  /* 
     Deletes a selected company
   */
   const handleDelete = (company) => {
@@ -118,8 +111,23 @@ const EditBrands = ({
       (item) => item.name.toLowerCase() !== company.toLowerCase()
     );
     setCompanyList(filter);
-    deleteBrandFromParent(company);
+    sendEditToParent(filter);
     API.brands.deleteCompany(company);
+  };
+
+  /* Edit a brand */
+  const handleEdit = (name, input) => {
+    if (name !== input) {
+      companyList.forEach((obj) => {
+        if (obj.name === name) {
+          obj.name = input;
+          obj.value = input;
+        }
+      });
+      sendEditToParent(companyList);
+      API.brands.updateCompany(name, input);
+    }
+    setState({ [name]: false });
   };
 
   /* Render each item in the list */
@@ -155,25 +163,11 @@ const EditBrands = ({
           required
           className="input-text"
           defaultValue={`${name}`}
-          onPressEnter={(input) => editBrandName(name, input.target.value)}
+          onPressEnter={(input) => handleEdit(name, input.target.value)}
         />
       );
     }
     return <Text>{name}</Text>;
-  };
-
-  const editBrandName = (name, input) => {
-    if (name !== input) {
-      companyList.forEach((obj) => {
-        if (obj.name === name) {
-          obj.name = input;
-          obj.value = input;
-        }
-      });
-      editBrandToParent(name, input);
-      API.brands.updateCompany(name, input);
-    }
-    setState({ [name]: false });
   };
 
   return (
@@ -183,6 +177,7 @@ const EditBrands = ({
       visible={visible}
       onCancel={close}
       onOk={close}
+      maskClosable={false}
     >
       <section className="EditBrands">
         <section className="header">

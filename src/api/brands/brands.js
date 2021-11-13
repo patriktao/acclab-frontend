@@ -41,22 +41,22 @@ export const fetchAllCountries = async () => {
 
 export const deleteCompany = async (brand) => {
   await axios
-    .delete("/brands/delete_company", { company: brand })
-    .then(message.success(brand + " has been succesfully removed."))
+    .delete("/brands/delete_company", { data: { company: brand } })
     .catch((err) => {
       if (err.response) {
         console.log(`Error: ${err.message}`);
+        message.warning(brand + " could not be removed.");
       }
-      message.warning(brand + " could not be removed.");
     });
+  message.success(brand + " has been succesfully removed.");
 };
 
 export const addCompany = async (brand) => {
   await axios.post("/brands/add_company", { company: brand }).catch((err) => {
     if (err.response) {
       console.log(`Error: ${err.message}`);
+      message.warning(brand + " could not be added.");
     }
-    message.warning(brand + " could not be added.");
   });
   message.success(brand + " has been added.");
 };

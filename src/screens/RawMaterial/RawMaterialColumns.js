@@ -1,6 +1,5 @@
 import moment from "moment";
 import { getPriorityIcon } from "../../components/Priority/Priority";
-import TooltipComponent from "../../components/TooltipComponent";
 
 export const general_columns = [
   {
