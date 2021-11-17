@@ -1,4 +1,4 @@
-import "./RawMaterialTable";
+import "./RawMaterialTable.scss";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -21,7 +21,7 @@ import { getPriority } from "../Priority/Priority";
 import EditRawMaterial from "../EditRawMaterial";
 import { API } from "../../api";
 import { raw_material_columns } from "./RawMaterialColumns";
-
+import { checkDate } from "../../helper/Checker";
 const { Search } = Input;
 
 const RawMaterialTable = () => {
@@ -99,19 +99,6 @@ const RawMaterialTable = () => {
   const closeEdit = (e) => {
     e.stopPropagation();
     setCreateModalVisible(false);
-  };
-
-  /* Check the item date and if requirements are satisfied, return the date in string format */
-  const checkDate = (inputData, startDate, endDate) => {
-    const date = moment(inputData);
-    if (startDate == null || endDate == null) {
-      return "";
-    } else if (
-      (date.isAfter(startDate) || date.isSame(startDate, "date")) &&
-      (date.isBefore(endDate) || date.isSame(endDate, "date"))
-    ) {
-      return date.format("YYYYMMDD");
-    }
   };
 
   const handleFilter = (e) => {
