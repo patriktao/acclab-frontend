@@ -2,8 +2,9 @@ import moment from "moment";
 import { Button, Tooltip, Dropdown, Menu } from "antd";
 import { Link } from "react-router-dom";
 import { EllipsisOutlined } from "@ant-design/icons";
-import "./RawMaterialTable.css";
+import "./RawMaterialTable.scss";
 import { getPriorityIcon } from "../Priority/Priority";
+import { calculateTotalRawMaterial } from "../../helper/Calculate";
 
 const editMenu = (
   <Menu style={{ borderRadius: "4px" }}>
@@ -58,6 +59,7 @@ export const raw_material_columns = [
     dataIndex: "amount",
     key: "amount",
     sorter: (a, b) => a.amount - b.amount,
+    render: async (amount, record) => <p>{await calculateTotalRawMaterial(record.id)}</p>,
   },
   {
     title: "Location",

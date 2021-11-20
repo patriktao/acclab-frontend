@@ -40,7 +40,7 @@ export const fetchForms = async () => {
 
 export const fetchMaterial = async (id) => {
   try {
-    const response = await axios.get(`/inventory/${id}`);
+    const response = await axios.get(`/raw_material/${id}`);
     return response.data;
   } catch (err) {
     console.log(`Error: ${err.message}`);
@@ -50,13 +50,23 @@ export const fetchMaterial = async (id) => {
 
 export const fetchLogistics = async (id) => {
   try {
-    const response = await axios.get(`/inventory/${id}/logistics`);
+    const response = await axios.get(`/raw_material/${id}/logistics`);
     return response.data;
   } catch (err) {
     console.log(`Error: ${err.message}`);
     return [];
   }
 };
+
+export const fetchTotalAmount = async (id) => {
+  try{
+    const response = await axios.get(`/raw_material/${id}/total_amount`);
+    return response.data;
+  } catch (err) {
+    console.log(`Error: ${err.message}`);
+    return [];
+  }
+}
 
 export const fetchCountries = async () => {
   try {
@@ -79,7 +89,7 @@ export const fetchCountries = async () => {
 
 export const fetchLocations = async () => {
   try {
-    const response = await axios.get("/stored_locations");
+    const response = await axios.get("/stored_locations/all");
     const locationArray = [];
     response.data.forEach((item) => {
       locationArray.push({
@@ -98,7 +108,7 @@ export const fetchLocations = async () => {
 
 export const fetchAll = async () => {
   try {
-    const response = await axios.get("/raw_material_table").catch();
+    const response = await axios.get("/raw_material_table");
     return response.data;
   } catch (err) {
     if (err.response) {

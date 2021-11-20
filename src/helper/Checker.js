@@ -1,3 +1,5 @@
+import moment from "moment";
+
 /* Checking if input and existing data is the same */
 
 export const checkString = (o1, o2) => {
