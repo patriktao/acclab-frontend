@@ -59,14 +59,14 @@ export const fetchLogistics = async (id) => {
 };
 
 export const fetchTotalAmount = async (id) => {
-  try{
+  try {
     const response = await axios.get(`/raw_material/${id}/total_amount`);
     return response.data;
   } catch (err) {
     console.log(`Error: ${err.message}`);
     return [];
   }
-}
+};
 
 export const fetchCountries = async () => {
   try {
@@ -119,15 +119,15 @@ export const fetchAll = async () => {
 };
 
 export const editMaterial = async (id, data) => {
-  await axios.put(`/inventory/${id}/edit`, data).catch((err) => {
+  await axios.put(`/raw_material/${id}/edit`, data).catch((err) => {
     if (err.response) {
-      console.log(`Error: ${err.message}`);
+      console.log(err.response);
     }
   });
 };
 
 export const handleRestock = async (id) => {
-  await axios.put(`/inventory/${id}/restock`).catch((err) => {
+  await axios.put(`/raw_material/${id}/restock`).catch((err) => {
     if (err.response) {
       console.log(`Error: ${err.message}`);
     }

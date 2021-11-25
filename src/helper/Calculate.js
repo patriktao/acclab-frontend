@@ -1,11 +1,13 @@
 import { API } from "../api";
+import { useState, useEffect } from "react";
 
 /* Calculate total amount from Raw Material Logistics */
-export const calculateTotalRawMaterial = async (id) => {
-  let total = 0;
-  await API.rawMaterial.fetchTotalAmount(id).then((res) => {
-    total = res[0].total_amount;
+export const CalculateTotalRawMaterial = (id) => {
+  const [total, setTotal] = useState(0);
+  useEffect(() => {
+    API.rawMaterial.fetchTotalAmount(id).then((res) => {
+      setTotal(res[0].total_amount);
+    });
   });
-  console.log(total)
-  return total;
+  return <div>{total}</div>;
 };

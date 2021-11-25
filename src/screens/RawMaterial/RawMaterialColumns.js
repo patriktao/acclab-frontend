@@ -1,7 +1,13 @@
 import moment from "moment";
+import { CalculateTotalRawMaterial } from "../../helper/Calculate";
 import { getPriorityIcon } from "../../components/Priority/Priority";
 
 export const general_columns = [
+  {
+    title: "raw_material_id",
+    dataIndex: "raw_material_id",
+    key: "raw_material_id",
+  },
   {
     title: "Material Name",
     dataIndex: "material_name",
@@ -21,6 +27,7 @@ export const general_columns = [
     title: "Total Amount",
     dataIndex: "total_amount",
     key: "total_amount",
+    render: (total_amount, record) => CalculateTotalRawMaterial(record.raw_material_id),
   },
   {
     title: "Unit",
@@ -37,17 +44,6 @@ export const general_columns = [
     dataIndex: "location",
     key: "location",
   },
-/*     {
-      title: "Priority",
-      dataIndex: "expiration_date",
-      key: "priority",
-      render: (expiration_date) => (
-        <TooltipComponent
-          title="Priority of Usage"
-          component={getPriorityIcon(expiration_date)}
-        />
-      ),
-    }, */
 ];
 
 export const nuitrition_columns = [

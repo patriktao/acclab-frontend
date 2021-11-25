@@ -174,7 +174,7 @@ const RawMaterial = (props) => {
                     <section className="item-image">
                       <div name="image">
                         <Avatar
-                          size={325}
+                          size={275}
                           shape="square"
                           alt="Company Logotype"
                           src={image}
@@ -195,7 +195,9 @@ const RawMaterial = (props) => {
                           size="medium"
                         >
                           <Table
-                            columns={Columns.general_columns}
+                            columns={Columns.general_columns.filter(
+                              (col) => col.dataIndex !== "raw_material_id"
+                            )}
                             dataSource={materialData}
                             pagination={false}
                             scroll={{ x: "400px" }}

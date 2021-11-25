@@ -263,7 +263,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
                         >
                           <AutoComplete
                             options={brands}
-                            /*                             filterOption={(inputValue, option) =>
+                            /*filterOption={(inputValue, option) =>
                               option.value
                                 .toUpperCase()
                                 .indexOf(inputValue.toUpperCase()) !== -1
