@@ -42,19 +42,19 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
   const [locations, setLocations] = useState([]);
 
   /* Input Field States */
-  const [name, setName] = useState();
-  const [brand, setBrand] = useState();
-  const [country, setCountry] = useState();
-  const [unit, setUnit] = useState();
-  const [form, setForm] = useState();
-  const [location, setLocation] = useState();
-  const [fat, setFat] = useState();
-  const [carb, setCarb] = useState();
-  const [protein, setProtein] = useState();
-  const [salt, setSalt] = useState();
-  const [sugar, setSugar] = useState();
-  const [fiber, setFiber] = useState();
-  const [content, setContent] = useState();
+  const [name, setName] = useState("");
+  const [brand, setBrand] = useState("");
+  const [country, setCountry] = useState("");
+  const [unit, setUnit] = useState("");
+  const [form, setForm] = useState("");
+  const [location, setLocation] = useState("");
+  const [fat, setFat] = useState(0);
+  const [carb, setCarb] = useState(0);
+  const [protein, setProtein] = useState(0);
+  const [salt, setSalt] = useState(0);
+  const [sugar, setSugar] = useState(0);
+  const [fiber, setFiber] = useState(0);
+  const [content, setContent] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
   const [image, setImage] = useState("");
   const [rawMaterialForm, setRawMaterialForm] = useState();
@@ -127,10 +127,6 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
     close(e);
   };
 
-  /* 
-    Sends data to the Raw Material Page
-  */
-
   const sendDataToParent = () => {
     handleEdit(rawMaterialForm);
   };
@@ -165,6 +161,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
     Sets a new list, used for adding, deleting and editing a brand from EditBrands.
   */
   const setCurrentBrands = (list) => {
+    setBrand("");
     setBrands(list);
   };
 
@@ -263,16 +260,16 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
                         >
                           <AutoComplete
                             options={brands}
-                            /*filterOption={(inputValue, option) =>
+                            filterOption={(inputValue, option) =>
                               option.value
                                 .toUpperCase()
                                 .indexOf(inputValue.toUpperCase()) !== -1
-                            } */
-                            onChange={(e) => e !== brand && setBrand(e)}
+                            }
+                            onChange={(e) => setBrand(e)}
                             value={brand}
-                            allowClear
                           >
                             <Input
+                              allowClear
                               className="input-text"
                               placeholder="Select a brand..."
                               suffix={

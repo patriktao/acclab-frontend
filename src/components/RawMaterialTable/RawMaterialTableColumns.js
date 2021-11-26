@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { EllipsisOutlined } from "@ant-design/icons";
 import "./RawMaterialTable.scss";
 import { getPriorityIcon } from "../Priority/Priority";
-import { CalculateTotalRawMaterial } from "../../helper/Calculate";
 
 const editMenu = (
   <Menu style={{ borderRadius: "4px" }}>
@@ -56,10 +55,9 @@ export const raw_material_columns = [
   },
   {
     title: "Amount (g/unit)",
-    dataIndex: "amount",
-    key: "amount",
-    /* sorter: (a, b) => a.amount - b.amount, */
-    render: (amount, record) => CalculateTotalRawMaterial(record.id),
+    dataIndex: "total_amount",
+    key: "total_amount",
+    sorter: (a, b) => a.total_amount - b.total_amount, 
   },
   {
     title: "Location",

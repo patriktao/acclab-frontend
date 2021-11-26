@@ -33,7 +33,7 @@ const RawMaterialTable = () => {
   const [filterVisible, setFilterVisible] = useState(false);
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [editVisible, setEditVisible] = useState(false);
-  const [itemNames, setItemNames] = useState([]);
+  const [itemNames] = useState([]);
 
   /* Fetching Table Data */
   useEffect(() => {
@@ -105,7 +105,7 @@ const RawMaterialTable = () => {
     const states = e;
     let count = 0;
 
-    /* If state is null, convert to empty string so that table can interpret */
+    // If state is null, convert to empty string so that table can interpret
     for (const [key, value] of e.entries()) {
       value == null || value === "Invalid date" || value === ""
         ? states.set(key, "")
@@ -113,7 +113,6 @@ const RawMaterialTable = () => {
     }
     setCounter(count);
 
-    /* Filters Table Data */
     const filtered_table = data.filter(
       (item) =>
         item.company

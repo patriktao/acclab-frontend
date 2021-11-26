@@ -123,6 +123,7 @@ const RawMaterial = (props) => {
                       "Create, edit and retrieve information of a raw material"
                     }
                     component={<InfoCircleOutlined />}
+                    trigger={"hover"}
                   />
                 </div>
                 <span className="sub-header">{materialName}</span>

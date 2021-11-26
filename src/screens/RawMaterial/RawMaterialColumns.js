@@ -1,5 +1,4 @@
 import moment from "moment";
-import { CalculateTotalRawMaterial } from "../../helper/Calculate";
 import { getPriorityIcon } from "../../components/Priority/Priority";
 
 export const general_columns = [
@@ -27,7 +26,6 @@ export const general_columns = [
     title: "Total Amount",
     dataIndex: "total_amount",
     key: "total_amount",
-    render: (total_amount, record) => CalculateTotalRawMaterial(record.raw_material_id),
   },
   {
     title: "Unit",
