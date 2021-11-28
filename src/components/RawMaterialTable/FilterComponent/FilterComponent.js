@@ -47,7 +47,7 @@ const FilterComponent = ({
   useEffect(() => {
     API.rawMaterial.fetchCompanies().then((res) => setCompanies(res));
     API.rawMaterial.fetchCountries().then((res) => setCountries(res));
-    API.rawMaterial.fetchLocations().then((res) => setLocations(res));
+    API.locations.fetchLocations().then((res) => setLocations(res));
     API.rawMaterial.fetchForms().then((res) => setForms(res));
   }, []);
 

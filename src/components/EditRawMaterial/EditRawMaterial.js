@@ -20,6 +20,7 @@ import { API } from "../../api";
 import { sortCompanies } from "../../helper/Sort";
 import RawMaterialClass from "../../classes/RawMaterialClass";
 import EditBrands from "../EditBrands";
+import EditLocations from "../EditLocations";
 
 const { Dragger } = Upload;
 const { TextArea } = Input;
@@ -34,6 +35,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
 
   /* Modal States */
   const [brandModalVisible, setBrandModalVisible] = useState(false);
+  const [locationModalVisible, setLocationModalVisible] = useState(false);
 
   /* Data States */
   const [brands, setBrands] = useState([]);
@@ -59,11 +61,12 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
   const [image, setImage] = useState("");
   const [rawMaterialForm, setRawMaterialForm] = useState();
   const [oldRawMaterial, setOldRawMaterial] = useState();
+
   useEffect(() => {
     const fetchData = () => {
       API.brands.fetchAllCompanies().then((res) => setBrands(res));
       API.brands.fetchAllCountries().then((res) => setCountries(res));
-      API.rawMaterial.fetchLocations().then((res) => setLocations(res));
+      API.locations.fetchLocations().then((res) => setLocations(res));
       API.rawMaterial.fetchForms().then((res) => setForms(res));
     };
 
@@ -101,10 +104,6 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
     },
   ];
 
-  /* 
-    When OK button is pressed, only send data if something has been edited.
-  */
-
   const handleOk = (e) => {
     rawMaterialForm.name = name;
     rawMaterialForm.brand = brand;
@@ -138,6 +137,15 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
     );
   };
 
+  const openLocationModal = () => {
+    setLocationModalVisible(true);
+  };
+
+  const closeLocationModal = (e) => {
+    e.stopPropagation();
+    setLocationModalVisible(false);
+  };
+
   const openBrandModal = () => {
     setBrandModalVisible(true);
   };
@@ -158,12 +166,18 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
   };
 
   /* 
-    Sets a new list, used for adding, deleting and editing a brand from EditBrands.
+    Sets a new list for brands; used to add, delete and edit a brand from EditBrands.
   */
   const setCurrentBrands = (list) => {
-    setBrand("");
     setBrands(list);
   };
+
+  /* 
+    Sets a new list for stored locations; used to add, delete and edit a location from EditLocations.
+  */
+    const setCurrentLocations = (list) => {
+      setLocations(list);
+    }
 
   /* Image Upload */
   /*   function beforeUpload(file) {
@@ -283,7 +297,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
                           <EditBrands
                             visible={brandModalVisible}
                             close={closeBrandModal}
-                            sendEditToParent={setCurrentBrands}
+                            sendChangesToParent={setCurrentBrands}
                           />
                         </Button>
                       </div>
@@ -374,14 +388,14 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
                       placeholder="Select here..."
                       onChange={(e) => e !== location && setLocation(e)}
                     />
-                    <TooltipComponent
-                      text="Add a new location"
-                      component={
-                        <Button className="button">
-                          <PlusOutlined />
-                        </Button>
-                      }
-                    />
+                    <Button className="button" onClick={openLocationModal}>
+                      <PlusOutlined />
+                      <EditLocations
+                        visible={locationModalVisible}
+                        close={closeLocationModal}
+                        sendChangesToParent={setCurrentLocations}
+                      />
+                    </Button>
                   </div>
                 </div>
               </div>

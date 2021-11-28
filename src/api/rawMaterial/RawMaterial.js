@@ -87,25 +87,6 @@ export const fetchCountries = async () => {
   }
 };
 
-export const fetchLocations = async () => {
-  try {
-    const response = await axios.get("/stored_locations/all");
-    const locationArray = [];
-    response.data.forEach((item) => {
-      locationArray.push({
-        value: item.location,
-        name: item.location,
-      });
-    });
-    return locationArray.sort((a, b) => a.name.localeCompare(b.name));
-  } catch (err) {
-    if (err.response) {
-      console.log(`Error: ${err.message}`);
-      return [];
-    }
-  }
-};
-
 export const fetchAll = async () => {
   try {
     const response = await axios.get("/raw_material_table");

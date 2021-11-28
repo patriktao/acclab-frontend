@@ -15,7 +15,7 @@ import {
 import { PlusOutlined } from "@ant-design/icons";
 import FilterComponent from "./FilterComponent";
 import moment from "moment";
-import AddRawMaterial from "./AddRawMaterial";
+/* import AddRawMaterial from "./AddRawMaterial"; */
 import TooltipComponent from "../TooltipComponent";
 import { getPriority } from "../Priority/Priority";
 import EditRawMaterial from "../EditRawMaterial";
@@ -211,11 +211,11 @@ const RawMaterialTable = () => {
                   onClick={openCreateModal}
                 >
                   Add Raw Material
-                  <AddRawMaterial
+{/*                   <AddRawMaterial
                     visible={createModalVisible}
                     close={closeCreateModal}
                     style={{ margin: "0 auto" }}
-                  />
+                  /> */}
                 </Button>
               </div>
             </div>

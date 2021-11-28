@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 
-export const sortCompanies = (array) => {
-  sortCompanies.propTypes = {
+export const sortList = (array) => {
+  sortList.propTypes = {
     array: PropTypes.array,
   };
   array.forEach((a) => console.log(a));
