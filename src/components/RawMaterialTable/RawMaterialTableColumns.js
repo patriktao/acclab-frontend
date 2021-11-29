@@ -11,7 +11,7 @@ const editMenu = (
   </Menu>
 );
 
-export const raw_material_columns = [
+const raw_material_columns = [
   {
     title: "ID",
     dataIndex: "id",
@@ -57,7 +57,7 @@ export const raw_material_columns = [
     title: "Amount (g/unit)",
     dataIndex: "total_amount",
     key: "total_amount",
-    sorter: (a, b) => a.total_amount - b.total_amount, 
+    sorter: (a, b) => a.total_amount - b.total_amount,
   },
   {
     title: "Location",
@@ -121,3 +121,5 @@ export const raw_material_columns = [
     ),
   },
 ];
+
+export default raw_material_columns;

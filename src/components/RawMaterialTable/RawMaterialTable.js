@@ -20,7 +20,7 @@ import TooltipComponent from "../TooltipComponent";
 import { getPriority } from "../Priority/Priority";
 import EditRawMaterial from "../EditRawMaterial";
 import { API } from "../../api";
-import { raw_material_columns } from "./RawMaterialTableColumns";
+import raw_material_columns from "./RawMaterialTableColumns";
 import { checkDate } from "../../helper/Checker";
 const { Search } = Input;
 
@@ -211,7 +211,7 @@ const RawMaterialTable = () => {
                   onClick={openCreateModal}
                 >
                   Add Raw Material
-{/*                   <AddRawMaterial
+                  {/*                   <AddRawMaterial
                     visible={createModalVisible}
                     close={closeCreateModal}
                     style={{ margin: "0 auto" }}

@@ -209,7 +209,7 @@ const EditLocations = ({ visible, close, sendChangesToParent }) => {
                 style={{ height: "100%", borderRadius: "12px" }}
                 size={"large"}
               >
-                Add a new stored Location
+                Add a new Stored Location
               </Button>
             </Popover>
           </div>
