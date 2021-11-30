@@ -2,8 +2,8 @@ import { DatePicker, InputNumber, Modal, Tabs, Table, Select } from "antd";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import "./AddReduceRawMaterial.scss";
-import moment from "moment";
-import { getPriorityIcon } from "../Priority/Priority";
+import reduction_reasons from "./ReductionReasons";
+import logistic_columns from "./LogisticColumns";
 
 const { TabPane } = Tabs;
 
@@ -16,83 +16,6 @@ const AddReduceRawMaterial = ({ close, visible, unit, logistics }) => {
 
   const [amount, setAmount] = useState(0);
   const [reason, setReason] = useState("Spill");
-
-  const reasons = [
-    {
-      value: "Spill",
-      name: "1",
-    },
-    {
-      value: "Consumed",
-      name: "2",
-    },
-    {
-      value: "Used in Formulation",
-      name: "3",
-    },
-  ];
-
-  const logistic_columns = [
-    {
-      title: "Amount",
-      key: "amount",
-      render: (record) => (
-        <InputNumber
-          className="input-number"
-          size={"small"}
-          style={{ width: "8rem" }}
-          placeholder={"0"}
-          min={0}
-          max={record.amount}
-        />
-      ),
-    },
-    {
-      title: "In Stock",
-      dataIndex: "amount",
-      key: "in_stock",
-    },
-    {
-      title: "Order Date",
-      dataIndex: "order_date",
-      key: "order_date",
-      render: (date) => () => {
-        if (date == null) {
-          <p />;
-        } else {
-          <p style={{ marginBottom: "auto" }}>
-            {moment(date).format("MMM D, YYYY")}
-          </p>;
-        }
-      },
-    },
-    {
-      title: "Received Date",
-      dataIndex: "received_date",
-      key: "received_date",
-      render: (date) => (
-        <p style={{ marginBottom: "auto" }}>
-          {moment(date).format("MMM D, YYYY")}
-        </p>
-      ),
-    },
-    {
-      title: "Expiration Date",
-      dataIndex: "expiration_date",
-      key: "expiration_date",
-      render: (date) => (
-        <p style={{ marginBottom: "auto" }}>
-          {moment(date).format("MMM D, YYYY")}
-        </p>
-      ),
-    },
-    {
-      title: "Priority of Usage",
-      dataIndex: "priority",
-      key: "priority",
-      render: (priority, record) => getPriorityIcon(record.expiration_date),
-    },
-  ];
 
   return (
     <Modal
@@ -155,7 +78,7 @@ const AddReduceRawMaterial = ({ close, visible, unit, logistics }) => {
                 <span className="sub-header">Reason:</span>
                 <Select
                   className="input-select"
-                  options={reasons}
+                  options={reduction_reasons}
                   defaultValue={reason}
                   style={{ width: "450px" }}
                   onSelect={(e) => setReason(e)}
