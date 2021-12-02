@@ -114,3 +114,11 @@ export const handleRestock = async (id) => {
     }
   });
 };
+
+export const addStock = async (id, data) => {
+  await axios.post(`/raw_material/${id}/add_logistic`, data).catch((err) => {
+    if (err.response) {
+      console.log(`Error: ${err.message}`);
+    }
+  });
+};
