@@ -8,6 +8,7 @@ import ExpiringColumns from "./ExpiringColumns";
 import { Table, Button } from "antd";
 import TooltipComponent from "../../components/TooltipComponent";
 import { API } from "../../api";
+import moment from "moment";
 
 const ExpiringTable = () => {
   const [tableLoading, setTableLoading] = useState(true);
@@ -27,11 +28,13 @@ const ExpiringTable = () => {
     fetchExpiringMaterials();
   }, []);
 
+  const today_date = moment().format("MMMM D YYYY").toUpperCase()
+
   return (
     <div className="table">
       <div className="table-headers">
         <div>
-          <span className="sub-header-table">TODAY, JULY 6 2021</span>
+          <span className="sub-header-table">TODAY, {today_date}</span>
           <br />
           <h4 className="main-header-table">Expiring Materials</h4>
         </div>

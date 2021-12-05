@@ -122,3 +122,19 @@ export const addStock = async (id, data) => {
     }
   });
 };
+
+export const updateStock = async (id, data) => {
+  await axios.put(`/raw_material/${id}/update_logistic`, data).catch((err) => {
+    if (err.response) {
+      console.log(`Error: ${err.message}`);
+    }
+  });
+};
+
+export const disableStock = async (id, data) => {
+  await axios.put(`/raw_material/${id}/disable_logistic`, data).catch((err) => {
+    if (err.response) {
+      console.log(`Error: ${err.message}`);
+    }
+  });
+}

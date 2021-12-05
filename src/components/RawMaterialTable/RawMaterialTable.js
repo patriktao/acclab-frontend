@@ -34,6 +34,7 @@ const RawMaterialTable = () => {
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [editVisible, setEditVisible] = useState(false);
   const [itemNames] = useState([]);
+  const [rowCount, setRowCount] = useState(0);
 
   /* Fetching Table Data */
   useEffect(() => {
@@ -41,6 +42,7 @@ const RawMaterialTable = () => {
       const rawMaterialTable = await API.rawMaterial.fetchAll().then((res) => {
         setData(res);
         setTable(res);
+        setRowCount(res.length)
         res.forEach((item) => {
           itemNames.push({
             value: item.name,
@@ -72,6 +74,7 @@ const RawMaterialTable = () => {
     setTable(data);
     setSearchText("");
     setCounter(0);
+    setRowCount(data.length);
   };
 
   const openFilter = () => {
@@ -104,6 +107,7 @@ const RawMaterialTable = () => {
   const handleFilter = (e) => {
     const states = e;
     let count = 0;
+    console.log(e)
 
     // If state is null, convert to empty string so that table can interpret
     for (const [key, value] of e.entries()) {
@@ -145,8 +149,11 @@ const RawMaterialTable = () => {
           .toLowerCase()
           .includes(states.get("priority"))
     );
+    setRowCount(filtered_table.length);
     setTable(filtered_table);
   };
+
+  const today_date = moment().format("MMMM D YYYY").toUpperCase()
 
   return (
     <div className="raw-material-table">
@@ -154,10 +161,10 @@ const RawMaterialTable = () => {
         <div className="table-header-position">
           <div className="table-text">
             <div>
-              <span className="sub-header-table">TODAY, JULY 6 2021</span>
+              <span className="sub-header-table">TODAY, {today_date}</span>
             </div>
             <div>
-              <h2 className="main-header-table">Raw Materials</h2>
+              <h2 className="main-header-table">Raw Materials ({rowCount})</h2>
             </div>
           </div>
           <div className="table-buttons">

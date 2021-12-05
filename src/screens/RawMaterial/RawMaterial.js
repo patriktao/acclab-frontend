@@ -107,11 +107,17 @@ const RawMaterial = (props) => {
     setShowAddReduce(false);
   };
 
-  const addStocktoList = (list) => {
+  const addStocks = (list) => {
     const new_amount = list[list.length - 1].amount;
     materialData[0].total_amount += new_amount;
     setLogistics(list);
   };
+
+  const reduceStocks = (list, reductionAmount) => {
+    materialData[0].total_amount -= reductionAmount;
+    setLogistics(list);
+  }
+
 
   return (
     <Layout className="sidebar-header-layout">
@@ -165,7 +171,8 @@ const RawMaterial = (props) => {
                     id={id}
                     unit={unit}
                     logistics={logistics}
-                    handleLogisticList={addStocktoList}
+                    sendAddToParent={addStocks}
+                    sendReductionToParent={reduceStocks}
                   />
                 </Button>
               </div>
@@ -240,7 +247,7 @@ const RawMaterial = (props) => {
                             className="table-logistics"
                             columns={Columns.stocks_columns}
                             dataSource={logistics}
-                            pagination={{ pageSize: 5 }}
+                            pagination={{ pageSize: 7 }}
                             rowKey={"stock_id"}
                           />
                         </Spin>

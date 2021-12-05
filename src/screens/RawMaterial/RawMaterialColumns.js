@@ -84,6 +84,12 @@ export const nuitrition_columns = [
 
 export const stocks_columns = [
   {
+    title: "Stock ID",
+    dataIndex: "stock_id",
+    key: "stock_id",
+    /* render: (value, item, index) => (page - 1) * 10 + index + 1, */
+  },
+  {
     title: "Amount",
     dataIndex: "amount",
     key: "amount",

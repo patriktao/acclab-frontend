@@ -8,7 +8,7 @@ const reduction_reasons = [
     name: "2",
   },
   {
-    value: "Used in Formulation",
+    value: "Correction",
     name: "3",
   },
 ];
