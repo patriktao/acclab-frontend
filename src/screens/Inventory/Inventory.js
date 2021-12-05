@@ -2,7 +2,7 @@ import { Layout } from "antd";
 import NavBar from "../../components/NavBar";
 import Sidebar from "../../components/Sidebar";
 import RawMaterialTable from "../../components/RawMaterialTable";
-import SemiFinishedProductTable from "../../components/SemiFinishedProductTable/";
+import SfpTable from "../../components/SfpTable";
 
 const { Content, Footer } = Layout;
 
@@ -25,7 +25,7 @@ const Inventory = () => {
               <RawMaterialTable />
             </div>
             <div style={{ marginTop: "3rem" }}>
-              <SemiFinishedProductTable />
+              <SfpTable/>
             </div>
           </div>
           <Footer className="footer">Accelerator Lab ©2021 Tetra Pak</Footer>

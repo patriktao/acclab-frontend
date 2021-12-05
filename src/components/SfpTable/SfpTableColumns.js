@@ -1,27 +1,31 @@
 import moment from "moment";
 import { Button, Tooltip } from "antd";
 import { EllipsisOutlined } from "@ant-design/icons";
-import "./SemiFinishedProductTable"
 
-export const raw_material_columns = [
+export const sfp_columns = [
+  {
+    title: "sfp_id",
+    dataIndex: "sfp_id",
+    key: "sfp_id",
+  },
   {
     title: "Item name",
     dataIndex: "name",
     key: "name",
     render: (text) => <a>{text}</a>,
-    sorter: (a, b) => a.name.localeCompare(b.name)
+    sorter: (a, b) => a.name.localeCompare(b.name),
   },
   {
     title: "Brand",
     dataIndex: "company",
     key: "company",
-    sorter: (a, b) => a.company.localeCompare(b.company)
+    sorter: (a, b) => a.company.localeCompare(b.company),
   },
   {
     title: "Country",
     dataIndex: "country",
     key: "country",
-    sorter: true
+    sorter: true,
   },
   {
     title: "Amount",
@@ -38,7 +42,7 @@ export const raw_material_columns = [
     title: "Location",
     dataIndex: "location",
     key: "location",
-    sorter: (a, b) => a.location.localeCompare(b.location)
+    sorter: (a, b) => a.location.localeCompare(b.location),
   },
   {
     title: "Expiration Date",
@@ -55,7 +59,7 @@ export const raw_material_columns = [
     title: "Priority",
     dataIndex: "priority",
     key: "priority",
-    sorter: (a, b) => a.priority.localeCompare(b.priority)
+    sorter: (a, b) => a.priority.localeCompare(b.priority),
   },
   {
     title: "Edit",
@@ -69,7 +73,7 @@ export const raw_material_columns = [
           alignContent: "center",
         }}
       >
-       <Tooltip title="Edit Item">
+        <Tooltip title="Edit Item">
           <Button className="edit-button">
             <EllipsisOutlined style={{ fontSize: "22px" }} />{" "}
           </Button>
