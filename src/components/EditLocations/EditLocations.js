@@ -183,6 +183,11 @@ const EditLocations = ({ visible, close, sendChangesToParent }) => {
       onCancel={close}
       onOk={close}
       maskClosable={false}
+      footer={[
+        <Button key="submit" type="primary" onClick={close}>
+          Close
+        </Button>,
+      ]}
     >
       <section className="EditBrands">
         <section className="header">
