@@ -1,17 +1,38 @@
 import React from "react";
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, message } from "antd";
 import { MailOutlined, EyeOutlined } from "@ant-design/icons";
 import "./LoginComponent.scss";
+import { useState } from "react";
 import { Redirect } from "react-router";
+import { API } from "../../api/api";
 
 const LoginComponent = () => {
-  const onFinish = (values) => {
-    console.log("Success:", values);
-  };
-
-  const Login = () => {
-    console.log("Successful");
-    <Redirect to="/dashboard" />;
+  const onFinish = async (values) => {
+    const response = await API.authentication.login(
+      values.email,
+      values.password
+    );
+    switch (response) {
+      case "success": {
+        message.success("You successfully logged in") && (
+          <Redirect to="/dashboard" />
+        );
+        break;
+      }
+      case "user not found":
+        message.warning("Your email or password is wrong") && (
+          <Redirect to="/" />
+        );
+        break;
+      case "wrong password":
+        message.warning("Your email or password is wrong") && (
+          <Redirect to="/" />
+        );
+        break;
+      default:
+        message.error("Error occurred when logging in") && <Redirect to="/" />;
+        break;
+    }
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -25,7 +46,7 @@ const LoginComponent = () => {
         initialValues={{
           remember: true,
         }}
-        onFinish={onFinish && Login}
+        onFinish={onFinish}
         onFinishFailed={onFinishFailed}
       >
         <div className="login-form">
@@ -44,7 +65,6 @@ const LoginComponent = () => {
               className="username-input"
             />
           </Form.Item>
-
           <Form.Item
             className="input-bar"
             name="password"
