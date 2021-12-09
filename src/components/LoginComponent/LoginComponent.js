@@ -2,23 +2,29 @@ import React from "react";
 import { Form, Input, Button, message } from "antd";
 import { MailOutlined, EyeOutlined } from "@ant-design/icons";
 import "./LoginComponent.scss";
-import { useState } from "react";
-import { Redirect } from "react-router";
+import { Redirect, useHistory } from "react-router";
 import { API } from "../../api/api";
+import { useAuth } from "../../auth-context";
 
 const LoginComponent = () => {
+  const { login } = useAuth();
+  const history = useHistory();
+
+  const loginSuccess = async () => {
+    message.success("You successfully logged in");
+    await login()
+    return history.push("/dashboard");
+  };
+
   const onFinish = async (values) => {
     const response = await API.authentication.login(
       values.email,
       values.password
     );
     switch (response) {
-      case "success": {
-        message.success("You successfully logged in") && (
-          <Redirect to="/dashboard" />
-        );
+      case "success":
+        loginSuccess();
         break;
-      }
       case "user not found":
         message.warning("Your email or password is wrong") && (
           <Redirect to="/" />

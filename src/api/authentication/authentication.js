@@ -6,11 +6,14 @@ export const login = async (email, password) => {
     email: email,
     password: password,
   };
-  const response = await axios.post("/login/login", data).catch((err) => {
+  try {
+    const response = await axios.post("/login/login", data);
+    return response.data.message;
+  } catch (err) {
     if (err.response) {
       console.log(`Error: ${err.message}`);
-      message.error("Error in HTTP Request to API");
+      console.log("Error in HTTP Request to API");
     }
-  });
-  return response.data.message;
+    return null;
+  }
 };

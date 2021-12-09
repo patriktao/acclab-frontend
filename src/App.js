@@ -3,21 +3,23 @@ import Dashboard from "./screens/Dashboard/Dashboard";
 import Login from "./screens/Login/LoginPage";
 import Inventory from "./screens/Inventory/Inventory";
 import RawMaterial from "./screens/RawMaterial/RawMaterial";
-import ProtectedRoute from "./ProtectedRoute";
-import { useState } from "react";
+import { useAuth } from "./auth-context";
 
 const App = () => {
-  const [isAuth, setIsAuth] = useState(false);
+  const { loggedIn } = useAuth();
 
-  return (
+  return loggedIn ? (
     <Router>
       <Switch>
-        <Route exact path="/" component={Login} />
-        {/* <Route path="/dashboard" component={Dashboard} /> */}
+        <Route exact path="/dashboard" component={Dashboard} />
         <Route exact path="/inventory" component={Inventory} />
         <Route path="/inventory/:id" component={RawMaterial} />
-
-        <ProtectedRoute path="/dashboard" component={Dashboard} isAuth={isAuth}/>
+      </Switch>
+    </Router>
+  ) : (
+    <Router>
+      <Switch>
+        <Route path="/" component={Login} />
       </Switch>
     </Router>
   );

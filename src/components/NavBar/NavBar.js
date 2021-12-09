@@ -1,25 +1,34 @@
 import "./NavBar.scss";
 import SidebarDrawer from "../SidebarDrawer/SidebarDrawer";
 import PropTypes from "prop-types";
-import { Layout, Avatar, Menu, Dropdown, Typography } from "antd";
+import { Layout, Avatar, Menu, Dropdown, Typography, message } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
 import moment from "moment";
-const { Header } = Layout;
+import { useAuth } from "../../auth-context";
+import { useHistory } from "react-router";
 
+const { Header } = Layout;
 const { Text } = Typography;
 
-const menu = (
-  <Menu style={{ borderRadius: "4px" }}>
-    <Menu.Item style={{ borderRadius: "4px" }}>
-      <Link to="/">Logout</Link>
-    </Menu.Item>
-  </Menu>
-);
-
-const today_date = moment().format("MMMM D, YYYY");
-
 const NavBar = () => {
+  const { logout } = useAuth();
+  const history = useHistory();
+  const today_date = moment().format("MMMM D, YYYY");
+
+  const handleLogout = () => {
+    message.success("You successfully logged out");
+    logout();
+    return history.push("/");
+  };
+
+  const menu = (
+    <Menu style={{ borderRadius: "4px" }}>
+      <Menu.Item style={{ borderRadius: "4px" }}>
+        <Text onClick={handleLogout}>Logout</Text>
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
     <section className="navbar-layout">
       <Header className="navbar">
@@ -27,7 +36,7 @@ const NavBar = () => {
           <SidebarDrawer />
         </div>
         <section className="right-side">
-          <div style={{fontSize: '14px'}}>{today_date}</div>
+          <div style={{ fontSize: "14px" }}>{today_date}</div>
           <div className="account-component">
             <div className="divider-component">
               <div className="v-divider" />
