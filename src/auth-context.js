@@ -7,17 +7,16 @@ const AuthContext = createContext({});
 
 const AuthProvider = (props) => {
   const [loggedIn, setLoggedIn] = useState();
-  const [userSession, setUserSession] = useState();
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     const getUserSession = async () => {
       const user = sessionStorage.getItem("user");
-      console.log(user);
       if (user !== null) {
         await API.authentication.loggedIn(user).then((res) => {
           if (res.loggedIn) {
             setLoggedIn(true);
-            setUserSession(res.user);
+            setUser(res.user);
           }
         });
       }
@@ -25,8 +24,8 @@ const AuthProvider = (props) => {
     getUserSession();
   }, []);
 
-  const getUserSession = () => {
-    return userSession;
+  const userSession = () => {
+    return user;
   };
 
   const login = () => {
@@ -41,7 +40,7 @@ const AuthProvider = (props) => {
     login,
     logout,
     loggedIn,
-    getUserSession,
+    userSession,
   };
   return <AuthContext.Provider value={authContextValue} {...props} />;
 };

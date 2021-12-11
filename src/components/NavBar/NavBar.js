@@ -6,14 +6,20 @@ import { UserOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { useAuth } from "../../auth-context";
 import { useHistory } from "react-router";
+import { useEffect, useState } from "react";
 
 const { Header } = Layout;
 const { Text } = Typography;
 
 const NavBar = () => {
-  const { logout } = useAuth();
+  const { logout, userSession } = useAuth();
   const history = useHistory();
   const today_date = moment().format("MMMM D, YYYY");
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    setUser(userSession());
+  }, [userSession]);
 
   const handleLogout = async () => {
     message.success("You successfully logged out");
@@ -50,7 +56,9 @@ const NavBar = () => {
                     size="medium"
                     icon={<UserOutlined />}
                   />
-                  <span className="account-name">Patrik Tao</span>
+                  <span className="account-name">
+                    {user.firstname} {user.lastname}
+                  </span>
                 </Text>
               </Dropdown>
             </div>
