@@ -6,7 +6,7 @@ export const login = async (email, password) => {
     password: password,
   };
   try {
-    const response = await axios.post("/login", data);
+    const response = await axios.post("/authentication/login", data);
     return response.data;
   } catch (err) {
     if (err.response) {
@@ -17,10 +17,12 @@ export const login = async (email, password) => {
   }
 };
 
-export const loggedIn = async (email) => {
+export const loggedIn = async (user) => {
   try {
-    const res = await axios.get("/login", { email: email });
-    return res.data.loggedIn;
+    const response = await axios.post("/authentication/loggedIn", {
+      email: user,
+    });
+    return response.data;
   } catch (err) {
     if (err.response) {
       console.log(`Error: ${err.message}`);

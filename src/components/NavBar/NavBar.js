@@ -15,10 +15,10 @@ const NavBar = () => {
   const history = useHistory();
   const today_date = moment().format("MMMM D, YYYY");
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     message.success("You successfully logged out");
-    logout();
-    sessionStorage.removeItem("userData");
+    await logout();
+    sessionStorage.removeItem("user");
     return history.push("/");
   };
 

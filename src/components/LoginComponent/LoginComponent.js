@@ -13,7 +13,7 @@ const LoginComponent = () => {
   const loginSuccess = async (response) => {
     message.success("You successfully logged in");
     await login();
-    sessionStorage.setItem("user", JSON.stringify(response.user.email));
+    sessionStorage.setItem("user", response.user.email);
     return history.push("/dashboard");
   };
 
