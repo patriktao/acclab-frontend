@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useHistory } from "react-router-dom";
 import { Menu, Layout } from "antd";
 import {
   PieChartFilled,
@@ -9,11 +9,22 @@ import {
   ExperimentFilled,
 } from "@ant-design/icons";
 import "./Sidebar.scss";
+import { useEffect } from "react";
+import { useAuth } from "../../auth-context";
 
 const { Sider } = Layout;
 
 const Sidebar = () => {
+  const { loggedIn } = useAuth();
+  const history = useHistory();
   const location = useLocation().pathname;
+
+  /* Always go to "/dashboard" when the path is "/" and you are loggedin */
+  useEffect(() => {
+    if (loggedIn && location === "/") {
+      history.push("/dashboard");
+    }
+  }, [loggedIn, history, location]);
 
   return (
     <>

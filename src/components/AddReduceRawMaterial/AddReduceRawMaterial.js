@@ -1,4 +1,13 @@
-import { DatePicker, InputNumber, Modal, Tabs, Table, Select } from "antd";
+import {
+  DatePicker,
+  InputNumber,
+  Modal,
+  Tabs,
+  Table,
+  Select,
+  Popconfirm,
+  Button,
+} from "antd";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import "./AddReduceRawMaterial.scss";
@@ -33,7 +42,7 @@ const AddReduceRawMaterial = ({
   const [amount, setAmount] = useState();
   const [reason, setReason] = useState("Spill");
   const [orderDate, setOrderDate] = useState("");
-  const [receivedDate, setReceivedDate] = useState();
+  const [receivedDate, setReceivedDate] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
   const [tabPane, setTabPane] = useState(1); //important for handleOK, are we adding or subtracting?
   const [editForm, setEditForm] = useState([]); //states for different amount changesß
@@ -51,15 +60,14 @@ const AddReduceRawMaterial = ({
             old_amount: e.amount,
             subtracted_amount: 0,
             new_amount: e.amount,
-            total_amount: e.total_amount
+            total_amount: e.total_amount,
           });
-          setTotalAmount(e.total_amount)
+          setTotalAmount(e.total_amount);
         });
         setCounter(1);
       }
     });
-    
-  }, []);
+  }, [counter, editForm, id]);
 
   /* Functions */
   const changeTabPane = (key) => {
@@ -73,16 +81,14 @@ const AddReduceRawMaterial = ({
   const handleOk = (e) => {
     try {
       if (tabPane === 1) {
-        const data = [
-          {
-            amount: amount,
-            order_date: emptyInputChecker(orderDate),
-            received_date: emptyInputChecker(receivedDate),
-            expiration_date: emptyInputChecker(expirationDate),
-            total_amount: totalAmount,
-          },
-        ];
-        addNewStock(data);
+        if (
+          amount !== null &&
+          receivedDate !== "" &&
+          expirationDate !== ""
+        ) {
+          const data = addData();
+          addNewStock(data);
+        }
       } else if (tabPane === 2) {
         reduceStock();
       }
@@ -90,6 +96,18 @@ const AddReduceRawMaterial = ({
     } catch (err) {
       console.log(err);
     }
+    };
+
+  const addData = () => {
+    return [
+      {
+        amount: amount,
+        order_date: emptyInputChecker(orderDate),
+        received_date: emptyInputChecker(receivedDate),
+        expiration_date: emptyInputChecker(expirationDate),
+        total_amount: totalAmount,
+      },
+    ];
   };
 
   const emptyInputChecker = (input) => {
@@ -107,6 +125,7 @@ const AddReduceRawMaterial = ({
       "You have successfully added a new stock"
     );
     sendAddToParent(mergedList);
+    console.log(data[0])
     API.rawMaterial.addStock(id, data[0]);
   };
 
@@ -244,6 +263,14 @@ const AddReduceRawMaterial = ({
     },
   ];
 
+  const popconfirmMessage = () => {
+    if (tabPane === 1) {
+      return <span> Are you sure to add this stock? </span>;
+    } else {
+      return <span> Are you sure to reduce these quantities? </span>;
+    }
+  };
+
   return (
     <Modal
       centered
@@ -252,6 +279,21 @@ const AddReduceRawMaterial = ({
       visible={visible}
       onCancel={close}
       onOk={handleOk}
+      footer={[
+        <Button key="submit" onClick={close}>
+          Cancel
+        </Button>,
+        <Popconfirm
+          title={popconfirmMessage}
+          onConfirm={handleOk}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button key="submit" type="primary">
+            OK
+          </Button>
+        </Popconfirm>,
+      ]}
     >
       <section className="AddReduceRawMaterial">
         <Tabs tabPosition={"left"} onTabClick={(key) => changeTabPane(key)}>

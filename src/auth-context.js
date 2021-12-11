@@ -10,9 +10,12 @@ const AuthProvider = (props) => {
 
   useEffect(() => {
     const user = sessionStorage.getItem("user");
-    console.log(user);
-    const isLoggedIn = API.authentication.loggedIn(user);
-    isLoggedIn ? setLoggedIn(true) : setLoggedIn(false);
+    if (user !== null) {
+      const isLoggedIn = API.authentication.loggedIn(user);
+      if(isLoggedIn){
+        setLoggedIn(true)
+      }
+    }
   }, []);
 
   const login = () => {
