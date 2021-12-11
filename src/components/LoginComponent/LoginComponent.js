@@ -10,9 +10,10 @@ const LoginComponent = () => {
   const { login } = useAuth();
   const history = useHistory();
 
-  const loginSuccess = async () => {
+  const loginSuccess = async (response) => {
     message.success("You successfully logged in");
-    await login()
+    await login();
+    sessionStorage.setItem("user", JSON.stringify(response.user.email));
     return history.push("/dashboard");
   };
 
@@ -21,9 +22,9 @@ const LoginComponent = () => {
       values.email,
       values.password
     );
-    switch (response) {
+    switch (response.message) {
       case "success":
-        loginSuccess();
+        loginSuccess(response);
         break;
       case "user not found":
         message.warning("Your email or password is wrong") && (

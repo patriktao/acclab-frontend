@@ -8,6 +8,8 @@ import {
 } from "@ant-design/icons";
 import { useState, useEffect } from "react";
 import { API } from "../../api";
+import { PresetColorTypes } from "antd/lib/_util/colors";
+import lightBlue from "../../constants/Colors";
 
 const DashboardCards = () => {
   const [ExpiredMaterials, setExpiredMaterials] = useState(0);
@@ -34,14 +36,16 @@ const DashboardCards = () => {
 
   return (
     <div className="site-card-wrapper">
-      <Row gutter={50, 24}>
+      <Row gutter={(50, 24)}>
         <Col span={6}>
           <Card className="card" bordered={false}>
             <div className="card-container">
               <div>
                 <span className="card-header">Total Materials</span>
                 <br />
-                <span className="card-value">{TotalMaterials}</span>
+                <span className="card-value">
+                  {TotalMaterials}
+                </span>
               </div>
               <div>
                 <div className="icon-material-background">
@@ -73,7 +77,9 @@ const DashboardCards = () => {
           <Card className="card" bordered={false}>
             <div className="card-container">
               <div>
-                <span className="card-header">Reports In Progress</span>
+                <span className="card-header" style={lightBlue}>
+                  Reports In Progress
+                </span>
                 <br />
                 <span className="card-value"> 0 </span>
               </div>

@@ -1,23 +1,27 @@
 import React, { createContext, useEffect, useState } from "react";
+import { API } from "./api/api";
 
 /* Context lets you pass states through your entire application  that is particularly below it*/
 
 const AuthContext = createContext({});
 
 const AuthProvider = (props) => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState();
 
-  /* useEffect(() => {
-    // pull saved login state from localStorage
-  }, []); */
+  useEffect(() => {
+    const user = sessionStorage.getItem("user");
+    console.log(user);
+    const isLoggedIn = API.authentication.loggedIn(user);
+    isLoggedIn ? setLoggedIn(true) : setLoggedIn(false);
+  }, []);
 
   const login = () => {
-    console.log('logged in')
+    console.log("logged in");
     setLoggedIn(true);
   };
 
   const logout = () => {
-    console.log('logged out')
+    console.log("logged out");
     setLoggedIn(false);
   };
 

@@ -18,6 +18,7 @@ const NavBar = () => {
   const handleLogout = () => {
     message.success("You successfully logged out");
     logout();
+    sessionStorage.removeItem("userData");
     return history.push("/");
   };
 
