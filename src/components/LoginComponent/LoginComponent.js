@@ -22,23 +22,29 @@ const LoginComponent = () => {
       values.email,
       values.password
     );
-    switch (response.message) {
-      case "success":
-        loginSuccess(response);
-        break;
-      case "user not found":
-        message.warning("Your email or password is wrong") && (
-          <Redirect to="/" />
-        );
-        break;
-      case "wrong password":
-        message.warning("Your email or password is wrong") && (
-          <Redirect to="/" />
-        );
-        break;
-      default:
-        message.error("Error occurred when logging in") && <Redirect to="/" />;
-        break;
+    try {
+      switch (response.message) {
+        case "success":
+          loginSuccess(response);
+          break;
+        case "user not found":
+          message.warning("Your email or password is wrong") && (
+            <Redirect to="/" />
+          );
+          break;
+        case "wrong password":
+          message.warning("Your email or password is wrong") && (
+            <Redirect to="/" />
+          );
+          break;
+        default:
+          message.error("Error occurred when logging in") && (
+            <Redirect to="/" />
+          );
+          break;
+      }
+    } catch (err) {
+      message.error("Error occurred when logging in") && <Redirect to="/" />;
     }
   };
 

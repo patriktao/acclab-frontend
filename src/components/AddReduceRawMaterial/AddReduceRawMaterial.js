@@ -81,12 +81,14 @@ const AddReduceRawMaterial = ({
   const handleOk = (e) => {
     try {
       if (tabPane === 1) {
-        if (
-          amount !== null &&
-          receivedDate !== "" &&
-          expirationDate !== ""
-        ) {
-          const data = addData();
+        if (amount !== null && receivedDate !== "" && expirationDate !== "") {
+          const data = {
+            amount: amount,
+            order_date: emptyInputChecker(orderDate),
+            received_date: emptyInputChecker(receivedDate),
+            expiration_date: emptyInputChecker(expirationDate),
+            total_amount: totalAmount,
+          };
           addNewStock(data);
         }
       } else if (tabPane === 2) {
@@ -96,20 +98,8 @@ const AddReduceRawMaterial = ({
     } catch (err) {
       console.log(err);
     }
-    };
-
-  const addData = () => {
-    return [
-      {
-        amount: amount,
-        order_date: emptyInputChecker(orderDate),
-        received_date: emptyInputChecker(receivedDate),
-        expiration_date: emptyInputChecker(expirationDate),
-        total_amount: totalAmount,
-      },
-    ];
   };
-
+  
   const emptyInputChecker = (input) => {
     if (input === "") {
       return "";
@@ -119,14 +109,14 @@ const AddReduceRawMaterial = ({
   };
 
   const addNewStock = (data) => {
+    API.rawMaterial.addStock(id, data[0]);
     const mergedList = logistics.concat(data);
     openNotificationWithIcon(
       "success",
       "You have successfully added a new stock"
     );
     sendAddToParent(mergedList);
-    console.log(data[0])
-    API.rawMaterial.addStock(id, data[0]);
+    console.log(data[0]);
   };
 
   const reduceStock = () => {

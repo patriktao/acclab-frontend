@@ -11,7 +11,7 @@ export const getPriority = (expirationDate) => {
     return "expired";
   } else if (difference < 30) {
     return "high";
-  } else if (difference < 180) {
+  } else if (difference < 365) {
     return "normal";
   } else {
     return "low";
@@ -29,7 +29,7 @@ export const getPriorityIcon = (expirationDate) => {
   } else if (difference < 30) {
     priority = "High";
     color = "#F2C94C";
-  } else if (difference < 180) {
+  } else if (difference < 365) {
     priority = "Normal";
     color = "#29CC97";
   } else {
