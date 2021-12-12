@@ -161,9 +161,6 @@ const RawMaterialTable = () => {
         <div className="table-header-position">
           <div className="table-text">
             <div>
-              <span className="sub-header-table">TODAY, {today_date}</span>
-            </div>
-            <div>
               <h2 className="main-header-table">Raw Materials ({rowCount})</h2>
             </div>
           </div>

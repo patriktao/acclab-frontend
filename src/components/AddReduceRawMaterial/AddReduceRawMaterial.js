@@ -99,24 +99,25 @@ const AddReduceRawMaterial = ({
       console.log(err);
     }
   };
-  
+
   const emptyInputChecker = (input) => {
     if (input === "") {
-      return "";
+      return null;
     } else {
       return moment(input).format("YYYYMMDD");
     }
   };
 
   const addNewStock = (data) => {
-    API.rawMaterial.addStock(id, data[0]);
+    console.log(data);
+    API.rawMaterial.addStock(id, data);
     const mergedList = logistics.concat(data);
     openNotificationWithIcon(
       "success",
       "You have successfully added a new stock"
     );
     sendAddToParent(mergedList);
-    console.log(data[0]);
+    console.log(data);
   };
 
   const reduceStock = () => {

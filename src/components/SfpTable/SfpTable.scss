@@ -1,4 +1,10 @@
 .SfpTable {
+  border-radius: 4px;
+  background: white;
+  padding: 16px 16px 0 16px;
+  box-shadow: 0px 16px 16px rgba(17, 17, 17, 5%);
+  overflow-x: auto;
+
   @media (min-width: 0px) {
     .edit-button {
       padding: 13px;
@@ -15,7 +21,6 @@
     .table-text {
       display: grid;
       align-items: center;
-      row-gap: 4px;
     }
 
     /* Table Buttons */
@@ -48,27 +53,10 @@
       margin-right: 1rem;
     }
 
-    .raw-material-table {
-      border-radius: 4px;
-      background: white;
-      padding: 16px 16px 0 16px;
-      box-shadow: 0px 16px 16px rgba(17, 17, 17, 5%);
-      overflow-x: auto;
-    }
-
     .sub-header-table {
       font-size: 14px;
       font-weight: 500;
       color: #777777;
-    }
-
-    .expand-button {
-      padding-right: 1rem;
-    }
-
-    .table-buttons {
-      padding-left: 1rem;
-      padding-right: 1rem;
     }
 
     .table-search {
@@ -90,6 +78,16 @@
       display: grid;
       grid-template-columns: max-content max-content;
       grid-template-rows: none;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .main-header-table{
+      padding-bottom: 0.5rem;
+      padding-left: 1rem;
+      margin-bottom: 0rem;
+      padding-top: 0.5rem;
+      margin-top: 0rem;
     }
   }
 
@@ -104,8 +102,13 @@
 
     .table-header-position {
       grid-template-rows: none;
-      grid-template-columns: 6fr 4fr;
+      grid-template-columns: 8fr 3fr;
       align-items: center;
+    }
+
+    .table-buttons {
+      padding-left: 0;
+      padding-right: 0;
     }
   }
 }
