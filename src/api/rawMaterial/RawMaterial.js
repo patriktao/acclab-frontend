@@ -50,7 +50,7 @@ export const fetchMaterial = async (id) => {
 
 export const fetchLogistics = async (id) => {
   try {
-    const response = await axios.get(`/raw_material_logistics/${id}/logistics`);
+    const response = await axios.get(`/raw_material_logistics/${id}`);
     return response.data;
   } catch (err) {
     console.log(`Error: ${err.message}`);
@@ -60,7 +60,9 @@ export const fetchLogistics = async (id) => {
 
 export const fetchTotalAmount = async (id) => {
   try {
-    const response = await axios.get(`/raw_material_logistics/${id}/total_amount`);
+    const response = await axios.get(
+      `/raw_material_logistics/${id}/total_amount`
+    );
     return response.data;
   } catch (err) {
     console.log(`Error: ${err.message}`);
@@ -116,15 +118,18 @@ export const handleRestock = async (id) => {
 };
 
 export const addStock = async (id, data) => {
-  await axios.post(`/raw_material_logistics/${id}/add_logistic`, data).catch((err) => {
-    if (err.response) {
-      console.log(`Error: ${err.message}`);
-    }
-  });
+  const res = await axios
+    .post(`/raw_material_logistics/${id}/add`, data)
+    .catch((err) => {
+      if (err.response) {
+        console.log(`Error: ${err.message}`);
+      }
+    });
+  return res.data;
 };
 
 export const updateStock = async (id, data) => {
-  await axios.put(`/raw_material_logistics/${id}/update_logistic`, data).catch((err) => {
+  await axios.put(`/raw_material_logistics/${id}/update`, data).catch((err) => {
     if (err.response) {
       console.log(`Error: ${err.message}`);
     }
@@ -132,9 +137,11 @@ export const updateStock = async (id, data) => {
 };
 
 export const disableStock = async (id, data) => {
-  await axios.put(`/raw_material_logistics/${id}/disable_logistic`, data).catch((err) => {
-    if (err.response) {
-      console.log(`Error: ${err.message}`);
-    }
-  });
-}
+  await axios
+    .put(`/raw_material_logistics/${id}/disable`, data)
+    .catch((err) => {
+      if (err.response) {
+        console.log(`Error: ${err.message}`);
+      }
+    });
+};

@@ -242,7 +242,9 @@ const RawMaterial = (props) => {
                           >
                             <Table
                               className="table-logistics"
-                              columns={Columns.stocks_columns}
+                              columns={Columns.stocks_columns.filter(
+                                (col) => col.dataIndex !== "stock_id"
+                              )}
                               dataSource={logistics}
                               pagination={{ pageSize: 7 }}
                               rowKey={"stock_id"}

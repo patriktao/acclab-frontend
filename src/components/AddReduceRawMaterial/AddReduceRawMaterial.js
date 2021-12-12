@@ -92,14 +92,7 @@ const AddReduceRawMaterial = ({
   const addFormRestrictions = (e) => {
     if (amount != null && receivedDate !== "" && expirationDate !== "") {
       if (expirationDate.isAfter(receivedDate) && amount > 0) {
-        const data = {
-          amount: amount,
-          order_date: checkEmptyInput(orderDate),
-          received_date: checkEmptyInput(receivedDate),
-          expiration_date: checkEmptyInput(expirationDate),
-          total_amount: totalAmount,
-        };
-        addNewStock(data);
+        addNewStock();
         close(e);
       } else {
         message.error("Expiration date must come after received date!");
@@ -115,14 +108,39 @@ const AddReduceRawMaterial = ({
     return input === "" ? null : moment(input).format("YYYYMMDD");
   };
 
-  const addNewStock = (data) => {
-    console.log(data);
-    API.rawMaterial.addStock(id, data);
+  const addNewStock = () => {
+    const data = {
+      raw_material_id: parseInt(id),
+      stock_id: "",
+      amount: amount,
+      order_date: checkEmptyInput(orderDate),
+      received_date: checkEmptyInput(receivedDate),
+      expiration_date: checkEmptyInput(expirationDate),
+      total_amount: totalAmount,
+    };
+    //API call and get the new generated stock_id
+    API.rawMaterial.addStock(id, data).then((res) => {
+      data.stock_id = res.stock_id;
+      console.log(data);
+      /* Push new stock to form */
+      editForm.push({
+        stock_id: res.stock_id,
+        old_amount: data.amount,
+        subtracted_amount: 0,
+        new_amount: data.amount,
+        total_amount: data.total_amount,
+      });
+    });
+
+    //Add the stock by merging the list
     const mergedList = logistics.concat(data);
+    console.log(mergedList);
     openNotificationWithIcon(
       "success",
       "You have successfully added a new stock"
     );
+    /* Update the lists */
+    setLogisticList(mergedList);
     sendAddToParent(mergedList);
   };
 
