@@ -7,6 +7,7 @@ import {
   Select,
   Popconfirm,
   Button,
+  message,
 } from "antd";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
@@ -44,11 +45,13 @@ const AddReduceRawMaterial = ({
   const [orderDate, setOrderDate] = useState("");
   const [receivedDate, setReceivedDate] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
-  const [tabPane, setTabPane] = useState(1); //important for handleOK, are we adding or subtracting?
+  const [tabPane, setTabPane] = useState("add");
   const [editForm, setEditForm] = useState([]); //states for different amount changesß
   const [counter, setCounter] = useState(0); //makes sure that useEffect only runs once
   const [logisticList, setLogisticList] = useState([]); //the list of logistics
   const [totalAmount, setTotalAmount] = useState(0);
+
+  /* tabPane 1 is add, tabPane 2 is reduce */
 
   useEffect(() => {
     API.rawMaterial.fetchLogistics(id).then((res) => {
@@ -69,43 +72,47 @@ const AddReduceRawMaterial = ({
     });
   }, [counter, editForm, id]);
 
-  /* Functions */
-  const changeTabPane = (key) => {
-    if (key === "2") {
-      setTabPane(2);
-    } else if (key === "1") {
-      setTabPane(1);
-    }
-  };
-
   const handleOk = (e) => {
-    try {
-      if (tabPane === 1) {
-        if (amount !== null && receivedDate !== "" && expirationDate !== "") {
-          const data = {
-            amount: amount,
-            order_date: emptyInputChecker(orderDate),
-            received_date: emptyInputChecker(receivedDate),
-            expiration_date: emptyInputChecker(expirationDate),
-            total_amount: totalAmount,
-          };
-          addNewStock(data);
-        }
-      } else if (tabPane === 2) {
-        reduceStock();
-      }
-      close(e);
-    } catch (err) {
-      console.log(err);
+    switch (tabPane) {
+      case "add":
+        addFormRestrictions(e);
+        break;
+      case "reduce":
+        reduceStock(e);
+        break;
+      default:
+        console.log("reached default");
     }
   };
 
-  const emptyInputChecker = (input) => {
-    if (input === "") {
-      return null;
-    } else {
-      return moment(input).format("YYYYMMDD");
+  const changeTabPane = (key) => {
+    key === "1" ? setTabPane("add") : setTabPane("reduce");
+  };
+
+  const addFormRestrictions = (e) => {
+    if (amount != null && receivedDate !== "" && expirationDate !== "") {
+      if (expirationDate.isAfter(receivedDate) && amount > 0) {
+        const data = {
+          amount: amount,
+          order_date: checkEmptyInput(orderDate),
+          received_date: checkEmptyInput(receivedDate),
+          expiration_date: checkEmptyInput(expirationDate),
+          total_amount: totalAmount,
+        };
+        addNewStock(data);
+        close(e);
+      } else {
+        message.error("Expiration date must come after received date!");
+      }
+      return;
     }
+    message.error(
+      "Amount, received date and expiration date needs to be filled!"
+    );
+  };
+
+  const checkEmptyInput = (input) => {
+    return input === "" ? null : moment(input).format("YYYYMMDD");
   };
 
   const addNewStock = (data) => {
@@ -117,10 +124,9 @@ const AddReduceRawMaterial = ({
       "You have successfully added a new stock"
     );
     sendAddToParent(mergedList);
-    console.log(data);
   };
 
-  const reduceStock = () => {
+  const reduceStock = (e) => {
     let totalAmountToReduce = 0;
     for (let index = 0; index < logisticList.length; index++) {
       //counting the total amount to be reduced
@@ -159,9 +165,8 @@ const AddReduceRawMaterial = ({
     setEditForm(newEditForm);
     setLogisticList(filtered_list);
     console.log(newEditForm);
-
-    //send changes to parent
     sendReductionToParent(filtered_list, totalAmountToReduce);
+    close(e);
   };
 
   /* Edits the stock based on what you input */
@@ -255,11 +260,11 @@ const AddReduceRawMaterial = ({
   ];
 
   const popconfirmMessage = () => {
-    if (tabPane === 1) {
-      return <span> Are you sure to add this stock? </span>;
-    } else {
-      return <span> Are you sure to reduce these quantities? </span>;
-    }
+    return tabPane === "add" ? (
+      <span> Are you sure to add this stock? </span>
+    ) : (
+      <span> Are you sure to reduce these quantities? </span>
+    );
   };
 
   return (
