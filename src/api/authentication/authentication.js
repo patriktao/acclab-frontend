@@ -7,6 +7,12 @@ export const login = async (email, password) => {
   };
   try {
     const response = await axios.post("/authentication/login", data);
+    if (response.data.message === "success") {
+      const user = response.data.user;
+      sessionStorage.setItem("email", user.email);
+      sessionStorage.setItem("firstname", user.firstname);
+      sessionStorage.setItem("lastname", user.lastname);
+    }
     return response.data;
   } catch (err) {
     if (err.response) {

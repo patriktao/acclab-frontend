@@ -18,13 +18,17 @@ const NavBar = () => {
   const [user, setUser] = useState({});
 
   useEffect(() => {
-    setUser(userSession());
+    setUser({
+      firstname: sessionStorage.getItem("firstname"),
+      lastname: sessionStorage.getItem("lastname"),
+    });
+    /*     setUser(userSession()); */
   }, [userSession]);
 
   const handleLogout = async () => {
     message.success("You successfully logged out");
     await logout();
-    sessionStorage.removeItem("user");
+    sessionStorage.clear();
     return history.push("/");
   };
 

@@ -135,13 +135,13 @@ const AddReduceRawMaterial = ({
     //Add the stock by merging the list
     const mergedList = logistics.concat(data);
     console.log(mergedList);
+    /* Update the lists */
+    setLogisticList(mergedList);
+    sendAddToParent(mergedList);
     openNotificationWithIcon(
       "success",
       "You have successfully added a new stock"
     );
-    /* Update the lists */
-    setLogisticList(mergedList);
-    sendAddToParent(mergedList);
   };
 
   const reduceStock = (e) => {
@@ -202,6 +202,7 @@ const AddReduceRawMaterial = ({
         if (item.stock_id === stock_id) {
           item.subtracted_amount = e;
           item.new_amount = item.old_amount - e;
+          console.log(item);
         }
       });
     }
