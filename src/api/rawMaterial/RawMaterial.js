@@ -145,3 +145,13 @@ export const disableStock = async (id, data) => {
       }
     });
 };
+
+export const updateTotalAmount = async (id, amount) => {
+  await axios
+    .put(`/raw_material_logistics/${id}/total_amount`, { amount: amount })
+    .catch((err) => {
+      if (err.response) {
+        console.log(`Error: ${err.message}`);
+      }
+    });
+};

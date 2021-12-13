@@ -17,7 +17,7 @@ import reduction_reasons from "./ReductionReasons";
 import moment from "moment";
 import { API } from "../../api";
 import { getPriorityIcon } from "../Priority/Priority";
-import openNotificationWithIcon from "../openNotificationWithIcon";
+import { SuccessNotification } from "../Notifications/Notifications";
 
 const { TabPane } = Tabs;
 
@@ -92,7 +92,7 @@ const AddReduceRawMaterial = ({
   const addFormRestrictions = (e) => {
     if (amount != null && receivedDate !== "" && expirationDate !== "") {
       if (expirationDate.isAfter(receivedDate) && amount > 0) {
-        addNewStock();
+        addStock();
         close(e);
       } else {
         message.error("Expiration date must come after received date!");
@@ -108,7 +108,9 @@ const AddReduceRawMaterial = ({
     return input === "" ? null : moment(input).format("YYYYMMDD");
   };
 
-  const addNewStock = () => {
+  const addStock = () => {
+    const newTotalAmount = totalAmount + amount;
+
     const data = {
       raw_material_id: parseInt(id),
       stock_id: "",
@@ -116,48 +118,67 @@ const AddReduceRawMaterial = ({
       order_date: checkEmptyInput(orderDate),
       received_date: checkEmptyInput(receivedDate),
       expiration_date: checkEmptyInput(expirationDate),
-      total_amount: totalAmount,
     };
-    //API call and get the new generated stock_id
+
+    // API call and get the new generated stock_id
     API.rawMaterial.addStock(id, data).then((res) => {
       data.stock_id = res.stock_id;
       console.log(data);
-      /* Push new stock to form */
+
+      // Update total amount
+      API.rawMaterial.updateTotalAmount(id, newTotalAmount);
+      setTotalAmount(newTotalAmount);
+
+      /* Edit the total amount in the Edit Form */
+      editForm.forEach((e) => {
+        e.total_amount += amount;
+      });
+
+      /* Push new stock to form with new stock_id*/
       editForm.push({
         stock_id: res.stock_id,
         old_amount: data.amount,
         subtracted_amount: 0,
         new_amount: data.amount,
-        total_amount: data.total_amount,
+        total_amount: newTotalAmount,
       });
     });
 
     //Add the stock by merging the list
     const mergedList = logistics.concat(data);
     console.log(mergedList);
+
     /* Update the lists */
     setLogisticList(mergedList);
     sendAddToParent(mergedList);
-    openNotificationWithIcon(
-      "success",
-      "You have successfully added a new stock"
-    );
+    SuccessNotification("You have successfully added a new stock");
   };
 
   const reduceStock = (e) => {
-    let totalAmountToReduce = 0;
+    // Calculate total reduction amount
+    let reductionAmount = 0;
     for (let index = 0; index < logisticList.length; index++) {
-      //counting the total amount to be reduced
-      totalAmountToReduce += editForm[index].subtracted_amount;
-      //setting the stock after after reduction
+      reductionAmount += editForm[index].subtracted_amount;
+      // Setting the stock in the list after reduction
       logisticList[index].amount -= editForm[index].subtracted_amount;
+      // TODO: Notification
+/*       const stock = editForm[index];
+      if (stock.old_amount > stock.new_amount) {
+        SuccessNotification(
+          "You have reduced Stock " +
+            stock.stock_id +
+            " from " +
+            stock.old_amount +
+            " to " +
+            stock.new_amount
+        );
+      } */
     }
 
-    /* Send a message when you have added */
+    // Send a message when you have added
     logisticList.forEach((e) => {
-      if (e.subtracted_amount === 0) {
-        openNotificationWithIcon(
-          "success",
+      if (e.amount === 0) {
+        SuccessNotification(
           "You have successfully removed Stock " + e.stock_id
         );
       }
@@ -177,13 +198,25 @@ const AddReduceRawMaterial = ({
       }
     });
 
-    //if amount = zero, remove the item from the array
+    // Update total amount
+    const newTotalAmount = totalAmount - reductionAmount;
+    API.rawMaterial.updateTotalAmount(id, newTotalAmount);
+    setTotalAmount(newTotalAmount);
+
+    //Update total amount of all forms
+    editForm.forEach((e) => {
+      e.total_amount = newTotalAmount;
+    });
+
+    //if amount = zero, remove the item from the array, update form and list
     const filtered_list = logisticList.filter((e) => e.amount !== 0);
     const newEditForm = editForm.filter((e) => e.new_amount !== 0);
     setEditForm(newEditForm);
-    setLogisticList(filtered_list);
     console.log(newEditForm);
-    sendReductionToParent(filtered_list, totalAmountToReduce);
+    setLogisticList(filtered_list);
+
+    //send changes to parent
+    sendReductionToParent(filtered_list, reductionAmount);
     close(e);
   };
 

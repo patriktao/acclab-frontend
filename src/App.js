@@ -9,20 +9,16 @@ const App = () => {
   const { loggedIn } = useAuth();
 
   return loggedIn ? (
-    <Router>
       <Switch>
         <Route exact path="/" component={Dashboard} />
         <Route path="/dashboard" component={Dashboard} />
         <Route exact path="/inventory" component={Inventory} />
         <Route path="/inventory/:id" component={RawMaterial} />
       </Switch>
-    </Router>
   ) : (
-    <Router>
       <Switch>
         <Route path="/" component={LoginPage} />
       </Switch>
-    </Router>
   );
 };
 
