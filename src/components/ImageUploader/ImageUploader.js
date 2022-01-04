@@ -1,65 +1,65 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-import { Upload, message } from "antd";
-import { InboxOutlined } from "@ant-design/icons";
+import { Upload, Button, message } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 
-const { Dragger } = Upload;
+const ImageUploader = ({ handleImage, currentImage, id }) => {
+  ImageUploader.propTypes = {
+    handleImage: PropTypes.func,
+    currentImage: PropTypes.string,
+    id: PropTypes.number,
+  };
 
-const ImageUploader = ({ handleImage, currentImage }) => {
   const [selectedFile, setSelectedFile] = useState();
-  const [imageUrl, setImageUrl] = useState();
   const [loading, setLoading] = useState(false);
 
   const handleChange = (info) => {
-    let status = info.file.status;
-    if (status === "uploading") {
+    const { status } = info.file;
+    if (status !== "uploading") {
       setLoading(true);
-    } else if (status === "done" && restrictions(info.file)) {
-      setSelectedFile(info.file);
-      setLoading(false);
+      console.log("uploading");
+      return;
+    }
+    if (status === "done") {
       message.success(`${info.file.name} file uploaded successfully.`);
+      console.log(info.file, info.fileList);
+      setLoading(false);
     } else if (status === "error") {
       message.error(`${info.file.name} file upload failed.`);
     }
   };
 
   const restrictions = (file) => {
-    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
+    const isJpgOrPng =
+      file.type === "image/jpeg" ||
+      file.type === "image/png" ||
+      file.type === "image/jpg";
     if (!isJpgOrPng) {
       message.error("You can only upload JPG/PNG file!");
     }
-    const isLt10M = file.size / 1024 / 1024 < 10;
-    if (!isLt10M) {
-      message.error("Image must smaller than 10MB!");
+    const size = file.size < 7e6;
+    if (!size) {
+      message.error("Image must smaller than 7MB!");
     }
-    return isJpgOrPng && isLt10M;
+    return isJpgOrPng && size;
   };
 
   return (
-    <Dragger
+    <Upload
       maxCount={1}
-      listType="text"
-      multiple={false}
+      listType="picture"
+      beforeUpload={restrictions}
       onChange={handleChange}
+      progress
+      action={`localhost:4000/upload/raw_materials/${id}`}
       onDrop={(e) => {
         setSelectedFile("");
         console.log("Dropped files", e.dataTransfer.files);
       }}
     >
-      <p className="ant-upload-drag-icon">
-        <InboxOutlined />
-      </p>
-      <p className="ant-upload-text">
-        Click or drag file to this area to upload
-      </p>
-      <p className="ant-upload-hint">Support for PNG. and JPEG. files.</p>
-    </Dragger>
+      <Button icon={<UploadOutlined />}>Upload</Button>
+    </Upload>
   );
-};
-
-ImageUploader.propTypes = {
-  handleImage: PropTypes.func,
-  currentImage: PropTypes.string,
 };
 
 export default ImageUploader;

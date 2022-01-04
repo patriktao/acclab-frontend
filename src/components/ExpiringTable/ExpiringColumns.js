@@ -15,12 +15,10 @@ const ExpiringColumns = [
     sorter: (a, b) => a.name.localeCompare(b.name),
     render: (name, record) => (
       <Link
-        to={
-          "/inventory/" +
-          record.id +
-          "/" +
-          name.replace(/\s/g, "").toLowerCase()
-        }
+      to={
+        "/inventory/rawmaterial/" +
+        record.id 
+      }
       >
         {name}
       </Link>

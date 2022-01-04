@@ -1,3 +1,4 @@
+import { message } from "antd";
 import axios from "axios";
 
 export const login = async (email, password) => {
@@ -6,7 +7,13 @@ export const login = async (email, password) => {
     password: password,
   };
   try {
-    const response = await axios.post("/authentication/login", data);
+    const response = await axios
+      .post("/authentication/login", data)
+      .catch((err) => {
+        if (err.response) {
+          message.error("Not connected to server.");
+        }
+      });
     if (response.data.message === "success") {
       const user = response.data.user;
       sessionStorage.setItem("email", user.email);

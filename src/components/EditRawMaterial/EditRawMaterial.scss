@@ -1,20 +1,19 @@
 .EditRawMaterial {
+  display: grid;
+  row-gap: 1.5rem;
+
   .rows {
     display: grid;
-    row-gap: 2rem;
+    row-gap: 1rem;
+  }
+  .avatar-uploader > .ant-upload {
+    width: 128px;
+    height: 128px;
   }
 
   .general {
-    padding-bottom: 1.5rem;
-
     h1 {
       padding-bottom: 1rem;
-    }
-
-    .image-wrapper {
-      display: grid;
-      grid-template-columns: 3fr 1fr;
-      column-gap: 2rem;
     }
 
     .column-wrapper {
@@ -56,14 +55,15 @@
       padding-bottom: 1rem;
     }
 
-    .rows {
-      row-gap: 1rem;
-    }
-
     .column-4 {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
       column-gap: 1.5rem;
     }
+  }
+
+  .image {
+    display: grid;
+    row-gap: 1rem;
   }
 }

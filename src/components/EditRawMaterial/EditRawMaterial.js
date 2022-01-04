@@ -10,6 +10,7 @@ import {
   Modal,
   Input,
   AutoComplete,
+  Popconfirm,
   Button,
   Select,
   Form,
@@ -21,8 +22,9 @@ import { sortCompanies } from "../../helper/Sort";
 import RawMaterialClass from "../../classes/RawMaterialClass";
 import EditBrands from "../EditBrands";
 import EditLocations from "../EditLocations";
+import ListBody from "antd/lib/transfer/ListBody";
+import ImageUploader from "../ImageUploader/ImageUploader";
 
-const { Dragger } = Upload;
 const { TextArea } = Input;
 
 const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
@@ -42,6 +44,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
   const [countries, setCountries] = useState([]);
   const [forms, setForms] = useState([]);
   const [locations, setLocations] = useState([]);
+  const [id, setId] = useState();
 
   /* Input Field States */
   const [name, setName] = useState("");
@@ -59,6 +62,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
   const [content, setContent] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
   const [image, setImage] = useState("");
+  const [fileList, setFileList] = useState([]);
   const [rawMaterialForm, setRawMaterialForm] = useState();
   const [oldRawMaterial, setOldRawMaterial] = useState();
 
@@ -72,6 +76,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
 
     const setData = () => {
       if (data != null) {
+        setId(data.raw_material_id);
         setName(data.material_name);
         setBrand(data.company);
         setCountry(data.country);
@@ -175,40 +180,8 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
   /* 
     Sets a new list for stored locations; used to add, delete and edit a location from EditLocations.
   */
-    const setCurrentLocations = (list) => {
-      setLocations(list);
-    }
-
-  /* Image Upload */
-  /*   function beforeUpload(file) {
-    const isJpgOrPng =
-      file.type === "image/jpeg" ||
-      file.type === "image/png" ||
-      file.type === "image/jpg";
-    const size = file.size < 7e6;
-    if (!isJpgOrPng) {
-      message.error("You can only upload JPG/PNG file!");
-    }
-    if (!size) {
-      message.error("Image must smaller than 7MB!");
-    }
-    return isJpgOrPng && size;
-  } */
-
-  const uploadImage = (info) => {
-    console.log(info.file.linkProps);
-    /* const status = info.file.status;
-    if (status === "uploading") {
-      console.log(info.file, info.fileList);
-      return;
-    }
-    if (status === "done") {
-      setImage(info.file.uid);
-      handleImage(info.file.uid);
-      message.success(`${info.file.name} file uploaded successfully.`);
-    } else if (status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
-    } */
+  const setCurrentLocations = (list) => {
+    setLocations(list);
   };
 
   return (
@@ -216,9 +189,23 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
       maskClosable={false}
       centered
       visible={visible}
-      onOk={(e) => handleOk(e)}
       onCancel={close}
       width={"950px"}
+      footer={[
+        <Button key="submit" onClick={close}>
+          Cancel
+        </Button>,
+        <Popconfirm
+          title={"Are you sure?"}
+          onConfirm={handleOk}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button key="submit" type="primary">
+            OK
+          </Button>
+        </Popconfirm>,
+      ]}
     >
       <Form
         onFinish={onFinish}
@@ -233,131 +220,106 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
           <section className="general">
             <h1>Edit {name}</h1>
             <div className="rows">
-              <div className="image-wrapper">
-                <div className="column-wrapper">
-                  <div className="column-1">
-                    <div className="header-field-wrapper">
-                      <span className="sub-header">Material Name</span>
-                      <Form.Item
-                        name="name"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input material name!",
-                          },
-                        ]}
-                      >
-                        <Input
-                          className="input-text"
-                          onChange={(e) =>
-                            e.target.value !== name && setName(e.target.value)
-                          }
-                          value={name}
-                          placeholder="Enter material name..."
-                          required
-                        />
-                      </Form.Item>
-                    </div>
+              <div className="column-wrapper">
+                <div className="column-1">
+                  <div className="header-field-wrapper">
+                    <span className="sub-header">Material Name</span>
+                    <Form.Item
+                      name="name"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input material name!",
+                        },
+                      ]}
+                    >
+                      <Input
+                        className="input-text"
+                        onChange={(e) =>
+                          e.target.value !== name && setName(e.target.value)
+                        }
+                        value={name}
+                        placeholder="Enter material name..."
+                        required
+                      />
+                    </Form.Item>
                   </div>
-                  <div className="column-2">
-                    <div className="header-field-wrapper">
-                      <span className="sub-header">Brand</span>
-                      <div className="field-add-wrapper">
-                        <Form.Item
-                          name="brand"
-                          rules={[
-                            {
-                              required: true,
-                              message: "Please choose a brand!",
-                            },
-                          ]}
-                        >
-                          <AutoComplete
-                            options={brands}
-                            filterOption={(inputValue, option) =>
-                              option.value
-                                .toUpperCase()
-                                .indexOf(inputValue.toUpperCase()) !== -1
-                            }
-                            onChange={(e) => setBrand(e)}
-                            value={brand}
-                          >
-                            <Input
-                              allowClear
-                              className="input-text"
-                              placeholder="Select a brand..."
-                              suffix={
-                                <SearchOutlined style={{ fontSize: "1rem" }} />
-                              }
-                            />
-                          </AutoComplete>
-                        </Form.Item>
-                        <Button className="button" onClick={openBrandModal}>
-                          <PlusOutlined />
-                          <EditBrands
-                            visible={brandModalVisible}
-                            close={closeBrandModal}
-                            sendChangesToParent={setCurrentBrands}
-                          />
-                        </Button>
-                      </div>
-                    </div>
-                    <div className="header-field-wrapper">
-                      <span className="sub-header">Country</span>
+                </div>
+                <div className="column-2">
+                  <div className="header-field-wrapper">
+                    <span className="sub-header">Brand</span>
+                    <div className="field-add-wrapper">
                       <Form.Item
-                        name="country"
+                        name="brand"
                         rules={[
                           {
                             required: true,
-                            message: "Please choose a country!",
+                            message: "Please choose a brand!",
                           },
                         ]}
                       >
                         <AutoComplete
-                          options={countries}
+                          options={brands}
                           filterOption={(inputValue, option) =>
                             option.value
                               .toUpperCase()
                               .indexOf(inputValue.toUpperCase()) !== -1
                           }
-                          onChange={(e) => e !== country && setCountry(e)}
-                          value={country}
-                          allowClear
+                          onChange={(e) => setBrand(e)}
+                          value={brand}
                         >
                           <Input
+                            allowClear
                             className="input-text"
-                            placeholder="Choose a country..."
+                            placeholder="Select a brand..."
                             suffix={
                               <SearchOutlined style={{ fontSize: "1rem" }} />
                             }
                           />
                         </AutoComplete>
                       </Form.Item>
+                      <Button className="button" onClick={openBrandModal}>
+                        <PlusOutlined />
+                        <EditBrands
+                          visible={brandModalVisible}
+                          close={closeBrandModal}
+                          sendChangesToParent={setCurrentBrands}
+                        />
+                      </Button>
                     </div>
                   </div>
-                </div>
-                <div name="ImageUpload">
-                  <Dragger
-                    listType="text"
-                    name="file"
-                    maxCount={1}
-                    onDrop={(e) => {
-                      setImage("");
-                      console.log("Dropped files", e.dataTransfer.files);
-                    }}
-                    onChange={(e) => e !== image && uploadImage}
-                    /* beforeUpload={beforeUpload} */
-                  >
-                    <p className="ant-upload-drag-icon">
-                      <InboxOutlined />
-                    </p>
-                    <p className="ant-upload-text">
-                      Click or drag file to this area to upload
-                    </p>
-                    <p className="ant-upload-hint">
-                      Support for PNG. and JPEG. files.
-                    </p>
-                  </Dragger>
+                  <div className="header-field-wrapper">
+                    <span className="sub-header">Country</span>
+                    <Form.Item
+                      name="country"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please choose a country!",
+                        },
+                      ]}
+                    >
+                      <AutoComplete
+                        options={countries}
+                        filterOption={(inputValue, option) =>
+                          option.value
+                            .toUpperCase()
+                            .indexOf(inputValue.toUpperCase()) !== -1
+                        }
+                        onChange={(e) => e !== country && setCountry(e)}
+                        value={country}
+                        allowClear
+                      >
+                        <Input
+                          className="input-text"
+                          placeholder="Choose a country..."
+                          suffix={
+                            <SearchOutlined style={{ fontSize: "1rem" }} />
+                          }
+                        />
+                      </AutoComplete>
+                    </Form.Item>
+                  </div>
                 </div>
               </div>
               <div className="column-3">
@@ -446,6 +408,12 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
                   onChange={(e) => setContent(e.target.value)}
                 />
               </div>
+            </div>
+          </section>
+          <section className="image">
+            <h2>Upload Image</h2>
+            <div name="ImageUpload">
+              <ImageUploader id={id} />
             </div>
           </section>
         </section>

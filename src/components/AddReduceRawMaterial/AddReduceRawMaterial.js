@@ -91,7 +91,7 @@ const AddReduceRawMaterial = ({
 
   const addFormRestrictions = (e) => {
     if (amount != null && receivedDate !== "" && expirationDate !== "") {
-      if (expirationDate.isAfter(receivedDate) && amount > 0) {
+      if (expirationDate.isAfter(receivedDate) && amount >= 0) {
         addStock();
         close(e);
       } else {
@@ -326,7 +326,6 @@ const AddReduceRawMaterial = ({
       width={1050}
       visible={visible}
       onCancel={close}
-      onOk={handleOk}
       footer={[
         <Button key="submit" onClick={close}>
           Cancel
@@ -358,7 +357,7 @@ const AddReduceRawMaterial = ({
                       value={amount}
                       placeholder="e.g. 1000"
                       required
-                      min={1}
+                      min={0}
                     />
                   </div>
                   <div className="header-field-wrapper">

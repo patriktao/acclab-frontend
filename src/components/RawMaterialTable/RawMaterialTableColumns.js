@@ -11,6 +11,16 @@ const editMenu = (
   </Menu>
 );
 
+const expirationDate = (expiration_date) => {
+  return expiration_date === null ? (
+    <p> </p>
+  ) : (
+    <p style={{ marginBottom: "auto" }}>
+      {moment(expiration_date).format("MMM D, YYYY")}
+    </p>
+  );
+};
+
 const raw_material_columns = [
   {
     title: "ID",
@@ -24,10 +34,8 @@ const raw_material_columns = [
     render: (name, record) => (
       <Link
         to={
-          "/inventory/" +
-          record.id +
-          "/" +
-          name.replace(/\s/g, "").toLowerCase()
+          "/inventory/rawmaterial/" +
+          record.id 
         }
       >
         {name}
@@ -66,27 +74,10 @@ const raw_material_columns = [
     sorter: (a, b) => a.location.localeCompare(b.location),
   },
   {
-    title: "Receieved Date",
-    dataIndex: "received_date",
-    key: "received_date",
-    render: (received_date) => (
-      <p style={{ marginBottom: "auto" }}>
-        {moment(received_date).format("MMM D, YYYY")}
-      </p>
-    ),
-    sorter: (a, b) =>
-      moment(a.received_date).format("YYYYMMDD") -
-      moment(b.received_date).format("YYYYMMDD"),
-  },
-  {
     title: "Expiration Date",
     dataIndex: "expiration_date",
     key: "expiration_date",
-    render: (expiration_date) => (
-      <p style={{ marginBottom: "auto" }}>
-        {moment(expiration_date).format("MMM D, YYYY")}
-      </p>
-    ),
+    render: (expiration_date) => expirationDate(expiration_date),
     sorter: (a, b) =>
       moment(a.expiration_date).format("YYYYMMDD") -
       moment(b.expiration_date).format("YYYYMMDD"),

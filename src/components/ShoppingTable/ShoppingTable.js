@@ -39,16 +39,7 @@ const ShoppingTable = () => {
       dataIndex: "name",
       key: "name",
       render: (name, record) => (
-        <Link
-          to={
-            "/inventory/" +
-            record.id +
-            "/" +
-            name.replace(/\s/g, "").toLowerCase()
-          }
-        >
-          {name}
-        </Link>
+        <Link to={"/inventory/rawmaterial/" + record.id}>{name}</Link>
       ),
     },
     {
@@ -99,7 +90,7 @@ const ShoppingTable = () => {
           columns={ShoppingColumns.filter((col) => col.dataIndex !== "id")}
           dataSource={shoppingList}
           pagination={{ pageSize: 8 }}
-          rowKey={'id'}
+          rowKey={"id"}
         />
       </Spin>
     </div>
