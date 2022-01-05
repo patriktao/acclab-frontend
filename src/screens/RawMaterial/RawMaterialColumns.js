@@ -87,7 +87,6 @@ export const stocks_columns = [
     title: "Stock ID",
     dataIndex: "stock_id",
     key: "stock_id",
-    /* render: (value, item, index) => (page - 1) * 10 + index + 1, */
   },
   {
     title: "Amount",
@@ -98,15 +97,14 @@ export const stocks_columns = [
     title: "Order Date",
     dataIndex: "order_date",
     key: "order_date",
-    render: (date) => () => {
-      if (date == null) {
-        <p />;
-      } else {
+    render: (date) =>
+      date === null ? (
+        <p />
+      ) : (
         <p style={{ marginBottom: "auto" }}>
           {moment(date).format("MMM D, YYYY")}
-        </p>;
-      }
-    },
+        </p>
+      ),
   },
   {
     title: "Received Date",

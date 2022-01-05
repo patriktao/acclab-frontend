@@ -36,9 +36,7 @@ const RawMaterial = (props) => {
   const [showEdit, setShowEdit] = useState(false);
   const [showAddReduce, setShowAddReduce] = useState(false);
   const [unit, setUnit] = useState("");
-
   const [image, setImage] = useState("");
-  const [preview, setPreview] = useState();
 
   const id = props.match.params.id;
 

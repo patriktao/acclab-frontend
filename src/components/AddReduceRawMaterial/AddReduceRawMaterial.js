@@ -46,31 +46,27 @@ const AddReduceRawMaterial = ({
   const [receivedDate, setReceivedDate] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
   const [tabPane, setTabPane] = useState("add");
-  const [editForm, setEditForm] = useState([]); //states for different amount changesß
-  const [counter, setCounter] = useState(0); //makes sure that useEffect only runs once
-  const [logisticList, setLogisticList] = useState([]); //the list of logistics
+  const [editForm, setEditForm] = useState([]); //states for different amount changes
+  const [logisticList, setLogisticList] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
 
   /* tabPane 1 is add, tabPane 2 is reduce */
 
   useEffect(() => {
-    API.rawMaterial.fetchLogistics(id).then((res) => {
-      setLogisticList(res);
-      if (counter === 0) {
-        res.forEach((e) => {
-          editForm.push({
-            stock_id: e.stock_id,
-            old_amount: e.amount,
-            subtracted_amount: 0,
-            new_amount: e.amount,
-            total_amount: e.total_amount,
-          });
-          setTotalAmount(e.total_amount);
+    if (logistics.length > 0) {
+      setLogisticList(logistics);
+      logistics.forEach((e) => {
+        editForm.push({
+          stock_id: e.stock_id,
+          old_amount: e.amount,
+          subtracted_amount: 0,
+          new_amount: e.amount,
+          total_amount: e.total_amount,
         });
-        setCounter(1);
-      }
-    });
-  }, [counter, editForm, id]);
+        setTotalAmount(e.total_amount);
+      });
+    }
+  }, [logisticList, logistics, editForm]);
 
   const handleOk = (e) => {
     switch (tabPane) {
@@ -155,14 +151,13 @@ const AddReduceRawMaterial = ({
   };
 
   const reduceStock = (e) => {
-    // Calculate total reduction amount
     let reductionAmount = 0;
     for (let index = 0; index < logisticList.length; index++) {
       reductionAmount += editForm[index].subtracted_amount;
       // Setting the stock in the list after reduction
       logisticList[index].amount -= editForm[index].subtracted_amount;
       // TODO: Notification
-/*       const stock = editForm[index];
+      /* const stock = editForm[index];
       if (stock.old_amount > stock.new_amount) {
         SuccessNotification(
           "You have reduced Stock " +
@@ -184,7 +179,7 @@ const AddReduceRawMaterial = ({
       }
     });
 
-    //send edit to API
+    //send edits to API
     console.log(editForm);
     editForm.forEach((e) => {
       if (e.new_amount === 0) {
@@ -198,12 +193,12 @@ const AddReduceRawMaterial = ({
       }
     });
 
-    // Update total amount
+    // Update total amount of raw material
     const newTotalAmount = totalAmount - reductionAmount;
     API.rawMaterial.updateTotalAmount(id, newTotalAmount);
     setTotalAmount(newTotalAmount);
 
-    //Update total amount of all forms
+    // Update total amount in the edit forms
     editForm.forEach((e) => {
       e.total_amount = newTotalAmount;
     });
@@ -215,7 +210,6 @@ const AddReduceRawMaterial = ({
     console.log(newEditForm);
     setLogisticList(filtered_list);
 
-    //send changes to parent
     sendReductionToParent(filtered_list, reductionAmount);
     close(e);
   };
@@ -273,15 +267,14 @@ const AddReduceRawMaterial = ({
       title: "Order Date",
       dataIndex: "order_date",
       key: "order_date",
-      render: (date) => () => {
-        if (date == null) {
-          <p />;
-        } else {
+      render: (date) =>
+        date === null ? (
+          <p />
+        ) : (
           <p style={{ marginBottom: "auto" }}>
             {moment(date).format("MMM D, YYYY")}
-          </p>;
-        }
-      },
+          </p>
+        ),
     },
     {
       title: "Received Date",
