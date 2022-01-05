@@ -35,8 +35,10 @@ const RawMaterial = (props) => {
   const [tableLoading2, setTableLoading2] = useState(true);
   const [showEdit, setShowEdit] = useState(false);
   const [showAddReduce, setShowAddReduce] = useState(false);
-  const [image, setImage] = useState("");
   const [unit, setUnit] = useState("");
+
+  const [image, setImage] = useState("");
+  const [preview, setPreview] = useState();
 
   const id = props.match.params.id;
 
@@ -88,11 +90,10 @@ const RawMaterial = (props) => {
     materialData[0].location = form.location;
     materialData[0].form = form.form;
     materialData[0].image = form.image;
+    if (typeof form.image === "string") {
+      setImage(form.image);
+    }
     setMaterialName(form.name);
-  };
-
-  const handleImage = (img) => {
-    setImage(img);
   };
 
   const openAddReduce = () => {
@@ -150,8 +151,7 @@ const RawMaterial = (props) => {
                       visible={showEdit}
                       close={closeEdit}
                       data={materialData[0]}
-                      handleEdit={handleEdit}
-                      handleImage={handleImage}
+                      sendChangesToParent={handleEdit}
                     />
                   </Button>
                   <Button

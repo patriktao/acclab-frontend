@@ -14,7 +14,6 @@ import {
   Button,
   Select,
   Form,
-  Upload,
   message,
 } from "antd";
 import { API } from "../../api";
@@ -22,17 +21,17 @@ import { sortCompanies } from "../../helper/Sort";
 import RawMaterialClass from "../../classes/RawMaterialClass";
 import EditBrands from "../EditBrands";
 import EditLocations from "../EditLocations";
-import ListBody from "antd/lib/transfer/ListBody";
-import ImageUploader from "../ImageUploader/ImageUploader";
+import ImageUploader from "../ImageUploader";
+import Units from "./Units";
 
 const { TextArea } = Input;
 
-const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
+const EditRawMaterial = ({ visible, close, data, sendChangesToParent }) => {
   EditRawMaterial.propTypes = {
     visible: PropTypes.bool,
     close: PropTypes.func,
     data: PropTypes.object,
-    handleEdit: PropTypes.func,
+    sendChangesToParent: PropTypes.func,
   };
 
   /* Modal States */
@@ -60,9 +59,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
   const [sugar, setSugar] = useState(0);
   const [fiber, setFiber] = useState(0);
   const [content, setContent] = useState("");
-  const [imageLoading, setImageLoading] = useState(false);
   const [image, setImage] = useState("");
-  const [fileList, setFileList] = useState([]);
   const [rawMaterialForm, setRawMaterialForm] = useState();
   const [oldRawMaterial, setOldRawMaterial] = useState();
 
@@ -98,18 +95,13 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
     setData();
   }, [data]);
 
-  const units = [
-    {
-      value: "g",
-      name: "g",
-    },
-    {
-      value: "units",
-      name: "units",
-    },
-  ];
-
-  const handleOk = (e) => {
+  const handleOk = async (e) => {
+    if (image !== null) {
+      await API.rawMaterial.updateImage(image, id).then((res) => {
+        rawMaterialForm.image = res;
+        console.log(res);
+      });
+    }
     rawMaterialForm.name = name;
     rawMaterialForm.brand = brand;
     rawMaterialForm.country = country;
@@ -123,16 +115,11 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
     rawMaterialForm.sugar = sugar;
     rawMaterialForm.fiber = fiber;
     rawMaterialForm.content = content;
-    rawMaterialForm.image = image;
     if (!isEqual(rawMaterialForm, oldRawMaterial)) {
-      sendDataToParent();
+      sendChangesToParent(rawMaterialForm);
       sendDataToAPI();
     }
     close(e);
-  };
-
-  const sendDataToParent = () => {
-    handleEdit(rawMaterialForm);
   };
 
   const sendDataToAPI = () => {
@@ -170,18 +157,16 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
     message.success("Failed editing raw material");
   };
 
-  /* 
-    Sets a new list for brands; used to add, delete and edit a brand from EditBrands.
-  */
   const setCurrentBrands = (list) => {
     setBrands(list);
   };
 
-  /* 
-    Sets a new list for stored locations; used to add, delete and edit a location from EditLocations.
-  */
   const setCurrentLocations = (list) => {
     setLocations(list);
+  };
+
+  const handleImage = (file) => {
+    file ? setImage(file) : setImage(null);
   };
 
   return (
@@ -326,7 +311,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
                 <div className="header-field-wrapper">
                   <span className="sub-header">Unit</span>
                   <Select
-                    options={units}
+                    options={Units}
                     placeholder="Select here..."
                     onChange={(e) => e !== unit && setUnit(e)}
                     value={unit}
@@ -413,7 +398,7 @@ const EditRawMaterial = ({ visible, close, data, handleEdit, handleImage }) => {
           <section className="image">
             <h2>Upload Image</h2>
             <div name="ImageUpload">
-              <ImageUploader id={id} />
+              <ImageUploader handleImage={handleImage} />
             </div>
           </section>
         </section>

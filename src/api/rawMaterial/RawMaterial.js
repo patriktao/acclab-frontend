@@ -155,3 +155,63 @@ export const updateTotalAmount = async (id, amount) => {
       }
     });
 };
+
+export const uploadImage = async (image, id) => {
+  const formData = new FormData();
+  formData.append("image", image);
+  await axios
+    .post(`/upload/raw_materials/${id}`, formData, {
+      headers: { "Content-type": "multipart/form-data" },
+    })
+    .catch((err) => {
+      if (err.response) {
+        console.log(`Error: ${err.message}`);
+        return null;
+      }
+    })
+    .then((res) => {
+      console.log(res);
+    });
+};
+
+export const deleteImage = async (id) => {
+  try {
+    const res = await axios.delete(`/upload/raw_materials/${id}`);
+    return res.data.message;
+  } catch (err) {
+    if (err.response) {
+      console.log(`Error: ${err.message}`);
+      return null;
+    }
+  }
+};
+
+export const updateImage = async (image, id) => {
+  const formData = new FormData();
+  formData.append("image", image);
+  let response = null;
+  await axios
+    .delete(`/upload/raw_materials/${id}`)
+    .catch((err) => {
+      if (err.response) {
+        console.log(`Error: ${err.message}`);
+        return null;
+      }
+    })
+    .then(async () => {
+      await axios
+        .post(`/upload/raw_materials/${id}`, formData, {
+          headers: { "Content-type": "multipart/form-data" },
+        })
+        .catch((err) => {
+          if (err.response) {
+            console.log(`Error: ${err.message}`);
+            return null;
+          }
+        })
+        .then((res) => {
+          response = res;
+        });
+    });
+  return response.data.Location;
+};

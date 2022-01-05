@@ -65,6 +65,11 @@ code {
   padding:16px 12px;
 }
 
+/* Avatar (ICON) */
+.ant-avatar > img {
+  object-fit: contain;
+}
+
 /* Fonts */
 .blue-text {
   color: #00bdf2;
