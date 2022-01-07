@@ -11,6 +11,7 @@ import {
 } from "antd";
 import {
   PlusOutlined,
+  AppstoreOutlined,
   EditOutlined,
   InfoCircleOutlined,
 } from "@ant-design/icons";
@@ -133,6 +134,24 @@ const RawMaterial = (props) => {
                     className="table-add"
                     type="primary"
                     size="large"
+                    icon={<PlusOutlined />}
+                    onClick={openAddReduce}
+                  >
+                    Handle Stocks
+                    <AddReduceRawMaterial
+                      close={closeAddReduce}
+                      visible={showAddReduce}
+                      id={id}
+                      unit={unit}
+                      logistics={logistics}
+                      sendAddToParent={addStocks}
+                      sendReductionToParent={reduceStocks}
+                    />
+                  </Button>
+                  <Button
+                    className="table-add"
+                    type="primary"
+                    size="large"
                     icon={<EditOutlined />}
                     onClick={() => openEdit()}
                   >
@@ -142,24 +161,6 @@ const RawMaterial = (props) => {
                       close={(e) => closeEdit(e)}
                       data={materialData[0]}
                       sendChangesToParent={handleEdit}
-                    />
-                  </Button>
-                  <Button
-                    className="table-add"
-                    type="primary"
-                    size="large"
-                    icon={<PlusOutlined />}
-                    onClick={openAddReduce}
-                  >
-                    Add/Reduce
-                    <AddReduceRawMaterial
-                      close={closeAddReduce}
-                      visible={showAddReduce}
-                      id={id}
-                      unit={unit}
-                      logistics={logistics}
-                      sendAddToParent={addStocks}
-                      sendReductionToParent={reduceStocks}
                     />
                   </Button>
                 </div>

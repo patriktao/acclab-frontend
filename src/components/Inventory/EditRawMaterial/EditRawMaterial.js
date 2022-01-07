@@ -99,6 +99,16 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
   }, [data]);
 
   const handleOk = async (e) => {
+    if (name === "") {
+      message.error("Please input a material name!");
+      return;
+    } else if (brand === "") {
+      message.error("Please select a brand!");
+      return;
+    } else if (country === "") {
+      message.error("Please select a  country!");
+      return;
+    }
     rawMaterialForm.name = name;
     rawMaterialForm.brand = brand;
     rawMaterialForm.country = country;
@@ -281,7 +291,7 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
                           rules={[
                             {
                               required: true,
-                              message: "Please choose a brand!",
+                              message: "Please select a brand!",
                             },
                           ]}
                         >
@@ -322,7 +332,7 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
                         rules={[
                           {
                             required: true,
-                            message: "Please choose a country!",
+                            message: "Please select a country!",
                           },
                         ]}
                       >
@@ -335,9 +345,9 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
                           }
                           onChange={(e) => e !== country && setCountry(e)}
                           value={country}
-                          allowClear
                         >
                           <Input
+                            allowClear
                             className="input-text"
                             placeholder="Choose a country..."
                             suffix={

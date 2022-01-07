@@ -34,7 +34,7 @@ const RawMaterialTable = () => {
   const [table, setTable] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [tableLoading, setTableLoading] = useState(true);
-  const [counter, setCounter] = useState(0);
+  const [activeFilters, setActiveFilters] = useState(0);
   const [filterVisible, setFilterVisible] = useState(false);
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [itemNames] = useState([]);
@@ -72,7 +72,7 @@ const RawMaterialTable = () => {
   const handleClear = () => {
     setTable(data);
     setSearchText("");
-    setCounter(0);
+    setActiveFilters(0);
     setRowCount(data.length);
   };
 
@@ -97,16 +97,16 @@ const RawMaterialTable = () => {
 
   const handleFilter = (e) => {
     const states = e;
-    let count = 0;
     console.log(e);
 
-    // If state is null, convert to empty string so that table can interpret
+    // Tables can only interpret empty strings and not null values, we therefore have to convert it.
+    let count = 0;
     for (const [key, value] of e.entries()) {
       value == null || value === "Invalid date" || value === ""
         ? states.set(key, "")
-        : setCounter(count++);
+        : setActiveFilters(count++);
     }
-    setCounter(count);
+    setActiveFilters(count);
 
     const filtered_table = data.filter(
       (item) =>
@@ -144,11 +144,10 @@ const RawMaterialTable = () => {
     setTable(filtered_table);
   };
 
-  /* Raw Material Columns */
+  /* Raw Material Column Logics */
   const { openEdit, editVisible } = useEditRawMaterial();
   const [itemData, setItemData] = useState(null);
 
-  /* TODO: Make so that data comes direcly from parent and not through API call */
   const fetchItemData = async (record) => {
     if (record !== null) {
       await API.rawMaterial.fetchMaterial(record.id).then((res) => {
@@ -315,7 +314,7 @@ const RawMaterialTable = () => {
                   handleFilter={handleFilter}
                   handleClear={handleClear}
                 />
-                Filter ({counter})
+                Filter ({activeFilters})
               </Button>
             </div>
             <div>
@@ -336,7 +335,7 @@ const RawMaterialTable = () => {
                   type="primary"
                   size="large"
                   icon={<PlusOutlined />}
-                  onClick={() => console.log('hej')}
+                  onClick={openCreateModal}
                 >
                   Add Raw Material
                   <CreateRawMaterial

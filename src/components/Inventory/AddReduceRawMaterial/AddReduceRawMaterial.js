@@ -337,7 +337,7 @@ const AddReduceRawMaterial = ({
         <Tabs tabPosition={"left"} onTabClick={(key) => changeTabPane(key)}>
           <TabPane tab="Add" key="1">
             <section className="add">
-              <h1>Add Amount</h1>
+              <h1>Add Stock</h1>
               <div className="rows">
                 <div className="column-1">
                   <div className="header-field-wrapper">
@@ -390,7 +390,7 @@ const AddReduceRawMaterial = ({
           </TabPane>
           <TabPane tab="Reduce" key="2">
             <section className="reduce">
-              <h1>Reduce Amount</h1>
+              <h1>Reduce Stocks</h1>
               <div className="header-field-wrapper">
                 <span className="sub-header">Reason:</span>
                 <Select

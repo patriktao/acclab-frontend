@@ -46,8 +46,8 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
   const [name, setName] = useState("");
   const [brand, setBrand] = useState("");
   const [country, setCountry] = useState("");
-  const [unit, setUnit] = useState("");
-  const [form, setForm] = useState("");
+  const [unit, setUnit] = useState("g");
+  const [form, setForm] = useState("Liquid");
   const [location, setLocation] = useState("");
   const [fat, setFat] = useState(0);
   const [carb, setCarb] = useState(0);
@@ -61,26 +61,24 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
 
   /* Image States */
   const [image, setImage] = useState(null);
-  const [currentImage, setCurrentImage] = useState(null);
 
   useEffect(() => {
-    const fetchData = () => {
-      API.brands.fetchAllCompanies().then((res) => setBrands(res));
-      API.brands.fetchAllCountries().then((res) => setCountries(res));
-      API.locations.fetchLocations().then((res) => setLocations(res));
-      API.rawMaterial.fetchForms().then((res) => setForms(res));
-    };
-
-    const setData = () => {
-      setRawMaterialForm(new RawMaterialClass());
-      setOldRawMaterial(new RawMaterialClass());
-    };
-
-    fetchData();
-    setData();
+    API.brands.fetchAllCompanies().then((res) => setBrands(res));
+    API.brands.fetchAllCountries().then((res) => setCountries(res));
+    API.locations.fetchLocations().then((res) => {
+      setLocations(res);
+      setLocation(res[0].name);
+    });
+    API.rawMaterial.fetchForms().then((res) => setForms(res));
+    setRawMaterialForm(new RawMaterialClass());
+    setOldRawMaterial(new RawMaterialClass());
   }, []);
 
   const handleOk = async (e) => {
+    if (name === "" || brand === "" || country === "") {
+      message.error("Please input name, brand and country.");
+      return;
+    }
     rawMaterialForm.name = name;
     rawMaterialForm.brand = brand;
     rawMaterialForm.country = country;
@@ -94,42 +92,27 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
     rawMaterialForm.sugar = sugar;
     rawMaterialForm.fiber = fiber;
     rawMaterialForm.content = content;
-    /* Does comparison actually work? */
     if (!isEqual(rawMaterialForm, oldRawMaterial)) {
-      await handleChangesAPI().then(() => {
-        handleImageAPI();
+      await createAPI().then(() => {
+        imageAPI();
         sendChangesToParent(rawMaterialForm);
       });
     }
     close(e);
   };
 
-  const handleImageAPI = async () => {
+  const imageAPI = async () => {
     if (image === null && rawMaterialForm.image === "") {
       console.log("image not changed");
-    } else if (image === null) {
-      await API.rawMaterial.deleteImage(id).then((res) => {
-        console.log("deleting image");
-        rawMaterialForm.image = "";
-        res === "success"
-          ? message.success("Image successfully deleted.")
-          : message.error("Failed to delete image");
-      });
-    } else if (rawMaterialForm.image === "") {
+    } else {
       await API.rawMaterial.uploadImage(image, id).then((res) => {
         console.log("uploading picture");
         rawMaterialForm.image = res;
       });
-    } else {
-      await API.rawMaterial.updateImage(image, id).then((res) => {
-        console.log("updating picture");
-        rawMaterialForm.image = res;
-        console.log(rawMaterialForm.image);
-      });
     }
   };
 
-  const handleChangesAPI = () => {};
+  const createAPI = () => {};
 
   const openLocationModal = () => {
     setLocationModalVisible(true);
@@ -296,9 +279,9 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
                           }
                           onChange={(e) => e !== country && setCountry(e)}
                           value={country}
-                          allowClear
                         >
                           <Input
+                            allowClear
                             className="input-text"
                             placeholder="Choose a country..."
                             suffix={
@@ -312,10 +295,7 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
                 </div>
                 <div className="header-field-wrapper">
                   <span className="sub-header">Image</span>
-                  <ImageUploader
-                    handleImage={handleImage}
-                    imageURL={currentImage}
-                  />
+                  <ImageUploader handleImage={handleImage} imageURL={""} />
                 </div>
               </div>
               <div className="column-3">
