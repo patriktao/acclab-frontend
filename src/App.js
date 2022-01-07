@@ -3,7 +3,7 @@ import Dashboard from "./screens/Dashboard/Dashboard";
 import LoginPage from "./screens/LoginPage/LoginPage";
 import Inventory from "./screens/Inventory/Inventory";
 import RawMaterial from "./screens/RawMaterial/RawMaterial";
-import { useAuth } from "./auth-context";
+import { useAuth } from "./context/auth-context";
 
 const App = () => {
   const { loggedIn } = useAuth();

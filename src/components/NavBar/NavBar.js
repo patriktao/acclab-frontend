@@ -1,10 +1,10 @@
 import "./NavBar.scss";
 import SidebarDrawer from "../SidebarDrawer/SidebarDrawer";
 import PropTypes from "prop-types";
+import moment from "moment";
 import { Layout, Avatar, Menu, Dropdown, Typography, message } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import moment from "moment";
-import { useAuth } from "../../auth-context";
+import { useAuth } from "../../context/auth-context";
 import { useHistory } from "react-router";
 import { useEffect, useState } from "react";
 
@@ -22,7 +22,6 @@ const NavBar = () => {
       firstname: sessionStorage.getItem("firstname"),
       lastname: sessionStorage.getItem("lastname"),
     });
-    /*     setUser(userSession()); */
   }, [userSession]);
 
   const handleLogout = async () => {

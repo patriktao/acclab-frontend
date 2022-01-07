@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { checkString, checkNumber } from "../helper/Checker";
+import { checkString, checkNumber, checkURLString } from "../helper/Checker";
 
 class RawMaterialClass {
   static propTypes = {
@@ -137,7 +137,7 @@ class RawMaterialClass {
     return this.#image;
   }
 
-  get data(){
+  get data() {
     return this.#data;
   }
 
@@ -261,7 +261,7 @@ class RawMaterialClass {
     if (checkNumber(input, this.#fiber)) {
       this.#fiber = input;
     }
-    return this; 
+    return this;
   }
 
   set content(input) {
@@ -278,7 +278,7 @@ class RawMaterialClass {
     this.propTypes = {
       input: PropTypes.setImage,
     };
-    if (checkString(input, this.#image)) {
+    if (checkURLString(input, this.#image)) {
       this.#image = input;
     }
     return this;
@@ -286,4 +286,3 @@ class RawMaterialClass {
 }
 
 export default RawMaterialClass;
-  

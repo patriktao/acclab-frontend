@@ -2,9 +2,7 @@ import PropTypes from "prop-types";
 import { SearchOutlined, PlusOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import "./EditRawMaterial.scss";
-import TooltipComponent from "../TooltipComponent";
 import InputNumber from "../InputNumber";
-import { InboxOutlined } from "@ant-design/icons";
 import { isEqual } from "lodash/fp";
 import {
   Modal,
@@ -23,16 +21,18 @@ import EditBrands from "../EditBrands";
 import EditLocations from "../EditLocations";
 import ImageUploader from "../ImageUploader";
 import Units from "./Units";
+import { useEditRawMaterial } from "../../context/edit-raw-material";
 
 const { TextArea } = Input;
 
-const EditRawMaterial = ({ visible, close, data, sendChangesToParent }) => {
+const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
   EditRawMaterial.propTypes = {
     visible: PropTypes.bool,
-    close: PropTypes.func,
     data: PropTypes.object,
     sendChangesToParent: PropTypes.func,
   };
+  /* Context */
+  const { closeEdit } = useEditRawMaterial();
 
   /* Modal States */
   const [brandModalVisible, setBrandModalVisible] = useState(false);
@@ -59,10 +59,12 @@ const EditRawMaterial = ({ visible, close, data, sendChangesToParent }) => {
   const [sugar, setSugar] = useState(0);
   const [fiber, setFiber] = useState(0);
   const [content, setContent] = useState("");
-  const [image, setImage] = useState("");
   const [rawMaterialForm, setRawMaterialForm] = useState();
   const [oldRawMaterial, setOldRawMaterial] = useState();
 
+  /* Image States */
+  const [image, setImage] = useState(null);
+  const [currentImage, setCurrentImage] = useState(null);
   useEffect(() => {
     const fetchData = () => {
       API.brands.fetchAllCompanies().then((res) => setBrands(res));
@@ -87,6 +89,7 @@ const EditRawMaterial = ({ visible, close, data, sendChangesToParent }) => {
         setSugar(data.sugar);
         setFiber(data.fiber);
         setContent(data.content);
+        setCurrentImage(data.image);
         setRawMaterialForm(new RawMaterialClass(data));
         setOldRawMaterial(new RawMaterialClass(data));
       }
@@ -96,12 +99,6 @@ const EditRawMaterial = ({ visible, close, data, sendChangesToParent }) => {
   }, [data]);
 
   const handleOk = async (e) => {
-    if (image !== null) {
-      await API.rawMaterial.updateImage(image, id).then((res) => {
-        rawMaterialForm.image = res;
-        console.log(res);
-      });
-    }
     rawMaterialForm.name = name;
     rawMaterialForm.brand = brand;
     rawMaterialForm.country = country;
@@ -115,14 +112,44 @@ const EditRawMaterial = ({ visible, close, data, sendChangesToParent }) => {
     rawMaterialForm.sugar = sugar;
     rawMaterialForm.fiber = fiber;
     rawMaterialForm.content = content;
+    /* Does comparison actually work? */
     if (!isEqual(rawMaterialForm, oldRawMaterial)) {
-      sendChangesToParent(rawMaterialForm);
-      sendDataToAPI();
+      await handleImageAPI().then(() => {
+        handleChangesAPI();
+        sendChangesToParent(rawMaterialForm);
+      });
     }
-    close(e);
+    closeEdit(e);
   };
 
-  const sendDataToAPI = () => {
+  const handleImageAPI = async () => {
+    if (image === null && rawMaterialForm.image === "") {
+      console.log("image not changed");
+    } else if (image === null) {
+      await API.rawMaterial.deleteImage(id).then((res) => {
+        console.log("deleting image");
+        rawMaterialForm.image = "";
+        res === "success"
+          ? message.success("Image succesfully deleted.")
+          : message.error("Failed to delete image");
+      });
+    } else if (rawMaterialForm.image === "") {
+      await API.rawMaterial.uploadImage(image, id).then((res) => {
+        console.log("uploading picture");
+        rawMaterialForm.image = res;
+      });
+    } else {
+      await API.rawMaterial.updateImage(image, id).then((res) => {
+        console.log("updating picture");
+        rawMaterialForm.image = res;
+        console.log(rawMaterialForm.image);
+      });
+    }
+
+    /* Reset States */
+  };
+
+  const handleChangesAPI = () => {
     API.rawMaterial.editMaterial(
       data.raw_material_id,
       rawMaterialForm.toJsonObject()[0]
@@ -169,27 +196,43 @@ const EditRawMaterial = ({ visible, close, data, sendChangesToParent }) => {
     file ? setImage(file) : setImage(null);
   };
 
+  const deleteRawMaterial = () => {};
+
   return (
     <Modal
       maskClosable={false}
       centered
       visible={visible}
-      onCancel={close}
+      onCancel={(e) => closeEdit(e)}
       width={"950px"}
       footer={[
-        <Button key="submit" onClick={close}>
-          Cancel
-        </Button>,
-        <Popconfirm
-          title={"Are you sure?"}
-          onConfirm={handleOk}
-          okText="Yes"
-          cancelText="No"
-        >
-          <Button key="submit" type="primary">
-            OK
-          </Button>
-        </Popconfirm>,
+        <section className="edit-raw-material-footer">
+          <div>
+            <Popconfirm
+              title={"Are you sure?"}
+              okType={"danger"}
+              okText={"Delete"}
+              onConfirm={deleteRawMaterial}
+            >
+              <Button type="danger">Delete</Button>
+            </Popconfirm>
+          </div>
+          <div>
+            <Button key="submit" onClick={(e) => closeEdit(e)}>
+              Cancel
+            </Button>
+            <Popconfirm
+              title={"Are you sure?"}
+              onConfirm={handleOk}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button key="submit" type="primary">
+                OK
+              </Button>
+            </Popconfirm>
+          </div>
+        </section>,
       ]}
     >
       <Form
@@ -202,109 +245,118 @@ const EditRawMaterial = ({ visible, close, data, sendChangesToParent }) => {
         }}
       >
         <section className="EditRawMaterial">
-          <section className="general">
+          <section className="GeneralInformation">
             <h1>Edit {name}</h1>
             <div className="rows">
-              <div className="column-wrapper">
-                <div className="column-1">
-                  <div className="header-field-wrapper">
-                    <span className="sub-header">Material Name</span>
-                    <Form.Item
-                      name="name"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input material name!",
-                        },
-                      ]}
-                    >
-                      <Input
-                        className="input-text"
-                        onChange={(e) =>
-                          e.target.value !== name && setName(e.target.value)
-                        }
-                        value={name}
-                        placeholder="Enter material name..."
-                        required
-                      />
-                    </Form.Item>
-                  </div>
-                </div>
-                <div className="column-2">
-                  <div className="header-field-wrapper">
-                    <span className="sub-header">Brand</span>
-                    <div className="field-add-wrapper">
+              <div className="image-general-information">
+                <div className="column-wrapper">
+                  <div className="column-1">
+                    <div className="header-field-wrapper">
+                      <span className="sub-header">Material Name</span>
                       <Form.Item
-                        name="brand"
+                        name="name"
                         rules={[
                           {
                             required: true,
-                            message: "Please choose a brand!",
+                            message: "Please input material name!",
+                          },
+                        ]}
+                      >
+                        <Input
+                          className="input-text"
+                          onChange={(e) =>
+                            e.target.value !== name && setName(e.target.value)
+                          }
+                          value={name}
+                          placeholder="Enter material name..."
+                          required
+                        />
+                      </Form.Item>
+                    </div>
+                  </div>
+                  <div className="column-2">
+                    <div className="header-field-wrapper">
+                      <span className="sub-header">Brand</span>
+                      <div className="field-add-wrapper">
+                        <Form.Item
+                          name="brand"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please choose a brand!",
+                            },
+                          ]}
+                        >
+                          <AutoComplete
+                            options={brands}
+                            filterOption={(inputValue, option) =>
+                              option.value
+                                .toUpperCase()
+                                .indexOf(inputValue.toUpperCase()) !== -1
+                            }
+                            onChange={(e) => setBrand(e)}
+                            value={brand}
+                          >
+                            <Input
+                              allowClear
+                              className="input-text"
+                              placeholder="Select a brand..."
+                              suffix={
+                                <SearchOutlined style={{ fontSize: "1rem" }} />
+                              }
+                            />
+                          </AutoComplete>
+                        </Form.Item>
+                        <Button className="button" onClick={openBrandModal}>
+                          <PlusOutlined />
+                          <EditBrands
+                            visible={brandModalVisible}
+                            close={closeBrandModal}
+                            sendChangesToParent={setCurrentBrands}
+                          />
+                        </Button>
+                      </div>
+                    </div>
+                    <div className="header-field-wrapper">
+                      <span className="sub-header">Country</span>
+                      <Form.Item
+                        name="country"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please choose a country!",
                           },
                         ]}
                       >
                         <AutoComplete
-                          options={brands}
+                          options={countries}
                           filterOption={(inputValue, option) =>
                             option.value
                               .toUpperCase()
                               .indexOf(inputValue.toUpperCase()) !== -1
                           }
-                          onChange={(e) => setBrand(e)}
-                          value={brand}
+                          onChange={(e) => e !== country && setCountry(e)}
+                          value={country}
+                          allowClear
                         >
                           <Input
-                            allowClear
                             className="input-text"
-                            placeholder="Select a brand..."
+                            placeholder="Choose a country..."
                             suffix={
                               <SearchOutlined style={{ fontSize: "1rem" }} />
                             }
                           />
                         </AutoComplete>
                       </Form.Item>
-                      <Button className="button" onClick={openBrandModal}>
-                        <PlusOutlined />
-                        <EditBrands
-                          visible={brandModalVisible}
-                          close={closeBrandModal}
-                          sendChangesToParent={setCurrentBrands}
-                        />
-                      </Button>
                     </div>
                   </div>
-                  <div className="header-field-wrapper">
-                    <span className="sub-header">Country</span>
-                    <Form.Item
-                      name="country"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please choose a country!",
-                        },
-                      ]}
-                    >
-                      <AutoComplete
-                        options={countries}
-                        filterOption={(inputValue, option) =>
-                          option.value
-                            .toUpperCase()
-                            .indexOf(inputValue.toUpperCase()) !== -1
-                        }
-                        onChange={(e) => e !== country && setCountry(e)}
-                        value={country}
-                        allowClear
-                      >
-                        <Input
-                          className="input-text"
-                          placeholder="Choose a country..."
-                          suffix={
-                            <SearchOutlined style={{ fontSize: "1rem" }} />
-                          }
-                        />
-                      </AutoComplete>
-                    </Form.Item>
-                  </div>
+                </div>
+                <div className="UploadImage">
+                  <h2>Upload Image</h2>
+                  <ImageUploader
+                    handleImage={handleImage}
+                    imageURL={currentImage}
+                  />
                 </div>
               </div>
               <div className="column-3">
@@ -348,7 +400,7 @@ const EditRawMaterial = ({ visible, close, data, sendChangesToParent }) => {
               </div>
             </div>
           </section>
-          <section className="facts">
+          <section className="NuitritionalFacts">
             <h2>Nuitritional Facts (per 100g)</h2>
             <div className="rows">
               <div className="column-4">
@@ -393,12 +445,6 @@ const EditRawMaterial = ({ visible, close, data, sendChangesToParent }) => {
                   onChange={(e) => setContent(e.target.value)}
                 />
               </div>
-            </div>
-          </section>
-          <section className="image">
-            <h2>Upload Image</h2>
-            <div name="ImageUpload">
-              <ImageUploader handleImage={handleImage} />
             </div>
           </section>
         </section>

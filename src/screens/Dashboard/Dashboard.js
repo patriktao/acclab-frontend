@@ -6,7 +6,7 @@ import ExpiringTable from "../../components/ExpiringTable";
 import ShoppingTable from "../../components/ShoppingTable";
 import DashboardCards from "../../components/DashboardCards";
 import { useEffect, useState } from "react";
-import { useAuth } from "../../auth-context";
+import { useAuth } from "../../context/auth-context";
 
 const { Content, Footer } = Layout;
 

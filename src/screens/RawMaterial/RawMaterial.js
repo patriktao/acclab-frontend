@@ -22,18 +22,19 @@ import EditRawMaterial from "../../components/EditRawMaterial";
 import AddReduceRawMaterial from "../../components/AddReduceRawMaterial";
 import { API } from "../../api";
 import "./RawMaterial.scss";
+import { useEditRawMaterial } from "../../context/edit-raw-material";
 
 const { Content, Footer } = Layout;
 const { TabPane } = Tabs;
 
 const RawMaterial = (props) => {
+  const { openEdit, closeEdit, editVisible } = useEditRawMaterial(); //context
   const [materialData, setMaterialData] = useState([]);
   const [materialName, setMaterialName] = useState([]);
   const [reStock, setReStock] = useState();
   const [logistics, setLogistics] = useState([]);
   const [tableLoading1, setTableLoading1] = useState(true);
   const [tableLoading2, setTableLoading2] = useState(true);
-  const [showEdit, setShowEdit] = useState(false);
   const [showAddReduce, setShowAddReduce] = useState(false);
   const [unit, setUnit] = useState("");
   const [image, setImage] = useState("");
@@ -62,15 +63,6 @@ const RawMaterial = (props) => {
     reStock
       ? message.warning("Item removed from Shopping List")
       : message.success("Item added to Shopping List");
-  };
-
-  const openEdit = () => {
-    setShowEdit(true);
-  };
-
-  const closeEdit = (e) => {
-    e.stopPropagation();
-    setShowEdit(false);
   };
 
   const handleEdit = (form) => {
@@ -142,12 +134,12 @@ const RawMaterial = (props) => {
                     type="primary"
                     size="large"
                     icon={<EditOutlined />}
-                    onClick={openEdit}
+                    onClick={() => openEdit()}
                   >
                     Edit
                     <EditRawMaterial
-                      visible={showEdit}
-                      close={closeEdit}
+                      visible={editVisible}
+                      close={(e) => closeEdit(e)}
                       data={materialData[0]}
                       sendChangesToParent={handleEdit}
                     />

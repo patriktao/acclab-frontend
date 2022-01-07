@@ -1,15 +1,18 @@
 import moment from "moment";
 
-/* Checking if input and existing data is the same */
+/* Check if input and existing data is the same */
 
 export const checkString = (o1, o2) => {
-  if (o1 !== null && o1 !== "" && o1 !== o2) {
-    return true;
-  }
-  return false;
+  return o1 !== null && o1 !== "" && o1 !== o2 ? true : false;
 };
 
-/* Checking if input satisfies conditions in Edit Raw Material  */
+/* Check if input are equal, if input is empty string => return false */
+
+export const checkURLString = (o1, o2) => {
+  return o1 !== null && o1 !== o2 ? true : false;
+};
+
+/* Check if input satisfies conditions in Edit Raw Material  */
 
 export const checkNumber = (n1, n2) => {
   if (n1 != null && n1 !== n2 && n1 <= 100 && n1 >= 0) {
@@ -27,7 +30,8 @@ export const checkDate = (inputData, startDate, endDate) => {
   const date = moment(inputData);
   if (startDate == null || endDate == null) {
     return "";
-  } else if (
+  }
+  if (
     (date.isAfter(startDate) || date.isSame(startDate, "date")) &&
     (date.isBefore(endDate) || date.isSame(endDate, "date"))
   ) {

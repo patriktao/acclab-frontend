@@ -9,6 +9,7 @@ import {
   AutoComplete,
   Tooltip,
   Modal,
+  Typography,
   Dropdown,
   Menu,
 } from "antd";
@@ -18,13 +19,18 @@ import moment from "moment";
 /* import AddRawMaterial from "./AddRawMaterial"; */
 import TooltipComponent from "../TooltipComponent";
 import { getPriority } from "../Priority/Priority";
-import EditRawMaterial from "../EditRawMaterial";
 import { API } from "../../api";
-import raw_material_columns from "./RawMaterialTableColumns";
+// import raw_material_columns from "./RawMaterialTableColumns";
 import { checkDate } from "../../helper/Checker";
-const { Search } = Input;
+// import RawMaterialTableColumns from "./RawMaterialTableColumns";
+import { getPriorityIcon } from "../Priority/Priority";
+import EditRawMaterial from "../EditRawMaterial";
+import { useEditRawMaterial } from "../../context/edit-raw-material";
+import { EllipsisOutlined } from "@ant-design/icons";
+const { Text } = Typography;
 
 const RawMaterialTable = () => {
+  const { Search } = Input;
   const [data, setData] = useState([]);
   const [table, setTable] = useState([]);
   const [searchText, setSearchText] = useState("");
@@ -32,17 +38,15 @@ const RawMaterialTable = () => {
   const [counter, setCounter] = useState(0);
   const [filterVisible, setFilterVisible] = useState(false);
   const [createModalVisible, setCreateModalVisible] = useState(false);
-  const [editVisible, setEditVisible] = useState(false);
   const [itemNames] = useState([]);
   const [rowCount, setRowCount] = useState(0);
 
-  /* Fetching Table Data */
   useEffect(() => {
     const fetchAll = async () => {
       const rawMaterialTable = await API.rawMaterial.fetchAll().then((res) => {
         setData(res);
         setTable(res);
-        setRowCount(res.length)
+        setRowCount(res.length);
         res.forEach((item) => {
           itemNames.push({
             value: item.name,
@@ -56,10 +60,6 @@ const RawMaterialTable = () => {
     };
     fetchAll();
   }, [itemNames]);
-
-  /* 
-    Function
-   */
 
   const handleSearch = (input) => {
     setSearchText(input);
@@ -95,19 +95,10 @@ const RawMaterialTable = () => {
     setCreateModalVisible(false);
   };
 
-  const openEdit = () => {
-    setCreateModalVisible(true);
-  };
-
-  const closeEdit = (e) => {
-    e.stopPropagation();
-    setCreateModalVisible(false);
-  };
-
   const handleFilter = (e) => {
     const states = e;
     let count = 0;
-    console.log(e)
+    console.log(e);
 
     // If state is null, convert to empty string so that table can interpret
     for (const [key, value] of e.entries()) {
@@ -153,7 +144,140 @@ const RawMaterialTable = () => {
     setTable(filtered_table);
   };
 
-  const today_date = moment().format("MMMM D YYYY").toUpperCase()
+  /* Raw Material Columns */
+  const { openEdit, closeEdit, editVisible } = useEditRawMaterial();
+  const [itemData, setItemData] = useState(null);
+
+  /* TODO: Make so that data comes direcly from parent and not through API call */
+  const fetchItemData = async (record) => {
+    if (record !== null) {
+      await API.rawMaterial.fetchMaterial(record.id).then((res) => {
+        setItemData(res[0]);
+      });
+    }
+  };
+
+  const handleRawMaterialEdit = (form) => {
+    /* 
+      Name
+      Country
+      Company
+      Location
+      Form
+    */
+    console.log(form);
+  };
+
+  const menuItems = (
+    <Menu style={{ borderRadius: "4px" }}>
+      <Menu.Item key="1" onClick={openEdit} style={{ borderRadius: "4px" }}>
+        <Text> Edit item </Text>
+        <EditRawMaterial
+          visible={editVisible}
+          data={itemData}
+          sendChangesToParent={handleRawMaterialEdit}
+        />
+      </Menu.Item>
+    </Menu>
+  );
+  const RawMaterialTableColumns = [
+    {
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "Item name",
+      dataIndex: "name",
+      key: "name",
+      render: (name, record) => (
+        <Link to={"/inventory/rawmaterial/" + record.id}>{name}</Link>
+      ),
+      sorter: (a, b) => a.name.localeCompare(b.name),
+    },
+    {
+      title: "Brand",
+      dataIndex: "company",
+      key: "company",
+      sorter: (a, b) => a.company.localeCompare(b.company),
+    },
+    {
+      title: "Country",
+      dataIndex: "country",
+      key: "country",
+      sorter: (a, b) => a.country.localeCompare(b.country),
+    },
+    {
+      title: "Form",
+      dataIndex: "form",
+      key: "form",
+      sorter: (a, b) => a.form.localeCompare(b.form),
+    },
+    {
+      title: "Amount (g/unit)",
+      dataIndex: "total_amount",
+      key: "total_amount",
+      sorter: (a, b) => a.total_amount - b.total_amount,
+    },
+    {
+      title: "Location",
+      dataIndex: "location",
+      key: "location",
+      sorter: (a, b) => a.location.localeCompare(b.location),
+    },
+    {
+      title: "Expiration Date",
+      dataIndex: "expiration_date",
+      key: "expiration_date",
+      render: (expiration_date) =>
+        expiration_date === null ? (
+          <p> </p>
+        ) : (
+          <p style={{ marginBottom: "auto" }}>
+            {moment(expiration_date).format("MMM D, YYYY")}
+          </p>
+        ),
+      sorter: (a, b) =>
+        moment(a.expiration_date).format("YYYYMMDD") -
+        moment(b.expiration_date).format("YYYYMMDD"),
+    },
+    {
+      title: "Priority",
+      sorter: (a, b) =>
+        moment(a.expiration_date).format("YYYYMMDD") -
+        moment(b.expiration_date).format("YYYYMMDD"),
+      render: (priority, record) => getPriorityIcon(record.expiration_date),
+    },
+    {
+      title: "Edit",
+      dataIndex: "",
+      key: "",
+      render: (record) => (
+        <div
+          style={{
+            display: "grid",
+            justifyContent: "center",
+            alignContent: "center",
+          }}
+        >
+          <Dropdown
+            overlay={menuItems}
+            placement="bottomCenter"
+            trigger={"hover"}
+          >
+            <Button
+              className="edit-button"
+              onClick={() => {
+                fetchItemData(record);
+              }}
+            >
+              <EllipsisOutlined style={{ fontSize: "22px" }} />{" "}
+            </Button>
+          </Dropdown>
+        </div>
+      ),
+    },
+  ];
 
   return (
     <div className="raw-material-table">
@@ -229,7 +353,7 @@ const RawMaterialTable = () => {
       <Spin spinning={tableLoading} tip="Loading..." size="large">
         <Table
           className="table-header"
-          columns={raw_material_columns.filter(
+          columns={RawMaterialTableColumns.filter(
             (col) =>
               col.dataIndex !== "form" &&
               col.dataIndex !== "received_date" &&

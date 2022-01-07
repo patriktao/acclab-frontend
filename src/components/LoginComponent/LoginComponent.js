@@ -4,7 +4,7 @@ import { MailOutlined, EyeOutlined } from "@ant-design/icons";
 import "./LoginComponent.scss";
 import { Redirect, useHistory } from "react-router";
 import { API } from "../../api/api";
-import { useAuth } from "../../auth-context";
+import { useAuth } from "../../context/auth-context";
 
 const LoginComponent = () => {
   const { login } = useAuth();

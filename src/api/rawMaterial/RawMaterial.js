@@ -159,6 +159,7 @@ export const updateTotalAmount = async (id, amount) => {
 export const uploadImage = async (image, id) => {
   const formData = new FormData();
   formData.append("image", image);
+  let response = null;
   await axios
     .post(`/upload/raw_materials/${id}`, formData, {
       headers: { "Content-type": "multipart/form-data" },
@@ -170,8 +171,9 @@ export const uploadImage = async (image, id) => {
       }
     })
     .then((res) => {
-      console.log(res);
+      response = res;
     });
+  return response.data.Location;
 };
 
 export const deleteImage = async (id) => {

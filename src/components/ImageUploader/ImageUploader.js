@@ -3,15 +3,13 @@ import { useState } from "react";
 import { Upload, Button, message } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 
-const ImageUploader = ({ handleImage }) => {
+const ImageUploader = ({ handleImage, imageURL }) => {
   ImageUploader.propTypes = {
     handleImage: PropTypes.func,
+    image: PropTypes.string,
   };
 
   const handleChange = (info) => {
-    if (info.file.status !== "uploading") {
-      console.log("uploading");
-    }
     if (info.file.status === "done") {
       message.success(`${info.file.name} file uploaded successfully`);
     } else if (info.file.status === "error") {
@@ -50,17 +48,32 @@ const ImageUploader = ({ handleImage }) => {
     }, 1);
   };
 
+  const getFileList = () => {
+    const fileList = [
+      {
+        url: imageURL,
+      },
+    ];
+    return imageURL === "" ? [] : fileList;
+  };
+
   return (
     <Upload
       maxCount={1}
-      listType="picture"
+      defaultFileList={getFileList}
+      listType="picture-card"
       onChange={handleChange}
       customRequest={customRequest}
-      onDrop={(e) => {
-        console.log("Dropped files", e.dataTransfer.files);
+      onRemove={(e) => {
+        handleImage(null);
+        console.log("Dropped files", e);
       }}
     >
-      <Button icon={<UploadOutlined />}>Upload</Button>
+      <div style={{ display: "flex", flexDirection: "column", rowGap: "8px" }}>
+        <UploadOutlined />
+        Upload <br />
+        Image
+      </div>
     </Upload>
   );
 };

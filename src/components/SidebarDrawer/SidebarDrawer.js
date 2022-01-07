@@ -18,7 +18,7 @@ const SidebarDrawer = () => {
   };
 
   return (
-    <>
+    <section className="SidebarDrawer">
       <nav className="menu-button">
         <Button
           className="button"
@@ -60,7 +60,7 @@ const SidebarDrawer = () => {
           </div>
         </Drawer>
       </div>
-    </>
+    </section>
   );
 };
 
