@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { SearchOutlined, PlusOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import "./EditRawMaterial.scss";
-import InputNumber from "../InputNumber";
+import InputNumber from "../../General/InputNumber";
 import { isEqual } from "lodash/fp";
 import {
   Modal,
@@ -14,14 +14,14 @@ import {
   Form,
   message,
 } from "antd";
-import { API } from "../../api";
-import { sortCompanies } from "../../helper/Sort";
-import RawMaterialClass from "../../classes/RawMaterialClass";
+import { API } from "../../../api";
+import { sortCompanies } from "../../../helper/Sort";
+import RawMaterialClass from "../../../classes/RawMaterialClass";
 import EditBrands from "../EditBrands";
 import EditLocations from "../EditLocations";
-import ImageUploader from "../ImageUploader";
+import ImageUploader from "../../General/ImageUploader";
 import Units from "./Units";
-import { useEditRawMaterial } from "../../context/edit-raw-material";
+import { useEditRawMaterial } from "../../../context/edit-raw-material";
 
 const { TextArea } = Input;
 
@@ -145,8 +145,6 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
         console.log(rawMaterialForm.image);
       });
     }
-
-    /* Reset States */
   };
 
   const handleChangesAPI = () => {

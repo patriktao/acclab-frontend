@@ -4,7 +4,7 @@ import { DeleteOutlined } from "@ant-design/icons";
 import "./ShoppingTable.scss";
 import { Spin } from "antd";
 import { Link } from "react-router-dom";
-import { API } from "../../api";
+import { API } from "../../../api";
 
 const ShoppingTable = () => {
   const [tableLoading, setTableLoading] = useState({ tableLoading: true });

@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import "./AddReduceRawMaterial.scss";
 import reduction_reasons from "./ReductionReasons";
 import moment from "moment";
-import { API } from "../../api";
+import { API } from "../../../api";
 import { getPriorityIcon } from "../Priority/Priority";
 import { SuccessNotification } from "../Notifications/Notifications";
 

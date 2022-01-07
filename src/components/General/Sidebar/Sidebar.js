@@ -10,7 +10,7 @@ import {
 } from "@ant-design/icons";
 import "./Sidebar.scss";
 import { useEffect } from "react";
-import { useAuth } from "../../context/auth-context";
+import { useAuth } from "../../../context/auth-context";
 
 const { Sider } = Layout;
 

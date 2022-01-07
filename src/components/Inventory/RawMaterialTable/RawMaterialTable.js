@@ -16,17 +16,16 @@ import {
 import { PlusOutlined } from "@ant-design/icons";
 import FilterComponent from "./FilterComponent";
 import moment from "moment";
-/* import AddRawMaterial from "./AddRawMaterial"; */
-import TooltipComponent from "../TooltipComponent";
-import { getPriority } from "../Priority/Priority";
-import { API } from "../../api";
-// import raw_material_columns from "./RawMaterialTableColumns";
-import { checkDate } from "../../helper/Checker";
-// import RawMaterialTableColumns from "./RawMaterialTableColumns";
-import { getPriorityIcon } from "../Priority/Priority";
+import TooltipComponent from "../../General/TooltipComponent";
+import { getPriority } from "../../General/Priority/Priority";
+import { API } from "../../../api";
+import { checkDate } from "../../../helper/Checker";
+import { getPriorityIcon } from "../../General/Priority/Priority";
 import EditRawMaterial from "../EditRawMaterial";
-import { useEditRawMaterial } from "../../context/edit-raw-material";
+import { useEditRawMaterial } from "../../../context/edit-raw-material";
 import { EllipsisOutlined } from "@ant-design/icons";
+import CreateRawMaterial from "../CreateRawMaterial";
+
 const { Text } = Typography;
 
 const RawMaterialTable = () => {
@@ -87,6 +86,7 @@ const RawMaterialTable = () => {
   };
 
   const openCreateModal = () => {
+    console.log("open");
     setCreateModalVisible(true);
   };
 
@@ -336,14 +336,13 @@ const RawMaterialTable = () => {
                   type="primary"
                   size="large"
                   icon={<PlusOutlined />}
-                  onClick={openCreateModal}
+                  onClick={() => console.log('hej')}
                 >
                   Add Raw Material
-                  {/*                   <AddRawMaterial
+                  <CreateRawMaterial
                     visible={createModalVisible}
                     close={closeCreateModal}
-                    style={{ margin: "0 auto" }}
-                  /> */}
+                  />
                 </Button>
               </div>
             </div>

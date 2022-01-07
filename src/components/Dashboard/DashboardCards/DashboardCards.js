@@ -7,9 +7,9 @@ import {
   FileDoneOutlined,
 } from "@ant-design/icons";
 import { useState, useEffect } from "react";
-import { API } from "../../api";
+import { API } from "../../../api";
 import { PresetColorTypes } from "antd/lib/_util/colors";
-import lightBlue from "../../constants/Colors";
+import lightBlue from "../../../constants/Colors";
 
 const DashboardCards = () => {
   const [ExpiredMaterials, setExpiredMaterials] = useState(0);

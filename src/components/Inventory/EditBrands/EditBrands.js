@@ -1,69 +1,67 @@
 import {
   Modal,
-  Input,
-  Popover,
-  Button,
   List,
   Popconfirm,
   Typography,
+  Button,
+  Input,
+  Popover,
   message,
 } from "antd";
-import { useState, useEffect } from "react";
-import { API } from "../../api";
 import PropTypes from "prop-types";
+import { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import { sortBy } from "lodash/fp";
-import TooltipComponent from "../TooltipComponent";
-import { sortList } from "../../helper/Sort";
+import { API } from "../../../api";
+import "./EditBrands.scss";
+import { sortList } from "../../../helper/Sort";
+import TooltipComponent from "../../General/TooltipComponent";
 
 const { Link, Text } = Typography;
 
-const EditLocations = ({ visible, close, sendChangesToParent }) => {
-  EditLocations.propTypes = {
+const EditBrands = ({ visible, close, sendChangesToParent }) => {
+  EditBrands.propTypes = {
     visible: PropTypes.bool,
     close: PropTypes.func,
     sendChangesToParent: PropTypes.func,
   };
 
-  const [locations, setLocations] = useState([]);
+  const [brands, setBrands] = useState([]);
   const [data, setData] = useState([]);
-  const [newLocation, setNewLocation] = useState("");
   const [searchField, setSearchField] = useState("");
-  const [fieldState, setFieldState] = useState({});
+  const [brandName, setBrandName] = useState("");
+  const [state, setState] = useState({});
 
   useEffect(() => {
-    API.locations.fetchLocations().then((res) => {
-      setLocations(res);
+    API.brands.fetchAllCompanies().then((res) => {
+      setBrands(res);
       setData(res);
     });
   }, []);
 
-  const handlesearchField = (e) => {
-    setSearchField(e);
-    const filter = data.filter((item) =>
-      item.name.toLowerCase().includes(e.toLowerCase())
-    );
-    setLocations(filter);
-  };
+  /* 
+  @Renders each brand in the list 
+  TODO: Fix the title of Pop Confirm such that it will display the text in two rows.
+  */
 
-  const locationList = (item) => {
+  const brandList = (item) => {
     return (
       <List.Item
         className="row"
         actions={[
           <Link
             onClick={() => {
-              setFieldState({ [item.name]: !fieldState[item.name] });
+              setState({ [item.name]: !state[item.name] });
             }}
             type="primary"
           >
-            {fieldState[item.name] ? "Close" : "Edit"}
+            {state[item.name] ? "Close" : "Edit"}
           </Link>,
           <Popconfirm
             title={
-              "Are you sure to delete this stored location?" +
+              "Are you sure to delete this brand?" +
               "\n" +
-              "This stored location will be deleted from all raw materials who uses it"
+              "This brand will be deleted from all raw materials who uses it"
             }
             onConfirm={() => handleDelete(item.name)}
           >
@@ -71,40 +69,14 @@ const EditLocations = ({ visible, close, sendChangesToParent }) => {
           </Popconfirm>,
         ]}
       >
-        <List.Item.Meta
-          className="item"
-          description={locationField(item.name)}
-        />
+        <List.Item.Meta className="item" description={brandField(item.name)} />
       </List.Item>
     );
   };
 
-  const handleDelete = (company) => {
-    const filter = locations.filter(
-      (item) => item.name.toLowerCase() !== company.toLowerCase()
-    );
-    setLocations(filter);
-    setData(filter);
-    sendChangesToParent(filter);
-    API.locations.deleteLocation(company);
-  };
 
-  const handleEdit = (name, input) => {
-    if (name !== input) {
-      locations.forEach((obj) => {
-        if (obj.name === name) {
-          obj.name = input;
-          obj.value = input;
-        }
-      });
-      setData(locations);
-      sendChangesToParent(locations);
-      API.locations.updateLocation(name, input);
-    }
-  };
-
-  const locationField = (name) => {
-    if (fieldState[name]) {
+  const brandField = (name) => {
+    if (state[name]) {
       return (
         <TooltipComponent
           component={
@@ -114,7 +86,7 @@ const EditLocations = ({ visible, close, sendChangesToParent }) => {
               defaultValue={`${name}`}
               onPressEnter={(input) => {
                 handleEdit(name, input.target.value);
-                setFieldState({ [name]: !fieldState[name] });
+                setState({ [name]: !state[name] });
               }}
             />
           }
@@ -126,17 +98,17 @@ const EditLocations = ({ visible, close, sendChangesToParent }) => {
     return <Text>{name}</Text>;
   };
 
-  const addNewLocation = () => {
+  const addNewBrand = () => {
     return (
       <div className="popover">
         <div className="header-field-wrapper">
-          <span>Add a new stored location</span>
+          <span>Add a new brand</span>
           <Input
-            value={newLocation}
+            value={brandName}
             allowClear
             className="input-text"
-            onChange={(e) => setNewLocation(e.target.value)}
-            placeholder="Type a new stored location..."
+            onChange={(e) => setBrandName(e.target.value)}
+            placeholder="Type a new brand name..."
             onPressEnter={handleAdd}
           />
         </div>
@@ -149,29 +121,59 @@ const EditLocations = ({ visible, close, sendChangesToParent }) => {
     );
   };
 
-  const ifLocationExists = () => {
-    for (let i = 0; i < locations.length; i++) {
-      if (locations[i].name.toLowerCase() === newLocation.toLowerCase()) {
+  const ifBrandExists = () => {
+    for (let i = 0; i < brands.length; i++) {
+      if (brands[i].name.toLowerCase() === brandName.toLowerCase()) {
         return true;
       }
     }
     return false;
   };
 
+  const handleSearch = (e) => {
+    setSearchField(e);
+    const filter = data.filter((item) =>
+      item.name.toLowerCase().includes(e.toLowerCase())
+    );
+    setBrands(filter);
+  };
+
   const handleAdd = () => {
-    if (newLocation === "") {
+    if (brandName === "") {
       message.warning("Please enter a brand name.");
-    } else if (ifLocationExists()) {
+    } else if (ifBrandExists()) {
       message.warning("The brand already exists.");
     } else {
-      const mergedList = locations.concat([
-        { value: newLocation, name: newLocation },
-      ]);
-      const sortedList = sortList(mergedList);
-      setLocations(sortedList);
-      setData(sortedList);
-      sendChangesToParent(sortedList);
-      API.locations.addLocation(newLocation);
+      const mergedList = brands.concat([{ value: brandName, name: brandName }]);
+      const sortedCompanies = sortList(mergedList);
+      setBrands(sortedCompanies);
+      setData(sortedCompanies);
+      sendChangesToParent(sortedCompanies);
+      API.brands.addCompany(brandName);
+    }
+  };
+
+  const handleDelete = (company) => {
+    const filter = brands.filter(
+      (item) => item.name.toLowerCase() !== company.toLowerCase()
+    );
+    setBrands(filter);
+    setData(filter);
+    sendChangesToParent(filter);
+    API.brands.deleteCompany(company);
+  };
+
+  const handleEdit = (name, input) => {
+    if (name !== input) {
+      brands.forEach((obj) => {
+        if (obj.name === name) {
+          obj.name = input;
+          obj.value = input;
+        }
+      });
+      setData(brands);
+      sendChangesToParent(brands);
+      API.brands.updateCompany(name, input);
     }
   };
 
@@ -183,38 +185,38 @@ const EditLocations = ({ visible, close, sendChangesToParent }) => {
       onCancel={close}
       onOk={close}
       maskClosable={false}
-      footer={[
+      footer = {[
         <Button key="submit" type="primary" onClick={close}>
           Close
-        </Button>,
+        </Button>
       ]}
     >
       <section className="EditBrands">
         <section className="header">
-          <h1>Edit Stored Locations</h1>
+          <h1>Edit Brands</h1>
         </section>
         <section className="body">
           <div className="options">
             <Input
-              onChange={(e) => handlesearchField(e.target.value)}
+              onChange={(e) => handleSearch(e.target.value)}
               value={searchField}
               size={"large"}
               className="input-text"
-              placeholder="searchField for a location name..."
+              placeholder="Search for a brand name..."
               allowClear
               enterbutton="true"
             />
             <Popover
               trigger="click"
               placement={"bottom"}
-              content={addNewLocation}
+              content={addNewBrand}
             >
               <Button
                 type="primary"
                 style={{ height: "100%", borderRadius: "12px" }}
                 size={"large"}
               >
-                Add a new Stored Location
+                Add a new Brand
               </Button>
             </Popover>
           </div>
@@ -226,9 +228,9 @@ const EditLocations = ({ visible, close, sendChangesToParent }) => {
             >
               <List
                 size="large"
-                dataSource={sortBy("location.location", locations || [])}
-                renderItem={locationList}
-                rowKey={"location"}
+                dataSource={sortBy("company.company", brands || [])}
+                renderItem={brandList}
+                rowKey={"company"}
               />
             </InfiniteScroll>
           </div>
@@ -238,4 +240,4 @@ const EditLocations = ({ visible, close, sendChangesToParent }) => {
   );
 };
 
-export default EditLocations;
+export default EditBrands;

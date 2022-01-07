@@ -11,7 +11,7 @@ import PropTypes from "prop-types";
 import "./FilterComponent.scss";
 import { SearchOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import { API } from "../../../api";
+import { API } from "../../../../api";
 
 const { RangePicker } = DatePicker;
 

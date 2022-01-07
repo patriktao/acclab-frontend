@@ -1,0 +1,88 @@
+.CreateRawMaterial {
+  display: grid;
+  row-gap: 1.5rem;
+
+  .rows {
+    display: grid;
+    row-gap: 1rem;
+  }
+
+  .avatar-uploader > .ant-upload {
+    width: 128px;
+    height: 128px;
+  }
+
+  .GeneralInformation {
+    h1 {
+      padding-bottom: 1rem;
+    }
+
+    .image-general-information {
+      display: grid;
+      grid-template-columns: 2.5fr 1fr;
+      column-gap: 2rem;
+    }
+
+    .image-upload {
+      display: grid;
+      justify-content: left;
+    }
+
+    .ant-upload {
+      width: 125px;
+      height: 145px;
+      margin-bottom: 0;
+    }
+
+    .column-wrapper {
+      display: grid;
+      row-gap: 1rem;
+    }
+
+    .button {
+      height: 50px;
+      width: 50px;
+      border-radius: 12px;
+    }
+
+    .field-add-wrapper {
+      display: grid;
+      grid-template-columns: 12fr 1fr;
+      column-gap: 0.5rem;
+    }
+
+    .column-1 {
+      display: grid;
+    }
+
+    .column-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 1.5rem;
+    }
+
+    .column-3 {
+      display: grid;
+      grid-template-columns: 0.4fr 1fr 1fr;
+      column-gap: 1.5rem;
+    }
+  }
+
+  .NuitritionalFacts {
+    h2 {
+      padding-bottom: 1rem;
+    }
+
+    .column-4 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+      column-gap: 1.5rem;
+    }
+  }
+}
+
+.edit-raw-material-footer {
+  padding: 0 8px 0 8px;
+  display: flex;
+  justify-content: space-between;
+}
