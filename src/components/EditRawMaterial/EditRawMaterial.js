@@ -351,8 +351,8 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
                     </div>
                   </div>
                 </div>
-                <div className="UploadImage">
-                  <h2>Upload Image</h2>
+                <div className="header-field-wrapper">
+                  <span className="sub-header">Image</span>
                   <ImageUploader
                     handleImage={handleImage}
                     imageURL={currentImage}

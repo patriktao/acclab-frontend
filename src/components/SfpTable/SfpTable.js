@@ -99,7 +99,7 @@ const SfpTable = () => {
                 <AutoComplete className="auto-complete" options={itemNames}>
                   <Search
                     className="table-search"
-                    placeholder="Search for a raw material..."
+                    placeholder="Search for a Semi-Finished Product..."
                     allowClear
                     size="large"
                     value={searchText}
@@ -107,19 +107,13 @@ const SfpTable = () => {
                   />
                 </AutoComplete>
                 <Button
-                  name="Add Raw Material"
                   className="table-add"
                   type="primary"
                   size="large"
                   icon={<PlusOutlined />}
                   onClick={openCreateModal}
                 >
-                  Add Raw Material
-                  {/*                   <AddRawMaterial
-                  visible={createModalVisible}
-                  close={closeCreateModal}
-                  style={{ margin: "0 auto" }}
-                /> */}
+                  Add SFP
                 </Button>
               </div>
             </div>

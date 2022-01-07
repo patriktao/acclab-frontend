@@ -23,6 +23,17 @@
       column-gap: 2rem;
     }
 
+    .image-upload {
+      display:grid;
+      justify-content: left;
+    }
+
+    .ant-upload {
+      width: 125px;
+      height: 145px;
+      margin-bottom: 0;
+    }
+
     .column-wrapper {
       display: grid;
       row-gap: 1rem;
@@ -67,12 +78,6 @@
       grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
       column-gap: 1.5rem;
     }
-  }
-
-  .UploadImage {
-    display: flex;
-    flex-direction: column;
-    row-gap: 1rem;
   }
 }
 
