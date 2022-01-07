@@ -130,7 +130,7 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
         console.log("deleting image");
         rawMaterialForm.image = "";
         res === "success"
-          ? message.success("Image succesfully deleted.")
+          ? message.success("Image successfully deleted.")
           : message.error("Failed to delete image");
       });
     } else if (rawMaterialForm.image === "") {

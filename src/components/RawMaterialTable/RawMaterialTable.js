@@ -145,7 +145,7 @@ const RawMaterialTable = () => {
   };
 
   /* Raw Material Columns */
-  const { openEdit, closeEdit, editVisible } = useEditRawMaterial();
+  const { openEdit, editVisible } = useEditRawMaterial();
   const [itemData, setItemData] = useState(null);
 
   /* TODO: Make so that data comes direcly from parent and not through API call */
@@ -158,14 +158,14 @@ const RawMaterialTable = () => {
   };
 
   const handleRawMaterialEdit = (form) => {
-    /* 
-      Name
-      Country
-      Company
-      Location
-      Form
-    */
-    console.log(form);
+    let itemIndex = table.findIndex(
+      (item) => item.id === form.data.raw_material_id
+    );
+    table[itemIndex].name = form.name;
+    table[itemIndex].country = form.country;
+    table[itemIndex].company = form.brand;
+    table[itemIndex].location = form.location;
+    table[itemIndex].form = form.form;
   };
 
   const menuItems = (
