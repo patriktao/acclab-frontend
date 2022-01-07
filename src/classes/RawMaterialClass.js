@@ -32,10 +32,10 @@ class RawMaterialClass {
   #fiber = 0;
   #content = "";
   #image = "";
-  #data;
+  #data = null;
 
   constructor(data) {
-    if (data !== null) {
+    if (data !== undefined && data !== null) {
       this.#data = data;
       this.#name = data.material_name;
       this.#brand = data.company;

@@ -1,8 +1,8 @@
 import { Layout } from "antd";
-import NavBar from "../../components/NavBar";
-import Sidebar from "../../components/Sidebar";
-import RawMaterialTable from "../../components/RawMaterialTable";
-import SfpTable from "../../components/SfpTable";
+import NavBar from "../../components/General/NavBar";
+import Sidebar from "../../components/General/Sidebar";
+import RawMaterialTable from "../../components/Inventory/RawMaterialTable";
+import SfpTable from "../../components/Inventory/SfpTable";
 
 const { Content, Footer } = Layout;
 
@@ -25,7 +25,7 @@ const Inventory = () => {
               <RawMaterialTable />
             </div>
             <div style={{ marginTop: "3rem" }}>
-              <SfpTable/>
+              <SfpTable />
             </div>
           </div>
           <Footer className="footer">Accelerator Lab ©2021 Tetra Pak</Footer>

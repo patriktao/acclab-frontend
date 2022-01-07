@@ -15,11 +15,11 @@ import {
   InfoCircleOutlined,
 } from "@ant-design/icons";
 import * as Columns from "./RawMaterialColumns";
-import NavBar from "../../components/NavBar";
-import Sidebar from "../../components/Sidebar";
-import TooltipComponent from "../../components/TooltipComponent";
-import EditRawMaterial from "../../components/EditRawMaterial";
-import AddReduceRawMaterial from "../../components/AddReduceRawMaterial";
+import NavBar from "../../components/General/NavBar";
+import Sidebar from "../../components/General/Sidebar";
+import TooltipComponent from "../../components/General/TooltipComponent";
+import EditRawMaterial from "../../components/Inventory/EditRawMaterial";
+import AddReduceRawMaterial from "../../components/Inventory/AddReduceRawMaterial";
 import { API } from "../../api";
 import "./RawMaterial.scss";
 import { useEditRawMaterial } from "../../context/edit-raw-material";

@@ -1,6 +1,6 @@
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { getPriorityIcon } from "../../components/Priority/Priority"
+import { getPriorityIcon } from "../../General/Priority/Priority";
 
 const ExpiringColumns = [
   {
@@ -14,14 +14,7 @@ const ExpiringColumns = [
     key: "name",
     sorter: (a, b) => a.name.localeCompare(b.name),
     render: (name, record) => (
-      <Link
-      to={
-        "/inventory/rawmaterial/" +
-        record.id 
-      }
-      >
-        {name}
-      </Link>
+      <Link to={"/inventory/rawmaterial/" + record.id}>{name}</Link>
     ),
   },
   {
@@ -51,8 +44,8 @@ const ExpiringColumns = [
   },
   {
     title: "Priority",
-    dataIndex: 'priority',
-    key: 'priority',
+    dataIndex: "priority",
+    key: "priority",
     sorter: (a, b) =>
       moment(a.expiration_date).format("YYYYMMDD") -
       moment(b.expiration_date).format("YYYYMMDD"),

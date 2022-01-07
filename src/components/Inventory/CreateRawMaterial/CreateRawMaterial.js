@@ -72,13 +72,13 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
     };
 
     const setData = () => {
-      setRawMaterialForm(new RawMaterialClass(data));
-      setOldRawMaterial(new RawMaterialClass(data));
+      setRawMaterialForm(new RawMaterialClass());
+      setOldRawMaterial(new RawMaterialClass());
     };
 
     fetchData();
     setData();
-  }, [data]);
+  }, []);
 
   const handleOk = async (e) => {
     rawMaterialForm.name = name;
@@ -101,7 +101,7 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
         sendChangesToParent(rawMaterialForm);
       });
     }
-    closeEdit(e);
+    close(e);
   };
 
   const handleImageAPI = async () => {
@@ -129,12 +129,7 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
     }
   };
 
-  const handleChangesAPI = () => {
-    API.rawMaterial.editMaterial(
-      data.raw_material_id,
-      rawMaterialForm.toJsonObject()[0]
-    );
-  };
+  const handleChangesAPI = () => {};
 
   const openLocationModal = () => {
     setLocationModalVisible(true);

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { sfp_columns } from "./SfpTableColumns";
 import { Table, Spin, Input, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import TooltipComponent from "../TooltipComponent";
+import TooltipComponent from "../../General/TooltipComponent";
 import FilterComponent from "../RawMaterialTable/FilterComponent";
 import { AutoComplete } from "antd";
 import moment from "moment";

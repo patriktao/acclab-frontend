@@ -1,7 +1,7 @@
 import React from "react";
 import { InputNumber as AntInputNumber } from "antd";
 import PropTypes from "prop-types";
-import "../../styles/inputfields.scss";
+import "../../../styles/inputfields.scss";
 
 const InputNumber = ({ children, value, onChange }) => {
   InputNumber.propTypes = {

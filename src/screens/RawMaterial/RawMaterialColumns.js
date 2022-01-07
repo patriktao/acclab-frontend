@@ -1,5 +1,5 @@
 import moment from "moment";
-import { getPriorityIcon } from "../../components/Priority/Priority";
+import { getPriorityIcon } from "../../components/General/Priority/Priority";
 
 export const general_columns = [
   {

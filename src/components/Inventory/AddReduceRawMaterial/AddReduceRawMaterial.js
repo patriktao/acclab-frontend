@@ -15,8 +15,8 @@ import "./AddReduceRawMaterial.scss";
 import reduction_reasons from "./ReductionReasons";
 import moment from "moment";
 import { API } from "../../../api";
-import { getPriorityIcon } from "../Priority/Priority";
-import { SuccessNotification } from "../Notifications/Notifications";
+import { getPriorityIcon } from "../../General/Priority";
+import { SuccessNotification } from "../../../components/General/Notifications";
 
 const { TabPane } = Tabs;
 
@@ -234,83 +234,82 @@ const AddReduceRawMaterial = ({
     }
   };
 
-  
   const popconfirmMessage = () => {
     return tabPane === "add" ? (
       <span> Are you sure to add this stock? </span>
-      ) : (
-        <span> Are you sure to reduce these quantities? </span>
-        );
-      };
-      /* Table columns */
-      const logistic_columns = [
-        {
-          title: "Stock ID",
-          dataIndex: "stock_id",
-          key: "stock_id",
-        },
-        {
-          title: "Amount",
-          key: "amount",
-          render: (record) => (
-            <InputNumber
-              className="input-number"
-              size={"small"}
-              style={{ width: "8rem" }}
-              placeholder={0}
-              min={0}
-              max={record.amount}
-              defaultValue={0}
-              onChange={(e) => editStock(e, record)}
-            />
-          ),
-        },
-        {
-          title: "In Stock",
-          dataIndex: "amount",
-          key: "in_stock",
-        },
-        {
-          title: "Order Date",
-          dataIndex: "order_date",
-          key: "order_date",
-          render: (date) =>
-            date === null ? (
-              <p />
-            ) : (
-              <p style={{ marginBottom: "auto" }}>
-                {moment(date).format("MMM D, YYYY")}
-              </p>
-            ),
-        },
-        {
-          title: "Received Date",
-          dataIndex: "received_date",
-          key: "received_date",
-          render: (date) => (
-            <p style={{ marginBottom: "auto" }}>
-              {moment(date).format("MMM D, YYYY")}
-            </p>
-          ),
-        },
-        {
-          title: "Expiration Date",
-          dataIndex: "expiration_date",
-          key: "expiration_date",
-          render: (date) => (
-            <p style={{ marginBottom: "auto" }}>
-              {moment(date).format("MMM D, YYYY")}
-            </p>
-          ),
-        },
-        {
-          title: "Priority of Usage",
-          dataIndex: "priority",
-          key: "priority",
-          render: (priority, record) => getPriorityIcon(record.expiration_date),
-        },
-      ];
-      
+    ) : (
+      <span> Are you sure to reduce these quantities? </span>
+    );
+  };
+  /* Table columns */
+  const logistic_columns = [
+    {
+      title: "Stock ID",
+      dataIndex: "stock_id",
+      key: "stock_id",
+    },
+    {
+      title: "Amount",
+      key: "amount",
+      render: (record) => (
+        <InputNumber
+          className="input-number"
+          size={"small"}
+          style={{ width: "8rem" }}
+          placeholder={0}
+          min={0}
+          max={record.amount}
+          defaultValue={0}
+          onChange={(e) => editStock(e, record)}
+        />
+      ),
+    },
+    {
+      title: "In Stock",
+      dataIndex: "amount",
+      key: "in_stock",
+    },
+    {
+      title: "Order Date",
+      dataIndex: "order_date",
+      key: "order_date",
+      render: (date) =>
+        date === null ? (
+          <p />
+        ) : (
+          <p style={{ marginBottom: "auto" }}>
+            {moment(date).format("MMM D, YYYY")}
+          </p>
+        ),
+    },
+    {
+      title: "Received Date",
+      dataIndex: "received_date",
+      key: "received_date",
+      render: (date) => (
+        <p style={{ marginBottom: "auto" }}>
+          {moment(date).format("MMM D, YYYY")}
+        </p>
+      ),
+    },
+    {
+      title: "Expiration Date",
+      dataIndex: "expiration_date",
+      key: "expiration_date",
+      render: (date) => (
+        <p style={{ marginBottom: "auto" }}>
+          {moment(date).format("MMM D, YYYY")}
+        </p>
+      ),
+    },
+    {
+      title: "Priority of Usage",
+      dataIndex: "priority",
+      key: "priority",
+      render: (priority, record) => getPriorityIcon(record.expiration_date),
+    },
+  ];
+
   return (
     <Modal
       centered

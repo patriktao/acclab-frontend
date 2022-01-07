@@ -1,10 +1,10 @@
 import "./Dashboard.scss";
 import { Layout, Row, Col } from "antd";
-import NavBar from "../../components/NavBar";
-import Sidebar from "../../components/Sidebar";
-import ExpiringTable from "../../components/ExpiringTable";
-import ShoppingTable from "../../components/ShoppingTable";
-import DashboardCards from "../../components/DashboardCards";
+import NavBar from "../../components/General/NavBar"
+import Sidebar from "../../components/General/Sidebar";
+import ExpiringTable from "../../components/Dashboard/ExpiringTable";
+import ShoppingTable from "../../components/Dashboard/ShoppingTable";
+import DashboardCards from "../../components/Dashboard/DashboardCards";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/auth-context";
 
