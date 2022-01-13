@@ -125,15 +125,23 @@ export const addStock = async (id, data) => {
         console.log(`Error: ${err.message}`);
       }
     });
+  //update the soonest exp_date raw material column
+  adjustExpirationDate(id);
   return res.data;
 };
 
 export const updateStock = async (id, data) => {
-  await axios.put(`/raw_material_logistics/${id}/update`, data).catch((err) => {
-    if (err.response) {
-      console.log(`Error: ${err.message}`);
-    }
-  });
+  await axios
+    .put(`/raw_material_logistics/${id}/update`, data)
+    .catch((err) => {
+      if (err.response) {
+        console.log(`Error: ${err.message}`);
+      }
+    })
+    .then(
+      //update the soonest exp_date raw material column
+      adjustExpirationDate(id)
+    );
 };
 
 export const disableStock = async (id, data) => {
@@ -143,7 +151,11 @@ export const disableStock = async (id, data) => {
       if (err.response) {
         console.log(`Error: ${err.message}`);
       }
-    });
+    })
+    .then(
+      //update the soonest exp_date raw material column
+      adjustExpirationDate(id)
+    );
 };
 
 export const updateTotalAmount = async (id, amount) => {
@@ -206,14 +218,18 @@ export const updateImage = async (image, id) => {
           headers: { "Content-type": "multipart/form-data" },
         })
         .catch((err) => {
-          if (err.response) {
-            console.log(`Error: ${err.message}`);
-            return null;
-          }
+          console.log(`Error: ${err.message}`);
+          return null;
         })
         .then((res) => {
           response = res;
         });
     });
   return response.data.Location;
+};
+
+export const adjustExpirationDate = async (id) => {
+  await axios.put(`/raw_material/${id}/adjustExpirationDate`).catch((err) => {
+    console.log(`Error: ${err.message}`);
+  });
 };

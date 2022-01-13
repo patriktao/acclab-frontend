@@ -84,28 +84,51 @@ const HandleStock = ({
     key === "1" ? setTabPane("add") : setTabPane("reduce");
   };
 
+  /* Return true if date is not empty string or null */
+  const dateFormChecker = (date) => {
+    return date !== "" && date !== null;
+  };
+
   const addFormRestrictions = (e) => {
-    if (amount != null && receivedDate !== "" && expirationDate !== "") {
-      if (expirationDate.isAfter(receivedDate) && amount >= 0) {
-        addStock();
-        close(e);
-      } else {
-        message.error("Expiration date must come after received date!");
+    if (
+      amount != null &&
+      dateFormChecker(receivedDate) &&
+      dateFormChecker(expirationDate)
+    ) {
+      if (amount <= 0) {
+        message.error("The amount needs to be a positive number!");
+        return;
+      } else if (dateFormChecker(orderDate)) {
+        if (
+          orderDate.isSameOrAfter(receivedDate) &&
+          orderDate.isSameOrAfter(expirationDate)
+        ) {
+          message.error(
+            "Order date must come before received date and expiration date!"
+          );
+          return;
+        }
+      } else if (expirationDate.isSameOrBefore(receivedDate)) {
+        message.error("Received date must come before expiration date!");
+        return;
       }
-      return;
+      addStock();
+      close(e);
+    } else {
+      message.error(
+        "Amount, received date and expiration date needs to be filled!"
+      );
     }
-    message.error(
-      "Amount, received date and expiration date needs to be filled!"
-    );
   };
 
   const checkEmptyInput = (input) => {
-    return input === "" ? null : moment(input).format("YYYYMMDD");
+    return input === "" || input === "Invalid date" || input === null
+      ? null
+      : moment(input).format("YYYYMMDD");
   };
 
   const addStock = () => {
     const newTotalAmount = totalAmount + amount;
-
     const data = {
       raw_material_id: parseInt(id),
       stock_id: "",
@@ -169,7 +192,6 @@ const HandleStock = ({
       } */
     }
 
-    // Send a message when you have added
     logisticList.forEach((e) => {
       if (e.amount === 0) {
         SuccessNotification(
@@ -178,8 +200,32 @@ const HandleStock = ({
       }
     });
 
-    //send edits to API
-    console.log(editForm);
+    //send changes to API
+    console.log("Form before reduction: " + editForm);
+    sendReductionToAPI();
+
+    // Update total amount of the raw material
+    const newTotalAmount = totalAmount - reductionAmount;
+    API.rawMaterial.updateTotalAmount(id, newTotalAmount);
+    setTotalAmount(newTotalAmount);
+
+    // Update total amount in the edit forms
+    editForm.forEach((e) => {
+      e.total_amount = newTotalAmount;
+    });
+
+    //if amount = 0: remove the item from the array and update both EditForm and Logistic List
+    const filtered_list = logisticList.filter((e) => e.amount !== 0);
+    const newEditForm = editForm.filter((e) => e.new_amount !== 0);
+    setEditForm(newEditForm);
+    setLogisticList(filtered_list);
+    console.log("New Form: " + newEditForm);
+
+    sendReductionToParent(filtered_list, reductionAmount);
+    close(e);
+  };
+
+  const sendReductionToAPI = () => {
     editForm.forEach((e) => {
       if (e.new_amount === 0) {
         API.rawMaterial.disableStock(id, e);
@@ -191,26 +237,6 @@ const HandleStock = ({
         API.rawMaterial.updateStock(id, e);
       }
     });
-
-    // Update total amount of raw material
-    const newTotalAmount = totalAmount - reductionAmount;
-    API.rawMaterial.updateTotalAmount(id, newTotalAmount);
-    setTotalAmount(newTotalAmount);
-
-    // Update total amount in the edit forms
-    editForm.forEach((e) => {
-      e.total_amount = newTotalAmount;
-    });
-
-    //if amount = zero, remove the item from the array, update form and list
-    const filtered_list = logisticList.filter((e) => e.amount !== 0);
-    const newEditForm = editForm.filter((e) => e.new_amount !== 0);
-    setEditForm(newEditForm);
-    console.log(newEditForm);
-    setLogisticList(filtered_list);
-
-    sendReductionToParent(filtered_list, reductionAmount);
-    close(e);
   };
 
   /* Edits the stock based on what you input */
@@ -337,7 +363,7 @@ const HandleStock = ({
         <Tabs tabPosition={"left"} onTabClick={(key) => changeTabPane(key)}>
           <TabPane tab="Add" key="1">
             <section className="add">
-              <h1>Add Amount</h1>
+              <h1>Add Stock</h1>
               <div className="rows">
                 <div className="column-1">
                   <div className="header-field-wrapper">
@@ -390,7 +416,7 @@ const HandleStock = ({
           </TabPane>
           <TabPane tab="Reduce" key="2">
             <section className="reduce">
-              <h1>Reduce Amount</h1>
+              <h1>Reduce Stocks</h1>
               <div className="header-field-wrapper">
                 <span className="sub-header">Reason:</span>
                 <Select

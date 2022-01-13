@@ -139,7 +139,7 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
     }
   };
 
-  const handleChangesAPI = () => {};
+  const createAPI = () => {};
 
   /* Functions to children*/
 
@@ -286,9 +286,9 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
                           }
                           onChange={(e) => e !== country && setCountry(e)}
                           value={country}
-                          allowClear
                         >
                           <Input
+                            allowClear
                             className="input-text"
                             placeholder="Choose a country..."
                             suffix={
@@ -302,10 +302,7 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
                 </div>
                 <div className="header-field-wrapper">
                   <span className="sub-header">Image</span>
-                  <ImageUploader
-                    handleImage={handleImage}
-                    imageURL={currentImage}
-                  />
+                  <ImageUploader handleImage={handleImage} imageURL={""} />
                 </div>
               </div>
               <div className="column-3">

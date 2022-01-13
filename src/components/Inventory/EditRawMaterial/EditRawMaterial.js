@@ -280,7 +280,7 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
                           rules={[
                             {
                               required: true,
-                              message: "Please choose a brand!",
+                              message: "Please select a brand!",
                             },
                           ]}
                         >
@@ -327,7 +327,7 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
                         rules={[
                           {
                             required: true,
-                            message: "Please choose a country!",
+                            message: "Please select a country!",
                           },
                         ]}
                       >
@@ -340,9 +340,9 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
                           }
                           onChange={(e) => e !== country && setCountry(e)}
                           value={country}
-                          allowClear
                         >
                           <Input
+                            allowClear
                             className="input-text"
                             placeholder="Choose a country..."
                             suffix={

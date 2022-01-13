@@ -31,7 +31,7 @@ const RawMaterialTable = () => {
   const [table, setTable] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [tableLoading, setTableLoading] = useState(true);
-  const [counter, setCounter] = useState(0);
+  const [activeFilters, setActiveFilters] = useState(0);
   const [filterVisible, setFilterVisible] = useState(false);
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [itemNames, setItemNames] = useState([]);
@@ -74,7 +74,7 @@ const RawMaterialTable = () => {
   const handleClear = () => {
     setTable(data);
     setSearchText("");
-    setCounter(0);
+    setActiveFilters(0);
     setRowCount(data.length);
   };
 
@@ -82,13 +82,14 @@ const RawMaterialTable = () => {
     const states = e;
     let count = 0;
 
-    // If state is null, convert to empty string so that table can interpret
+    // Tables can only interpret empty strings and not null values, we therefore have to convert it.
+    let count = 0;
     for (const [key, value] of e.entries()) {
       value == null || value === "Invalid date" || value === ""
         ? states.set(key, "")
-        : setCounter(count++);
+        : setActiveFilters(count++);
     }
-    setCounter(count);
+    setActiveFilters(count);
 
     const filtered_table = data.filter(
       (item) =>
@@ -131,15 +132,17 @@ const RawMaterialTable = () => {
 
   const fetchItemData = async (record) => {
     if (record !== null) {
-      await API.rawMaterial.fetchMaterial(record.id).then((res) => {
-        setItemData(res[0]);
-      });
+      await API.rawMaterial
+        .fetchMaterial(record.raw_material_id)
+        .then((res) => {
+          setItemData(res[0]);
+        });
     }
   };
 
   const handleRawMaterialEdit = (form) => {
     let itemIndex = table.findIndex(
-      (item) => item.id === form.data.raw_material_id
+      (item) => item.raw_material_id === form.data.raw_material_id
     );
     table[itemIndex].name = form.name;
     table[itemIndex].country = form.country;
@@ -185,18 +188,18 @@ const RawMaterialTable = () => {
 
   const RawMaterialTableColumns = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
+      title: "id",
+      dataIndex: "raw_material_id",
+      key: "raw_material_id",
     },
     {
       title: "Item name",
-      dataIndex: "name",
-      key: "name",
-      render: (name, record) => (
-        <Link to={"/inventory/rawmaterial/" + record.id}>{name}</Link>
+      dataIndex: "material_name",
+      key: "material_name",
+      render: (material_name, record) => (
+        <Link to={"/inventory/rawmaterial/" + record.raw_material_id}>{material_name}</Link>
       ),
-      sorter: (a, b) => a.name.localeCompare(b.name),
+      sorter: (a, b) => a.material_name.localeCompare(b.material_name),
     },
     {
       title: "Brand",
@@ -321,7 +324,7 @@ const RawMaterialTable = () => {
                   handleFilter={handleFilter}
                   handleClear={handleClear}
                 />
-                Filter ({counter})
+                Filter ({activeFilters})
               </Button>
             </div>
             <div>
@@ -374,7 +377,7 @@ const RawMaterialTable = () => {
             (col) =>
               col.dataIndex !== "form" &&
               col.dataIndex !== "received_date" &&
-              col.dataIndex !== "id"
+              col.dataIndex !== "raw_material_id"
           )}
           dataSource={table}
           rowKey={"id"}

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Tabs, Table, Spin, Button, Checkbox, message, Avatar } from "antd";
 import {
   PlusOutlined,
+  AppstoreOutlined,
   EditOutlined,
   InfoCircleOutlined,
 } from "@ant-design/icons";
