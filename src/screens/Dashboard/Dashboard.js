@@ -1,14 +1,11 @@
 import "./Dashboard.scss";
-import { Layout, Row, Col } from "antd";
-import NavBar from "../../components/General/NavBar"
-import Sidebar from "../../components/General/Sidebar";
+import { Row, Col } from "antd";
 import ExpiringTable from "../../components/Dashboard/ExpiringTable";
 import ShoppingTable from "../../components/Dashboard/ShoppingTable";
 import DashboardCards from "../../components/Dashboard/DashboardCards";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/auth-context";
-
-const { Content, Footer } = Layout;
+import Template from "../Template";
 
 const Dashboard = () => {
   const [user, setUser] = useState({});
@@ -19,39 +16,34 @@ const Dashboard = () => {
   }, [userSession]);
 
   return (
-    <Layout className="sidebar-header-layout">
-      <Sidebar />
-      <Layout>
-        <NavBar />
-        <Content className="content-layout">
-          <div className="content-wrapper">
-            <div title="Paragraph-Wrapper">
-              <span className="content-sub-header"> DASHBOARD </span>
-              <h1 className="blue-text"> Good Morning, {user.firstname} </h1>
-              <span className="content-sub-header">
-                Here's what's happening with your inventory today
-              </span>
-            </div>
-            <section title="Card-Wrapper">
-              <Row gutter={16}>
-                <Col span={24} style={{ marginTop: "1.5rem" }}>
-                  <DashboardCards />
-                </Col>
-              </Row>
-            </section>
-            <section className="table-wrapper" style={{ marginTop: "1.5rem" }}>
-              <div>
-                <ExpiringTable />
-              </div>
-              <div>
-                <ShoppingTable />
-              </div>
-            </section>
+    <Template
+      content={
+        <section name="Dashboard">
+          <div title="Paragraph-Wrapper">
+            <span className="content-sub-header"> DASHBOARD </span>
+            <h1 className="blue-text"> Good Morning, {user.firstname} </h1>
+            <span className="content-sub-header">
+              Here's what's happening with your inventory today
+            </span>
           </div>
-          <Footer className="footer">Accelerator Lab ©2021 Tetra Pak</Footer>
-        </Content>
-      </Layout>
-    </Layout>
+          <section title="Card-Wrapper">
+            <Row gutter={16}>
+              <Col span={24} style={{ marginTop: "1.5rem" }}>
+                <DashboardCards />
+              </Col>
+            </Row>
+          </section>
+          <section className="table-wrapper" style={{ marginTop: "1.5rem" }}>
+            <div>
+              <ExpiringTable />
+            </div>
+            <div>
+              <ShoppingTable />
+            </div>
+          </section>
+        </section>
+      }
+    />
   );
 };
 

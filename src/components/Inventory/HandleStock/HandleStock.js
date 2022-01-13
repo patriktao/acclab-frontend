@@ -11,16 +11,16 @@ import {
 } from "antd";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
-import "./AddReduceRawMaterial.scss";
+import "./HandleStock.scss";
 import reduction_reasons from "./ReductionReasons";
 import moment from "moment";
 import { API } from "../../../api";
 import { getPriorityIcon } from "../../General/Priority";
-import { SuccessNotification } from "../../../components/General/Notifications";
+import { SuccessNotification } from "../../General/Notifications";
 
 const { TabPane } = Tabs;
 
-const AddReduceRawMaterial = ({
+const HandleStock = ({
   close,
   visible,
   unit,
@@ -29,7 +29,7 @@ const AddReduceRawMaterial = ({
   sendAddToParent,
   sendReductionToParent,
 }) => {
-  AddReduceRawMaterial.propTypes = {
+  HandleStock.propTypes = {
     visible: PropTypes.bool,
     close: PropTypes.func,
     unit: PropTypes.string,
@@ -45,7 +45,7 @@ const AddReduceRawMaterial = ({
   const [receivedDate, setReceivedDate] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
   const [tabPane, setTabPane] = useState("add");
-  const [editForm, setEditForm] = useState([]); //states for different amount changes
+  const [editForm, setEditForm] = useState([]);
   const [logisticList, setLogisticList] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
 
@@ -416,4 +416,4 @@ const AddReduceRawMaterial = ({
   );
 };
 
-export default AddReduceRawMaterial;
+export default HandleStock;

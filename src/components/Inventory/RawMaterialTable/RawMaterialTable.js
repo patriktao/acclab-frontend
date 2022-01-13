@@ -7,28 +7,25 @@ import {
   Input,
   Button,
   AutoComplete,
-  Tooltip,
-  Modal,
   Typography,
   Dropdown,
   Menu,
+  message,
 } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
 import FilterComponent from "./FilterComponent";
 import moment from "moment";
 import TooltipComponent from "../../General/TooltipComponent";
+import { PlusOutlined, EllipsisOutlined } from "@ant-design/icons";
 import { getPriority } from "../../General/Priority/Priority";
 import { API } from "../../../api";
 import { checkDate } from "../../../helper/Checker";
 import { getPriorityIcon } from "../../General/Priority/Priority";
-import EditRawMaterial from "../EditRawMaterial";
 import { useEditRawMaterial } from "../../../context/edit-raw-material";
-import { EllipsisOutlined } from "@ant-design/icons";
+import EditRawMaterial from "../EditRawMaterial";
 import CreateRawMaterial from "../CreateRawMaterial";
 
-const { Text } = Typography;
-
 const RawMaterialTable = () => {
+  const { Text } = Typography;
   const { Search } = Input;
   const [data, setData] = useState([]);
   const [table, setTable] = useState([]);
@@ -37,8 +34,9 @@ const RawMaterialTable = () => {
   const [counter, setCounter] = useState(0);
   const [filterVisible, setFilterVisible] = useState(false);
   const [createModalVisible, setCreateModalVisible] = useState(false);
-  const [itemNames] = useState([]);
+  const [itemNames, setItemNames] = useState([]);
   const [rowCount, setRowCount] = useState(0);
+  const [firstRender, setFirstRender] = useState(true);
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -46,13 +44,17 @@ const RawMaterialTable = () => {
         setData(res);
         setTable(res);
         setRowCount(res.length);
-        res.forEach((item) => {
-          itemNames.push({
-            value: item.name,
-            name: item.id,
+        if (firstRender) {
+          res.forEach((item) => {
+            itemNames.push({
+              value: item.name,
+              name: item.id,
+            });
           });
-        });
+          setFirstRender(false);
+        }
       });
+
       if (!(rawMaterialTable instanceof Error)) {
         setTableLoading(false);
       }
@@ -76,29 +78,9 @@ const RawMaterialTable = () => {
     setRowCount(data.length);
   };
 
-  const openFilter = () => {
-    setFilterVisible(true);
-  };
-
-  const closeFilter = (e) => {
-    e.stopPropagation();
-    setFilterVisible(false);
-  };
-
-  const openCreateModal = () => {
-    console.log("open");
-    setCreateModalVisible(true);
-  };
-
-  const closeCreateModal = (e) => {
-    e.stopPropagation();
-    setCreateModalVisible(false);
-  };
-
   const handleFilter = (e) => {
     const states = e;
     let count = 0;
-    console.log(e);
 
     // If state is null, convert to empty string so that table can interpret
     for (const [key, value] of e.entries()) {
@@ -144,11 +126,9 @@ const RawMaterialTable = () => {
     setTable(filtered_table);
   };
 
-  /* Raw Material Columns */
   const { openEdit, editVisible } = useEditRawMaterial();
   const [itemData, setItemData] = useState(null);
 
-  /* TODO: Make so that data comes direcly from parent and not through API call */
   const fetchItemData = async (record) => {
     if (record !== null) {
       await API.rawMaterial.fetchMaterial(record.id).then((res) => {
@@ -168,6 +148,28 @@ const RawMaterialTable = () => {
     table[itemIndex].form = form.form;
   };
 
+  const createRawMaterial = (form) => {
+    const newMaterial = table.concat({
+      name: form.name,
+      company: form.brand,
+      country: form.country,
+      total_amount: 0,
+      location: form.location,
+      expiration_date: null,
+    });
+    setTable(newMaterial);
+    setData(newMaterial);
+    message.success(form.name + " has been added to inventory.");
+    test(form);
+  };
+
+  const test = (form) => {
+    const newName = itemNames.concat({
+      value: form.name,
+    });
+    setItemNames(newName);
+  };
+
   const menuItems = (
     <Menu style={{ borderRadius: "4px" }}>
       <Menu.Item key="1" onClick={openEdit} style={{ borderRadius: "4px" }}>
@@ -180,6 +182,7 @@ const RawMaterialTable = () => {
       </Menu.Item>
     </Menu>
   );
+
   const RawMaterialTableColumns = [
     {
       title: "ID",
@@ -307,11 +310,14 @@ const RawMaterialTable = () => {
                 className="table-filter"
                 type="primary"
                 size="large"
-                onClick={openFilter}
+                onClick={() => setFilterVisible(true)}
               >
                 <FilterComponent
                   filterVisible={filterVisible}
-                  closeFilter={closeFilter}
+                  closeFilter={(e) => {
+                    e.stopPropagation();
+                    setFilterVisible(false);
+                  }}
                   handleFilter={handleFilter}
                   handleClear={handleClear}
                 />
@@ -320,7 +326,15 @@ const RawMaterialTable = () => {
             </div>
             <div>
               <div className="search-add">
-                <AutoComplete className="auto-complete" options={itemNames}>
+                <AutoComplete
+                  className="auto-complete"
+                  options={itemNames}
+                  filterOption={(searchText, option) =>
+                    option.value
+                      .toUpperCase()
+                      .indexOf(searchText.toUpperCase()) !== -1
+                  }
+                >
                   <Search
                     className="table-search"
                     placeholder="Search for a raw material..."
@@ -336,12 +350,16 @@ const RawMaterialTable = () => {
                   type="primary"
                   size="large"
                   icon={<PlusOutlined />}
-                  onClick={() => console.log('hej')}
+                  onClick={() => setCreateModalVisible(true)}
                 >
                   Add Raw Material
                   <CreateRawMaterial
                     visible={createModalVisible}
-                    close={closeCreateModal}
+                    close={(e) => {
+                      e.stopPropagation();
+                      setCreateModalVisible(false);
+                    }}
+                    sendChangesToParent={createRawMaterial}
                   />
                 </Button>
               </div>

@@ -65,40 +65,61 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
   /* Image States */
   const [image, setImage] = useState(null);
   const [currentImage, setCurrentImage] = useState(null);
-  useEffect(() => {
-    const fetchData = () => {
-      API.brands.fetchAllCompanies().then((res) => setBrands(res));
-      API.brands.fetchAllCountries().then((res) => setCountries(res));
-      API.locations.fetchLocations().then((res) => setLocations(res));
-      API.rawMaterial.fetchForms().then((res) => setForms(res));
-    };
 
-    const setData = () => {
-      if (data != null) {
-        setId(data.raw_material_id);
-        setName(data.material_name);
-        setBrand(data.company);
-        setCountry(data.country);
-        setUnit(data.unit);
-        setForm(data.form);
-        setLocation(data.location);
-        setFat(data.fat);
-        setCarb(data.carbohydrate);
-        setProtein(data.protein);
-        setSalt(data.salt);
-        setSugar(data.sugar);
-        setFiber(data.fiber);
-        setContent(data.content);
-        setCurrentImage(data.image);
-        setRawMaterialForm(new RawMaterialClass(data));
-        setOldRawMaterial(new RawMaterialClass(data));
-      }
-    };
-    fetchData();
-    setData();
+  useEffect(() => {
+    API.brands.fetchAllCompanies().then((res) => setBrands(res));
+    API.brands.fetchAllCountries().then((res) => setCountries(res));
+    API.locations.fetchLocations().then((res) => setLocations(res));
+    API.rawMaterial.fetchForms().then((res) => setForms(res));
+    if (data != null) {
+      setId(data.raw_material_id);
+      setName(data.material_name);
+      setBrand(data.company);
+      setCountry(data.country);
+      setUnit(data.unit);
+      setForm(data.form);
+      setLocation(data.location);
+      setFat(data.fat);
+      setCarb(data.carbohydrate);
+      setProtein(data.protein);
+      setSalt(data.salt);
+      setSugar(data.sugar);
+      setFiber(data.fiber);
+      setContent(data.content);
+      setCurrentImage(data.image);
+      setRawMaterialForm(new RawMaterialClass(data));
+      setOldRawMaterial(new RawMaterialClass(data));
+    }
   }, [data]);
 
-  const handleOk = async (e) => {
+  const ifExistsInList = (array, object) => {
+    return array.find((e) => e.name === object) === undefined ? false : true;
+  };
+
+  const passRestrictions = () => {
+    if (name === "" || name === null) {
+      message.error("Please type a material name!");
+      return false;
+    } else if (!ifExistsInList(brands, brand)) {
+      message.error("Please select a brand from the list!");
+      return false;
+    } else if (!ifExistsInList(countries, country)) {
+      message.error("Please select a country from the list!");
+      return false;
+    } else if (!ifExistsInList(locations, location)) {
+      message.error("Please select a storage location");
+      return false;
+    }
+    return true;
+  };
+
+  const handleOk = (e) => {
+    if (passRestrictions()) {
+      handleEdit(e);
+    }
+  };
+
+  const handleEdit = async (e) => {
     rawMaterialForm.name = name;
     rawMaterialForm.brand = brand;
     rawMaterialForm.country = country;
@@ -115,7 +136,10 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
     /* Does comparison actually work? */
     if (!isEqual(rawMaterialForm, oldRawMaterial)) {
       await handleImageAPI().then(() => {
-        handleChangesAPI();
+        API.rawMaterial.editMaterial(
+          data.raw_material_id,
+          rawMaterialForm.toJsonObject()[0]
+        );
         sendChangesToParent(rawMaterialForm);
       });
     }
@@ -123,8 +147,8 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
   };
 
   const handleImageAPI = async () => {
-    if (image === null && rawMaterialForm.image === "") {
-      console.log("image not changed");
+    if (image === null && rawMaterialForm.image !== "") {
+      console.log("no changes to image");
     } else if (image === null) {
       await API.rawMaterial.deleteImage(id).then((res) => {
         console.log("deleting image");
@@ -145,31 +169,6 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
         console.log(rawMaterialForm.image);
       });
     }
-  };
-
-  const handleChangesAPI = () => {
-    API.rawMaterial.editMaterial(
-      data.raw_material_id,
-      rawMaterialForm.toJsonObject()[0]
-    );
-  };
-
-  const openLocationModal = () => {
-    setLocationModalVisible(true);
-  };
-
-  const closeLocationModal = (e) => {
-    e.stopPropagation();
-    setLocationModalVisible(false);
-  };
-
-  const openBrandModal = () => {
-    setBrandModalVisible(true);
-  };
-
-  const closeBrandModal = (e) => {
-    e.stopPropagation();
-    setBrandModalVisible(false);
   };
 
   const onFinish = (values) => {
@@ -305,11 +304,17 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
                             />
                           </AutoComplete>
                         </Form.Item>
-                        <Button className="button" onClick={openBrandModal}>
+                        <Button
+                          className="button"
+                          onClick={() => setBrandModalVisible(true)}
+                        >
                           <PlusOutlined />
                           <EditBrands
                             visible={brandModalVisible}
-                            close={closeBrandModal}
+                            close={(e) => {
+                              e.stopPropagation();
+                              setBrandModalVisible(false);
+                            }}
                             sendChangesToParent={setCurrentBrands}
                           />
                         </Button>
@@ -385,11 +390,17 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
                       placeholder="Select here..."
                       onChange={(e) => e !== location && setLocation(e)}
                     />
-                    <Button className="button" onClick={openLocationModal}>
+                    <Button
+                      className="button"
+                      onClick={() => setBrandModalVisible(true)}
+                    >
                       <PlusOutlined />
                       <EditLocations
                         visible={locationModalVisible}
-                        close={closeLocationModal}
+                        close={(e) => {
+                          e.stopPropagation();
+                          setBrandModalVisible(false);
+                        }}
                         sendChangesToParent={setCurrentLocations}
                       />
                     </Button>

@@ -46,9 +46,9 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
   const [name, setName] = useState("");
   const [brand, setBrand] = useState("");
   const [country, setCountry] = useState("");
-  const [unit, setUnit] = useState("");
-  const [form, setForm] = useState("");
-  const [location, setLocation] = useState("");
+  const [unit, setUnit] = useState("g");
+  const [form, setForm] = useState("Liquid");
+  const [location, setLocation] = useState("Ambient");
   const [fat, setFat] = useState(0);
   const [carb, setCarb] = useState(0);
   const [protein, setProtein] = useState(0);
@@ -61,26 +61,54 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
 
   /* Image States */
   const [image, setImage] = useState(null);
-  const [currentImage, setCurrentImage] = useState(null);
+  const [currentImage] = useState("");
 
   useEffect(() => {
-    const fetchData = () => {
-      API.brands.fetchAllCompanies().then((res) => setBrands(res));
-      API.brands.fetchAllCountries().then((res) => setCountries(res));
-      API.locations.fetchLocations().then((res) => setLocations(res));
-      API.rawMaterial.fetchForms().then((res) => setForms(res));
-    };
-
-    const setData = () => {
-      setRawMaterialForm(new RawMaterialClass());
-      setOldRawMaterial(new RawMaterialClass());
-    };
-
-    fetchData();
-    setData();
+    API.brands.fetchAllCompanies().then((res) => setBrands(res));
+    API.brands.fetchAllCountries().then((res) => setCountries(res));
+    API.locations.fetchLocations().then((res) => setLocations(res));
+    API.rawMaterial.fetchForms().then((res) => setForms(res));
+    setRawMaterialForm(new RawMaterialClass());
   }, []);
 
+  const onFinish = (values) => {
+    console.log("Success:", values);
+    message.success("Succesfully edited raw material");
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+    message.success("Failed editing raw material");
+  };
+
   const handleOk = async (e) => {
+    if (passRestrictions()) {
+      createMaterial(e);
+    }
+  };
+
+  const passRestrictions = () => {
+    if (name === "" || name === null) {
+      message.error("Please type a material name!");
+      return false;
+    } else if (!ifExistsInList(brands, brand)) {
+      message.error("Please select a brand from the list!");
+      return false;
+    } else if (!ifExistsInList(countries, country)) {
+      message.error("Please select a country from the list!");
+      return false;
+    } else if (!ifExistsInList(locations, location)) {
+      message.error("Please select a storage location");
+      return false;
+    }
+    return true;
+  };
+  
+  const ifExistsInList = (array, object) => {
+    return array.find((e) => e.name === object) === undefined ? false : true;
+  };
+
+  const createMaterial = (e) => {
     rawMaterialForm.name = name;
     rawMaterialForm.brand = brand;
     rawMaterialForm.country = country;
@@ -94,69 +122,29 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
     rawMaterialForm.sugar = sugar;
     rawMaterialForm.fiber = fiber;
     rawMaterialForm.content = content;
-    /* Does comparison actually work? */
-    if (!isEqual(rawMaterialForm, oldRawMaterial)) {
-      await handleChangesAPI().then(() => {
-        handleImageAPI();
-        sendChangesToParent(rawMaterialForm);
-      });
-    }
+    console.log(rawMaterialForm);
+    sendChangesToParent(rawMaterialForm);
+    /*     await handleImageAPI().then(() => {
+      handleChangesAPI();
+    }); */
     close(e);
   };
 
   const handleImageAPI = async () => {
-    if (image === null && rawMaterialForm.image === "") {
-      console.log("image not changed");
-    } else if (image === null) {
-      await API.rawMaterial.deleteImage(id).then((res) => {
-        console.log("deleting image");
-        rawMaterialForm.image = "";
-        res === "success"
-          ? message.success("Image successfully deleted.")
-          : message.error("Failed to delete image");
-      });
-    } else if (rawMaterialForm.image === "") {
+    if (rawMaterialForm.image === "") {
       await API.rawMaterial.uploadImage(image, id).then((res) => {
         console.log("uploading picture");
         rawMaterialForm.image = res;
-      });
-    } else {
-      await API.rawMaterial.updateImage(image, id).then((res) => {
-        console.log("updating picture");
-        rawMaterialForm.image = res;
-        console.log(rawMaterialForm.image);
       });
     }
   };
 
   const handleChangesAPI = () => {};
 
-  const openLocationModal = () => {
-    setLocationModalVisible(true);
-  };
+  /* Functions to children*/
 
-  const closeLocationModal = (e) => {
-    e.stopPropagation();
-    setLocationModalVisible(false);
-  };
-
-  const openBrandModal = () => {
-    setBrandModalVisible(true);
-  };
-
-  const closeBrandModal = (e) => {
-    e.stopPropagation();
-    setBrandModalVisible(false);
-  };
-
-  const onFinish = (values) => {
-    console.log("Success:", values);
-    message.success("Succesfully edited raw material");
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-    message.success("Failed editing raw material");
+  const handleImage = (file) => {
+    file ? setImage(file) : setImage(null);
   };
 
   const setCurrentBrands = (list) => {
@@ -165,10 +153,6 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
 
   const setCurrentLocations = (list) => {
     setLocations(list);
-  };
-
-  const handleImage = (file) => {
-    file ? setImage(file) : setImage(null);
   };
 
   return (
@@ -205,7 +189,7 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
       >
         <section className="CreateRawMaterial">
           <section className="GeneralInformation">
-            <h1>Edit {name}</h1>
+            <h1>Create {name}</h1>
             <div className="rows">
               <div className="image-general-information">
                 <div className="column-wrapper">
@@ -266,11 +250,17 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
                             />
                           </AutoComplete>
                         </Form.Item>
-                        <Button className="button" onClick={openBrandModal}>
+                        <Button
+                          className="button"
+                          onClick={() => setBrandModalVisible(true)}
+                        >
                           <PlusOutlined />
                           <EditBrands
                             visible={brandModalVisible}
-                            close={closeBrandModal}
+                            close={(e) => {
+                              e.stopPropagation();
+                              setBrandModalVisible(false);
+                            }}
                             sendChangesToParent={setCurrentBrands}
                           />
                         </Button>
@@ -346,11 +336,17 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
                       placeholder="Select here..."
                       onChange={(e) => e !== location && setLocation(e)}
                     />
-                    <Button className="button" onClick={openLocationModal}>
+                    <Button
+                      className="button"
+                      onClick={() => setLocationModalVisible(true)}
+                    >
                       <PlusOutlined />
                       <EditLocations
                         visible={locationModalVisible}
-                        close={closeLocationModal}
+                        close={(e) => {
+                          e.stopPropagation();
+                          setLocationModalVisible(false);
+                        }}
                         sendChangesToParent={setCurrentLocations}
                       />
                     </Button>

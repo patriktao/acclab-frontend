@@ -41,7 +41,7 @@ const FilterComponent = ({
   const [form, setForm] = useState();
   const [receivedDate, setReceivedDate] = useState(null);
   const [expirationDate, setExpirationDate] = useState(null);
-  const [priority, setPriority] = useState();
+  const [priority, setPriority] = useState('');
 
   /* Fetches Data, the select components have data types {value, name} and require different method to handle */
   useEffect(() => {
