@@ -57,11 +57,9 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
   const [fiber, setFiber] = useState(0);
   const [content, setContent] = useState("");
   const [rawMaterialForm, setRawMaterialForm] = useState();
-  const [oldRawMaterial, setOldRawMaterial] = useState();
 
   /* Image States */
   const [image, setImage] = useState(null);
-  const [currentImage] = useState("");
 
   useEffect(() => {
     API.brands.fetchAllCompanies().then((res) => setBrands(res));
@@ -103,12 +101,12 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
     }
     return true;
   };
-  
+
   const ifExistsInList = (array, object) => {
     return array.find((e) => e.name === object) === undefined ? false : true;
   };
 
-  const createMaterial = (e) => {
+  const createMaterial = async (e) => {
     rawMaterialForm.name = name;
     rawMaterialForm.brand = brand;
     rawMaterialForm.country = country;
@@ -122,16 +120,17 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
     rawMaterialForm.sugar = sugar;
     rawMaterialForm.fiber = fiber;
     rawMaterialForm.content = content;
-    console.log(rawMaterialForm);
-    sendChangesToParent(rawMaterialForm);
-    /*     await handleImageAPI().then(() => {
-      handleChangesAPI();
-    }); */
+    await createAPI().then((res) => {
+      if (res !== "failed") {
+        imageAPI(res);
+        sendChangesToParent(rawMaterialForm);
+      }
+    });
     close(e);
   };
 
-  const handleImageAPI = async () => {
-    if (rawMaterialForm.image === "") {
+  const imageAPI = async () => {
+    if (image !== undefined || image !== null) {
       await API.rawMaterial.uploadImage(image, id).then((res) => {
         console.log("uploading picture");
         rawMaterialForm.image = res;
@@ -139,7 +138,16 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
     }
   };
 
-  const createAPI = () => {};
+  const createAPI = async () => {
+    let response = await API.rawMaterial
+      .create(rawMaterialForm.toJsonObject())
+      .then((res) => {
+        rawMaterialForm.id = res;
+        setId(res);
+        console.log(res);
+      });
+    return response;
+  };
 
   /* Functions to children*/
 

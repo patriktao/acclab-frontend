@@ -47,7 +47,7 @@ const RawMaterialTable = () => {
         if (firstRender) {
           res.forEach((item) => {
             itemNames.push({
-              value: item.name,
+              value: item.material_name,
               name: item.id,
             });
           });
@@ -66,7 +66,7 @@ const RawMaterialTable = () => {
     setSearchText(input);
     setTable(
       data.filter((item) =>
-        item.name.toLowerCase().includes(input.toLowerCase())
+        item.material_name.toLowerCase().includes(input.toLowerCase())
       )
     );
   };
@@ -80,7 +80,6 @@ const RawMaterialTable = () => {
 
   const handleFilter = (e) => {
     const states = e;
-    let count = 0;
 
     // Tables can only interpret empty strings and not null values, we therefore have to convert it.
     let count = 0;
@@ -130,6 +129,7 @@ const RawMaterialTable = () => {
   const { openEdit, editVisible } = useEditRawMaterial();
   const [itemData, setItemData] = useState(null);
 
+  /* TODO: Fix so it comes from the TABLE API fetch and not its own */
   const fetchItemData = async (record) => {
     if (record !== null) {
       await API.rawMaterial
@@ -144,7 +144,7 @@ const RawMaterialTable = () => {
     let itemIndex = table.findIndex(
       (item) => item.raw_material_id === form.data.raw_material_id
     );
-    table[itemIndex].name = form.name;
+    table[itemIndex].material_name = form.name;
     table[itemIndex].country = form.country;
     table[itemIndex].company = form.brand;
     table[itemIndex].location = form.location;
@@ -153,17 +153,17 @@ const RawMaterialTable = () => {
 
   const createRawMaterial = (form) => {
     const newMaterial = table.concat({
-      name: form.name,
+      raw_material_id: form.id,
+      material_name: form.name,
       company: form.brand,
       country: form.country,
       total_amount: 0,
       location: form.location,
       expiration_date: null,
     });
+    console.log(newMaterial);
     setTable(newMaterial);
     setData(newMaterial);
-    message.success(form.name + " has been added to inventory.");
-    test(form);
   };
 
   const test = (form) => {
@@ -197,7 +197,9 @@ const RawMaterialTable = () => {
       dataIndex: "material_name",
       key: "material_name",
       render: (material_name, record) => (
-        <Link to={"/inventory/rawmaterial/" + record.raw_material_id}>{material_name}</Link>
+        <Link to={"/inventory/rawmaterial/" + record.raw_material_id}>
+          {material_name}
+        </Link>
       ),
       sorter: (a, b) => a.material_name.localeCompare(b.material_name),
     },
@@ -382,6 +384,7 @@ const RawMaterialTable = () => {
           dataSource={table}
           rowKey={"id"}
           pagination={{ pageSize: 8, position: ["bottomCenter"] }}
+          size="middle"
         />
       </Spin>
     </div>

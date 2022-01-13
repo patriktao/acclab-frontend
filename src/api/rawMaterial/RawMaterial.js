@@ -1,3 +1,4 @@
+import { message } from "antd";
 import axios from "axios";
 
 export const fetchCompanies = async () => {
@@ -159,33 +160,33 @@ export const disableStock = async (id, data) => {
 };
 
 export const updateTotalAmount = async (id, amount) => {
-  await axios
-    .put(`/raw_material_logistics/${id}/total_amount`, { amount: amount })
-    .catch((err) => {
-      if (err.response) {
-        console.log(`Error: ${err.message}`);
-      }
+  try {
+    await axios.put(`/raw_material_logistics/${id}/total_amount`, {
+      amount: amount,
     });
+  } catch (err) {
+    console.log(`Error: ${err.message}`);
+    message.error("Failed updating the total amount.");
+  }
 };
 
 export const uploadImage = async (image, id) => {
-  const formData = new FormData();
-  formData.append("image", image);
-  let response = null;
-  await axios
-    .post(`/upload/raw_materials/${id}`, formData, {
-      headers: { "Content-type": "multipart/form-data" },
-    })
-    .catch((err) => {
-      if (err.response) {
-        console.log(`Error: ${err.message}`);
-        return null;
-      }
-    })
-    .then((res) => {
-      response = res;
-    });
-  return response.data.Location;
+  try {
+    const formData = new FormData();
+    formData.append("image", image);
+    let response = null;
+    await axios
+      .post(`/upload/raw_materials/${id}`, formData, {
+        headers: { "Content-type": "multipart/form-data" },
+      })
+      .then((res) => {
+        response = res;
+      });
+    return response.data.Location;
+  } catch (err) {
+    console.log(`Error: ${err.message}`);
+    return null;
+  }
 };
 
 export const deleteImage = async (id) => {
@@ -193,10 +194,8 @@ export const deleteImage = async (id) => {
     const res = await axios.delete(`/upload/raw_materials/${id}`);
     return res.data.message;
   } catch (err) {
-    if (err.response) {
-      console.log(`Error: ${err.message}`);
-      return null;
-    }
+    console.log(`Error: ${err.message}`);
+    return null;
   }
 };
 
@@ -232,4 +231,19 @@ export const adjustExpirationDate = async (id) => {
   await axios.put(`/raw_material/${id}/adjustExpirationDate`).catch((err) => {
     console.log(`Error: ${err.message}`);
   });
+};
+
+export const create = async (form) => {
+  try {
+    let response = 0;
+    await axios.post(`/raw_material/create`, form).then((res) => {
+      response = res.data.raw_material_id[0];
+    });
+    message.success(form.name + " has been added to inventory.");
+    return response;
+  } catch (err) {
+    console.log(`Error: ${err.message}`);
+    message.error("Unable to add new raw material.");
+    return "failed";
+  }
 };

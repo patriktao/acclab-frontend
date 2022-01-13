@@ -18,6 +18,7 @@ class RawMaterialClass {
     image: PropTypes.string,
   };
 
+  #id = null;
   #name = "";
   #brand = "";
   #country = "";
@@ -37,6 +38,7 @@ class RawMaterialClass {
   constructor(data) {
     if (data !== undefined && data !== null) {
       this.#data = data;
+      this.#id = data.raw_material_id;
       this.#name = data.material_name;
       this.#brand = data.company;
       this.#country = data.country;
@@ -57,29 +59,32 @@ class RawMaterialClass {
   /* Return an Json Object of the data */
 
   toJsonObject() {
-    return [
-      {
-        name: this.#name,
-        company: this.#brand,
-        country: this.#country,
-        unit: this.#unit,
-        form: this.#form,
-        location: this.#location,
-        fat: this.#fat,
-        carb: this.#carb,
-        protein: this.#protein,
-        salt: this.#salt,
-        sugar: this.#sugar,
-        fiber: this.#fiber,
-        content: this.#content,
-        image: this.image,
-      },
-    ];
+    return {
+      id: this.#id,
+      name: this.#name,
+      company: this.#brand,
+      country: this.#country,
+      unit: this.#unit,
+      form: this.#form,
+      location: this.#location,
+      fat: this.#fat,
+      carb: this.#carb,
+      protein: this.#protein,
+      salt: this.#salt,
+      sugar: this.#sugar,
+      fiber: this.#fiber,
+      content: this.#content,
+      image: this.image,
+    };
   }
 
   /* 
     Returns the private variables
   */
+
+  get id() {
+    return this.#id;
+  }
 
   get name() {
     return this.#name;
@@ -144,6 +149,17 @@ class RawMaterialClass {
   /* 
     Set functions
   */
+
+  set id(input) {
+    this.propTypes = {
+      input: PropTypes.number,
+    };
+    if (input >= 0) {
+      this.#id = input;
+    }
+    return this;
+  }
+
   set name(input) {
     this.propTypes = {
       input: PropTypes.string,

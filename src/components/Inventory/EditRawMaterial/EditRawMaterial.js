@@ -63,7 +63,7 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
   const [oldRawMaterial, setOldRawMaterial] = useState();
 
   /* Image States */
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState("");
   const [currentImage, setCurrentImage] = useState(null);
 
   useEffect(() => {
@@ -133,47 +133,42 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
     rawMaterialForm.sugar = sugar;
     rawMaterialForm.fiber = fiber;
     rawMaterialForm.content = content;
-    /* Does comparison actually work? */
-    if (!isEqual(rawMaterialForm, oldRawMaterial)) {
-      await handleImageAPI().then(() => {
+    await handleImageAPI().then(() => {
+      if (
+        !isEqual(rawMaterialForm.toJsonObject(), oldRawMaterial.toJsonObject())
+      ) {
         API.rawMaterial.editMaterial(
           data.raw_material_id,
-          rawMaterialForm.toJsonObject()[0]
+          rawMaterialForm.toJsonObject()
         );
         sendChangesToParent(rawMaterialForm);
-      });
-    }
-    closeEdit(e);
+        message.success("Successfully edited raw material.");
+      } else {
+        message.success("No changes made.");
+      }
+      closeEdit(e);
+    });
   };
 
   const handleImageAPI = async () => {
-    if (image === null && rawMaterialForm.image !== "") {
-      console.log("no changes to image");
-    } else if (image === null) {
-      await API.rawMaterial.deleteImage(id).then((res) => {
-        console.log("deleting image");
-        rawMaterialForm.image = "";
-        res === "success"
-          ? message.success("Image successfully deleted.")
-          : message.error("Failed to delete image");
-      });
-    } else if (rawMaterialForm.image === "") {
+    if (image === "") {
+      return;
+    } else if (image !== null && rawMaterialForm.image === "") {
       await API.rawMaterial.uploadImage(image, id).then((res) => {
         console.log("uploading picture");
         rawMaterialForm.image = res;
       });
-    } else {
+    } else if (image !== null && rawMaterialForm.image !== "") {
       await API.rawMaterial.updateImage(image, id).then((res) => {
         console.log("updating picture");
         rawMaterialForm.image = res;
-        console.log(rawMaterialForm.image);
+      });
+    } else if (image === null && rawMaterialForm.image !== "") {
+      await API.rawMaterial.deleteImage(id).then(() => {
+        console.log("deleting picture");
+        rawMaterialForm.image = "";
       });
     }
-  };
-
-  const onFinish = (values) => {
-    console.log("Success:", values);
-    message.success("Succesfully edited raw material");
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -218,22 +213,21 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
             <Button key="submit" onClick={(e) => closeEdit(e)}>
               Cancel
             </Button>
-            <Popconfirm
+            {/*             <Popconfirm
               title={"Are you sure?"}
               onConfirm={handleOk}
               okText="Yes"
               cancelText="No"
-            >
-              <Button key="submit" type="primary">
-                OK
-              </Button>
-            </Popconfirm>
+            > */}
+            <Button key="submit" type="primary" onClick={handleOk}>
+              OK
+            </Button>
+            {/* </Popconfirm> */}
           </div>
         </section>,
       ]}
     >
       <Form
-        onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         initialValues={{
           name: name,

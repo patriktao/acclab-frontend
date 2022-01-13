@@ -56,8 +56,9 @@ const ExpiringTable = () => {
           className="table-header"
           columns={ExpiringColumns.filter((col) => col.dataIndex !== "id")}
           dataSource={data}
-          pagination={{ pageSize: 8 }}
+          pagination={{ pageSize: 7 }}
           rowKey={'name'}
+          size="middle"
         />
       </Spin>
     </div>
