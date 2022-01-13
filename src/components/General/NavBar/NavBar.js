@@ -33,8 +33,8 @@ const NavBar = () => {
 
   const menu = (
     <Menu style={{ borderRadius: "4px" }}>
-      <Menu.Item style={{ borderRadius: "4px" }}>
-        <Text onClick={handleLogout}>Logout</Text>
+      <Menu.Item style={{ borderRadius: "4px" }} onClick={handleLogout}>
+        <Text>Logout</Text>
       </Menu.Item>
     </Menu>
   );
