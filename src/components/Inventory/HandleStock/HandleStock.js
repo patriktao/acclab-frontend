@@ -17,6 +17,7 @@ import moment from "moment";
 import { API } from "../../../api";
 import { getPriorityIcon } from "../../General/Priority";
 import { SuccessNotification } from "../../General/Notifications";
+import { isEqual } from "lodash/fp";
 
 const { TabPane } = Tabs;
 
@@ -46,6 +47,7 @@ const HandleStock = ({
   const [expirationDate, setExpirationDate] = useState("");
   const [tabPane, setTabPane] = useState("add");
   const [editForm, setEditForm] = useState([]);
+  const [oldForm, setOldForm] = useState([]);
   const [logisticList, setLogisticList] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
 
@@ -64,6 +66,7 @@ const HandleStock = ({
         });
         setTotalAmount(e.total_amount);
       });
+      setOldForm(editForm);
     }
   }, [logisticList, logistics, editForm]);
 
@@ -73,7 +76,13 @@ const HandleStock = ({
         addFormRestrictions(e);
         break;
       case "reduce":
-        reduceStock(e);
+        if (!isEqual(editForm, oldForm)) {
+          reduceStock(e);
+          message.success("You have succesfully reduced stocks");
+        } else {
+          message.success("No changes made.");
+          close(e);
+        }
         break;
       default:
         console.log("reached default");
@@ -360,7 +369,7 @@ const HandleStock = ({
       ]}
     >
       <section className="AddReduceRawMaterial">
-        <Tabs tabPosition={"left"} onTabClick={(key) => changeTabPane(key)}>
+        <Tabs tabPosition={"right"} onTabClick={(key) => changeTabPane(key)}>
           <TabPane tab="Add" key="1">
             <section className="add">
               <h1>Add Stock</h1>

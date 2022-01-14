@@ -58,7 +58,7 @@ const ExpiringTable = () => {
           dataSource={data}
           pagination={{ pageSize: 7 }}
           rowKey={'name'}
-          size="middle"
+          size="small"
         />
       </Spin>
     </div>

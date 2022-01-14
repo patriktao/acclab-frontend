@@ -374,7 +374,7 @@ const RawMaterialTable = () => {
       </div>
       <Spin spinning={tableLoading} tip="Loading..." size="large">
         <Table
-          className="table-header"
+          className="table-header" 
           columns={RawMaterialTableColumns.filter(
             (col) =>
               col.dataIndex !== "form" &&
@@ -384,7 +384,7 @@ const RawMaterialTable = () => {
           dataSource={table}
           rowKey={"id"}
           pagination={{ pageSize: 8, position: ["bottomCenter"] }}
-          size="middle"
+          size="small"
         />
       </Spin>
     </div>

@@ -91,7 +91,7 @@ const ShoppingTable = () => {
           dataSource={shoppingList}
           pagination={{ pageSize: 8 }}
           rowKey={"id"}
-          size="middle"
+          size="small"
         />
       </Spin>
     </div>

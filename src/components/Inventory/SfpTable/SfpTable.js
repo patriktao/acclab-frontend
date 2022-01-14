@@ -132,7 +132,7 @@ const SfpTable = () => {
           dataSource={table}
           rowKey={"id"}
           pagination={{ pageSize: 8, position: ["bottomCenter"] }}
-          size="middle"
+          size="small"
         />
       </Spin>
     </div>

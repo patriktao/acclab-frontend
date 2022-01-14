@@ -213,16 +213,9 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
             <Button key="submit" onClick={(e) => closeEdit(e)}>
               Cancel
             </Button>
-            {/*             <Popconfirm
-              title={"Are you sure?"}
-              onConfirm={handleOk}
-              okText="Yes"
-              cancelText="No"
-            > */}
             <Button key="submit" type="primary" onClick={handleOk}>
               OK
             </Button>
-            {/* </Popconfirm> */}
           </div>
         </section>,
       ]}
