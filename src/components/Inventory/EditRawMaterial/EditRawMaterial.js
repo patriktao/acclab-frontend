@@ -96,6 +96,12 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
     return array.find((e) => e.name === object) === undefined ? false : true;
   };
 
+  const handleOk = (e) => {
+    if (passRestrictions() /* && imageRestrictions() */) {
+      handleEdit(e);
+    }
+  };
+
   const passRestrictions = () => {
     if (name === "" || name === null) {
       message.error("Please type a material name!");
@@ -111,12 +117,6 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
       return false;
     }
     return true;
-  };
-
-  const handleOk = (e) => {
-    if (passRestrictions()) {
-      handleEdit(e);
-    }
   };
 
   const handleEdit = async (e) => {
@@ -146,7 +146,7 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
       } else {
         message.success("No changes made.");
       }
-      closeEdit(e);
+      closeEdit(e, id);
     });
   };
 
@@ -185,6 +185,7 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
   };
 
   const handleImage = (file) => {
+    console.log("reached");
     file ? setImage(file) : setImage(null);
   };
 
@@ -195,7 +196,7 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
       maskClosable={false}
       centered
       visible={visible}
-      onCancel={(e) => closeEdit(e)}
+      onCancel={(e) => closeEdit(e, id)}
       width={"950px"}
       footer={[
         <section className="edit-raw-material-footer">
@@ -210,7 +211,7 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
             </Popconfirm>
           </div>
           <div>
-            <Button key="submit" onClick={(e) => closeEdit(e)}>
+            <Button key="submit" onClick={(e) => closeEdit(e, id)}>
               Cancel
             </Button>
             <Button key="submit" type="primary" onClick={handleOk}>

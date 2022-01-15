@@ -131,12 +131,12 @@ const RawMaterial = (props) => {
                 type="primary"
                 size="large"
                 icon={<EditOutlined />}
-                onClick={() => openEdit()}
+                onClick={() => openEdit(id)}
               >
                 Edit
                 <EditRawMaterial
-                  visible={editVisible}
-                  close={(e) => closeEdit(e)}
+                  visible={editVisible[id]}
+                  close={(e) => closeEdit(e, id)}
                   data={materialData[0]}
                   sendChangesToParent={handleEdit}
                 />

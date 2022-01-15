@@ -1,17 +1,18 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
+import { API } from "../api";
 
 const RawMaterialContext = createContext({});
 
 const EditRawMaterialProvider = (props) => {
-  const [editVisible, setEditVisible] = useState(false);
+  const [editVisible, setEditVisible] = useState({});
 
-  const openEdit = () => {
-    setEditVisible(true);
+  const openEdit = (id) => {
+    setEditVisible({ [id]: true });
   };
-  
-  const closeEdit = (e) => {
+
+  const closeEdit = (e, id) => {
     e.stopPropagation();
-    setEditVisible(false);
+    setEditVisible({ [id]: false });
   };
 
   const editContextCalue = {

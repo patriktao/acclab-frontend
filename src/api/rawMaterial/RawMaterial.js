@@ -173,11 +173,18 @@ export const updateTotalAmount = async (id, amount) => {
 export const uploadImage = async (image, id) => {
   try {
     const formData = new FormData();
+    console.log(image);
     formData.append("image", image);
     let response = null;
     await axios
       .post(`/upload/raw_materials/${id}`, formData, {
         headers: { "Content-type": "multipart/form-data" },
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.log(error.response);
+          console.log("error", error.message);
+        }
       })
       .then((res) => {
         response = res;

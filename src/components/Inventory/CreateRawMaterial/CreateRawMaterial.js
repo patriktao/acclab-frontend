@@ -198,7 +198,7 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
       >
         <section className="CreateRawMaterial">
           <section className="GeneralInformation">
-            <h1>Create {name}</h1>
+            <h1>Add a new raw material</h1>
             <div className="rows">
               <div className="image-general-information">
                 <div className="column-wrapper">

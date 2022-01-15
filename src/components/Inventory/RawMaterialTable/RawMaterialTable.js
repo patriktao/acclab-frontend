@@ -10,7 +10,6 @@ import {
   Typography,
   Dropdown,
   Menu,
-  message,
 } from "antd";
 import FilterComponent from "./FilterComponent";
 import moment from "moment";
@@ -129,15 +128,8 @@ const RawMaterialTable = () => {
   const { openEdit, editVisible } = useEditRawMaterial();
   const [itemData, setItemData] = useState(null);
 
-  /* TODO: Fix so it comes from the TABLE API fetch and not its own */
-  const fetchItemData = async (record) => {
-    if (record !== null) {
-      await API.rawMaterial
-        .fetchMaterial(record.raw_material_id)
-        .then((res) => {
-          setItemData(res[0]);
-        });
-    }
+  const fetchItemData = (record) => {
+    setItemData(record);
   };
 
   const handleRawMaterialEdit = (form) => {
@@ -166,6 +158,7 @@ const RawMaterialTable = () => {
     setData(newMaterial);
   };
 
+  /* TODO: bug, can't add item to searchList and table simultaniously */
   const test = (form) => {
     const newName = itemNames.concat({
       value: form.name,
@@ -173,18 +166,24 @@ const RawMaterialTable = () => {
     setItemNames(newName);
   };
 
-  const menuItems = (
-    <Menu style={{ borderRadius: "4px" }}>
-      <Menu.Item key="1" onClick={openEdit} style={{ borderRadius: "4px" }}>
-        <Text> Edit item </Text>
-        <EditRawMaterial
-          visible={editVisible}
-          data={itemData}
-          sendChangesToParent={handleRawMaterialEdit}
-        />
-      </Menu.Item>
-    </Menu>
-  );
+  const menuItems = (record) => {
+    return (
+      <Menu style={{ borderRadius: "4px" }}>
+        <Menu.Item
+          key="1"
+          onClick={() => openEdit(record.raw_material_id)}
+          style={{ borderRadius: "4px" }}
+        >
+          <Text> Edit item </Text>
+          <EditRawMaterial
+            visible={editVisible[record.raw_material_id]}
+            data={itemData}
+            sendChangesToParent={handleRawMaterialEdit}
+          />
+        </Menu.Item>
+      </Menu>
+    );
+  };
 
   const RawMaterialTableColumns = [
     {
@@ -269,9 +268,9 @@ const RawMaterialTable = () => {
           }}
         >
           <Dropdown
-            overlay={menuItems}
+            overlay={() => menuItems(record)}
             placement="bottomCenter"
-            trigger={"hover"}
+            trigger="hover"
           >
             <Button
               className="edit-button"
@@ -374,7 +373,7 @@ const RawMaterialTable = () => {
       </div>
       <Spin spinning={tableLoading} tip="Loading..." size="large">
         <Table
-          className="table-header" 
+          className="table-header"
           columns={RawMaterialTableColumns.filter(
             (col) =>
               col.dataIndex !== "form" &&
