@@ -20,25 +20,6 @@ export const fetchCompanies = async () => {
   }
 };
 
-export const fetchForms = async () => {
-  try {
-    const response = await axios.get("/material_forms");
-    const formsArray = [];
-    response.data.forEach((item) => {
-      formsArray.push({
-        value: item.form,
-        name: item.form,
-      });
-    });
-    return formsArray.sort((a, b) => a.name.localeCompare(b.name));
-  } catch (err) {
-    if (err.response) {
-      console.log(`Error: ${err.message}`);
-      return [];
-    }
-  }
-};
-
 export const fetchMaterial = async (id) => {
   try {
     const response = await axios.get(`/raw_material/${id}`);

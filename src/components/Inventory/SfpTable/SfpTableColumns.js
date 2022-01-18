@@ -1,6 +1,7 @@
 import moment from "moment";
 import { Button, Tooltip } from "antd";
 import { EllipsisOutlined } from "@ant-design/icons";
+import { getPriorityIcon } from "../../General/Priority/Priority";
 
 export const sfp_columns = [
   {
@@ -10,8 +11,8 @@ export const sfp_columns = [
   },
   {
     title: "Item name",
-    dataIndex: "name",
-    key: "name",
+    dataIndex: "sfp_name",
+    key: "sfp_name",
     render: (text) => <a>{text}</a>,
     sorter: (a, b) => a.name.localeCompare(b.name),
   },
@@ -28,9 +29,9 @@ export const sfp_columns = [
     sorter: true,
   },
   {
-    title: "Amount",
-    dataIndex: "amount",
-    key: "amount",
+    title: "Amount (g/unit)",
+    dataIndex: "total_amount",
+    key: "total_amount",
     sorter: (a, b) => a.amount - b.amount,
   },
   {
@@ -57,9 +58,10 @@ export const sfp_columns = [
   },
   {
     title: "Priority",
-    dataIndex: "priority",
-    key: "priority",
-    sorter: (a, b) => a.priority.localeCompare(b.priority),
+    sorter: (a, b) =>
+      moment(a.expiration_date).format("YYYYMMDD") -
+      moment(b.expiration_date).format("YYYYMMDD"),
+    render: (priority, record) => getPriorityIcon(record.expiration_date),
   },
   {
     title: "Edit",

@@ -4,64 +4,96 @@ import { sfp_columns } from "./SfpTableColumns";
 import { Table, Spin, Input, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import TooltipComponent from "../../General/TooltipComponent";
-import FilterComponent from "../RawMaterialTable/FilterComponent";
 import { AutoComplete } from "antd";
+import SfpFilter from "./SfpFilter";
 import moment from "moment";
+import { checkDate } from "../../../helper/Checker";
+import { getPriority } from "../../General/Priority/Priority";
 
 const { Search } = Input;
 
 const axios = require("axios");
 
 const SfpTable = () => {
-  /* Fetching all raw materials */
   const [tableLoading, setTableLoading] = useState(true);
-  const [searchText, searchedColumn] = useState("");
+  const [searchText, setSearchText] = useState("");
   const [data, setData] = useState([]);
   const [table, setTable] = useState([]);
   const [counter, setCounter] = useState(0);
   const [filterVisible, setFilterVisible] = useState(false);
   const [itemNames] = useState([]);
   const [rowCount, setRowCount] = useState(0);
+  const [activeFilters, setActiveFilters] = useState(0);
 
   useEffect(() => {
     const fetchTable = async () => {
-      try {
-        const response = await axios.get("/sfp_table") || [];
-        setTable(response.data);
-        setTableLoading(false);
-      } catch (err) {
-        if (err.response) {
-          console.log(err.response);
-        } else {
-          console.log(`Error: ${err.message}`);
-        }
-        setTableLoading(true);
-      }
+      const response = (await axios.get("/sfp_table")) || [];
+      setTable(response.data);
+      setData(response.data);
+      setTableLoading(false);
     };
     fetchTable();
   }, []);
 
-  const handleClear = () => {};
+  const handleClear = () => {
+    setTable(data);
+    setSearchText("");
+    setActiveFilters(0);
+    setRowCount(data.length);
+  };
 
-  const openFilter = () => {};
+  const handleSearch = (input) => {
+    setSearchText(input);
+    setTable(
+      data.filter((item) =>
+        item.sfp_name.toLowerCase().includes(input.toLowerCase())
+      )
+    );
+  };
 
-  const closeFilter = () => {};
+  const handleFilter = (fields) => {
+    const states = fields;
+    console.log(states);
+    // Tables can only interpret empty strings (not null values), we therefore have to convert it.
+    let count = 0;
+    for (var key in states) {
+      const value = states[key];
+      value == null || value === "Invalid date" || value === ""
+        ? (states[key] = "")
+        : setActiveFilters(count++);
+    }
+    setActiveFilters(count);
 
-  const handleSearch = () => {};
+    const filteredTable = data.filter(
+      (item) =>
+        item.location.includes(states.location) &&
+        item.form.includes(states.form) &&
+        moment(item.expiration_date)
+          .format("YYYYMMDD")
+          .includes(
+            checkDate(
+              item.expiration_date,
+              states.expiration_date[0],
+              states.expiration_date[1]
+            )
+          ) &&
+        getPriority(item.priority).toLowerCase().includes(states.priority)
+    );
+    setRowCount(filteredTable.length);
+    setTable(filteredTable);
+  };
 
   const openCreateModal = () => {};
 
-  const handleFilter = () => {};
-
-  const today_date = moment().format("MMMM D YYYY").toUpperCase()
-  
   return (
     <div className="SfpTable">
       <div className="table-headers">
         <div className="table-header-position">
           <div className="table-text">
             <div>
-              <h2 className="main-header-table">Semi-Finished Products ({rowCount})</h2>
+              <h2 className="main-header-table">
+                Semi-Finished Products ({rowCount})
+              </h2>
             </div>
           </div>
           <div className="table-buttons">
@@ -83,15 +115,18 @@ const SfpTable = () => {
                 className="table-filter"
                 type="primary"
                 size="large"
-                onClick={openFilter}
+                onClick={() => setFilterVisible(true)}
               >
-                <FilterComponent
+                <SfpFilter
                   filterVisible={filterVisible}
-                  closeFilter={closeFilter}
+                  closeFilter={(e) => {
+                    e.stopPropagation();
+                    setFilterVisible(false);
+                  }}
                   handleFilter={handleFilter}
                   handleClear={handleClear}
                 />
-                Filter ({counter})
+                Filter ({activeFilters})
               </Button>
             </div>
             <div>

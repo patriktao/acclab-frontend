@@ -43,7 +43,7 @@ const LoginComponent = () => {
           break;
       }
     } catch (err) {
-      message.error("Error occurred when logging in") && <Redirect to="/" />;
+      <Redirect to="/" />;
     }
   };
 

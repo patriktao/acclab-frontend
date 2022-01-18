@@ -76,7 +76,7 @@ const EditRawMaterial = ({
     API.brands.fetchAllCompanies().then((res) => setBrands(res));
     API.brands.fetchAllCountries().then((res) => setCountries(res));
     API.locations.fetchLocations().then((res) => setLocations(res));
-    API.rawMaterial.fetchForms().then((res) => setForms(res));
+    API.materialforms.fetchForms().then((res) => setForms(res));
     if (data != null) {
       setId(data.raw_material_id);
       setName(data.material_name);

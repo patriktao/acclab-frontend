@@ -11,7 +11,7 @@ import {
   Dropdown,
   Menu,
 } from "antd";
-import FilterComponent from "./FilterComponent";
+import RawMaterialFilter from "./RawMaterialFilter";
 import moment from "moment";
 import TooltipComponent from "../../General/TooltipComponent";
 import { PlusOutlined, EllipsisOutlined } from "@ant-design/icons";
@@ -22,6 +22,7 @@ import { getPriorityIcon } from "../../General/Priority/Priority";
 import { useEditRawMaterial } from "../../../context/edit-raw-material";
 import EditRawMaterial from "../EditRawMaterial";
 import CreateRawMaterial from "../CreateRawMaterial";
+
 
 const RawMaterialTable = () => {
   const { Text } = Typography;
@@ -239,6 +240,11 @@ const RawMaterialTable = () => {
       sorter: (a, b) => a.total_amount - b.total_amount,
     },
     {
+      title: "Unit",
+      dataIndex: "unit",
+      key: "unit",
+    },
+    {
       title: "Location",
       dataIndex: "location",
       key: "location",
@@ -328,7 +334,7 @@ const RawMaterialTable = () => {
                 size="large"
                 onClick={() => setFilterVisible(true)}
               >
-                <FilterComponent
+                <RawMaterialFilter
                   filterVisible={filterVisible}
                   closeFilter={(e) => {
                     e.stopPropagation();
