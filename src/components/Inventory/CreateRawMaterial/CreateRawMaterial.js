@@ -141,7 +141,7 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
 
   const createAPI = async () => {
     let response = await API.rawMaterial
-      .create(rawMaterialForm.toJsonObject())
+      .createRawMaterial(rawMaterialForm.toJsonObject())
       .then((res) => {
         rawMaterialForm.id = res;
         setId(res);

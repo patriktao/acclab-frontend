@@ -240,7 +240,7 @@ export const adjustExpirationDate = async (id) => {
   });
 };
 
-export const create = async (form) => {
+export const createRawMaterial = async (form) => {
   try {
     let response = 0;
     await axios.post(`/raw_material/create`, form).then((res) => {
@@ -252,5 +252,23 @@ export const create = async (form) => {
     console.log(`Error: ${err.message}`);
     message.error("Unable to add new raw material.");
     return "failed";
+  }
+};
+
+export const deleteRawMaterial = async (id) => {
+  let response = "failed";
+  try {
+    await axios.delete(`/raw_material_logistics/${id}/all`);
+    await axios.delete(`/raw_material/${id}`).then(() => {
+      message.success("Successfully deleted the raw material.");
+      response = "success";
+    });
+    return response;
+  } catch (err) {
+    if (err.response) {
+      console.log(`Error: ${err.message}`);
+      message.error("Unable to delete the raw material.");
+      return response;
+    }
   }
 };

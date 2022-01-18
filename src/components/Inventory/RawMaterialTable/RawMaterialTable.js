@@ -125,7 +125,7 @@ const RawMaterialTable = () => {
     setTable(filtered_table);
   };
 
-  const { openEdit, editVisible } = useEditRawMaterial();
+  const { openEdit, editVisible, closeEdit } = useEditRawMaterial();
   const [itemData, setItemData] = useState(null);
 
   const fetchItemData = (record) => {
@@ -143,6 +143,16 @@ const RawMaterialTable = () => {
     table[itemIndex].form = form.form;
   };
 
+  const deleteRawMaterial = (e, id) => {
+    closeEdit(e);
+    let newTable = table.filter((item) => item.raw_material_id !== id);
+    setTable(newTable);
+    setData(newTable);
+    API.rawMaterial.deleteRawMaterial(id).then((res) => {
+      console.log(res);
+    });
+  };
+
   const createRawMaterial = (form) => {
     const newMaterial = table.concat({
       raw_material_id: form.id,
@@ -152,6 +162,7 @@ const RawMaterialTable = () => {
       total_amount: 0,
       location: form.location,
       expiration_date: null,
+      image: "",
     });
     console.log(newMaterial);
     setTable(newMaterial);
@@ -179,6 +190,7 @@ const RawMaterialTable = () => {
             visible={editVisible[record.raw_material_id]}
             data={itemData}
             sendChangesToParent={handleRawMaterialEdit}
+            deleteRawMaterial={deleteRawMaterial}
           />
         </Menu.Item>
       </Menu>

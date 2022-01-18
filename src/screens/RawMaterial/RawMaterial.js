@@ -14,6 +14,7 @@ import { API } from "../../api";
 import "./RawMaterial.scss";
 import { useEditRawMaterial } from "../../context/edit-raw-material";
 import Template from "../Template";
+import { useHistory } from "react-router";
 
 const { TabPane } = Tabs;
 
@@ -30,6 +31,7 @@ const RawMaterial = (props) => {
   const [image, setImage] = useState("");
 
   const id = props.match.params.id;
+  const history = useHistory();
 
   useEffect(() => {
     API.rawMaterial.fetchMaterial(id).then((res) => {
@@ -86,6 +88,14 @@ const RawMaterial = (props) => {
     setLogistics(list);
   };
 
+  const deleteRawMaterial = (e, id) => {
+    API.rawMaterial.deleteRawMaterial(id).then((res) => {
+      if (res === "success") {
+        return history.push("/inventory");
+      }
+    });
+  };
+
   return (
     <Template
       content={
@@ -139,6 +149,7 @@ const RawMaterial = (props) => {
                   close={(e) => closeEdit(e, id)}
                   data={materialData[0]}
                   sendChangesToParent={handleEdit}
+                  deleteRawMaterial={deleteRawMaterial}
                 />
               </Button>
             </div>

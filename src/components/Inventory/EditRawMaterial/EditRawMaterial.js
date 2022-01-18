@@ -25,11 +25,17 @@ import { useEditRawMaterial } from "../../../context/edit-raw-material";
 
 const { TextArea } = Input;
 
-const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
+const EditRawMaterial = ({
+  visible,
+  data,
+  sendChangesToParent,
+  deleteRawMaterial,
+}) => {
   EditRawMaterial.propTypes = {
     visible: PropTypes.bool,
     data: PropTypes.object,
     sendChangesToParent: PropTypes.func,
+    deleteRawMaterial: PropTypes.func,
   };
   /* Context */
   const { closeEdit } = useEditRawMaterial();
@@ -189,8 +195,6 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
     file ? setImage(file) : setImage(null);
   };
 
-  const deleteRawMaterial = () => {};
-
   return (
     <Modal
       maskClosable={false}
@@ -205,7 +209,7 @@ const EditRawMaterial = ({ visible, data, sendChangesToParent }) => {
               title={"Are you sure?"}
               okType={"danger"}
               okText={"Delete"}
-              onConfirm={deleteRawMaterial}
+              onConfirm={(e) => deleteRawMaterial(e, id)}
             >
               <Button type="danger">Delete</Button>
             </Popconfirm>
