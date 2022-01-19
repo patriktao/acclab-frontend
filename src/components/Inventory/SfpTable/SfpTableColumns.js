@@ -1,6 +1,7 @@
 import moment from "moment";
 import { Button, Tooltip } from "antd";
 import { EllipsisOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 import { getPriorityIcon } from "../../General/Priority/Priority";
 
 export const sfp_columns = [
@@ -13,7 +14,9 @@ export const sfp_columns = [
     title: "Item name",
     dataIndex: "sfp_name",
     key: "sfp_name",
-    render: (text) => <a>{text}</a>,
+    render: (sfp_name, record) => (
+      <Link to={"/inventory/sfp/" + record.sfp_id}>{sfp_name}</Link>
+    ),
     sorter: (a, b) => a.name.localeCompare(b.name),
   },
   {

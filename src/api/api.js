@@ -5,6 +5,7 @@ import * as Brands from "./brands";
 import * as Locations from "./locations";
 import * as Authentication from "./authentication";
 import * as MaterialForms from "./materialForms";
+import * as Sfp from "./sfp";
 
 export class API {
   static rawMaterial = RawMaterial;
@@ -14,4 +15,5 @@ export class API {
   static locations = Locations;
   static authentication = Authentication;
   static materialforms = MaterialForms;
+  static sfp = Sfp;
 }

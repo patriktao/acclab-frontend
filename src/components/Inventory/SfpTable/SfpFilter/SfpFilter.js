@@ -24,23 +24,19 @@ const SfpFilter = ({
 
   /* Data Fields */
   const [locations, setLocations] = useState([]);
-  const [forms, setForms] = useState([]);
 
   /* Input Fields */
   const [location, setLocation] = useState(null);
-  const [form, setForm] = useState(null);
   const [expirationDate, setExpirationDate] = useState(null);
   const [priority, setPriority] = useState("");
 
   useEffect(() => {
     API.locations.fetchLocations().then((res) => setLocations(res));
-    API.materialforms.fetchForms().then((res) => setForms(res));
   }, []);
 
   const passStatesToParent = (e) => {
     handleFilter({
       location: location,
-      form: form,
       expiration_date: expirationDate,
       priority: priority,
     });
@@ -49,7 +45,6 @@ const SfpFilter = ({
 
   const resetFields = () => {
     setLocation(null);
-    setForm(null);
     setExpirationDate(null);
     setPriority("");
     handleClear();
@@ -78,15 +73,6 @@ const SfpFilter = ({
               placeholder="All locations..."
               onChange={(e) => setLocation(e)}
             />
-            <InputSelect
-              header="Material Form"
-              options={forms}
-              value={form}
-              placeholder="All forms..."
-              onChange={(e) => setForm(e)}
-            />
-          </div>
-          <div className="columns">
             <InputRangePicker
               header="Expiration Date"
               value={expirationDate}

@@ -9,10 +9,9 @@ import SfpFilter from "./SfpFilter";
 import moment from "moment";
 import { checkDate } from "../../../helper/Checker";
 import { getPriority } from "../../General/Priority/Priority";
+import { API } from "../../../api";
 
 const { Search } = Input;
-
-const axios = require("axios");
 
 const SfpTable = () => {
   const [tableLoading, setTableLoading] = useState(true);
@@ -26,13 +25,11 @@ const SfpTable = () => {
   const [activeFilters, setActiveFilters] = useState(0);
 
   useEffect(() => {
-    const fetchTable = async () => {
-      const response = (await axios.get("/sfp_table")) || [];
-      setTable(response.data);
-      setData(response.data);
+    API.sfp.fetchTable().then((res) => {
+      setTable(res);
+      setData(res);
       setTableLoading(false);
-    };
-    fetchTable();
+    });
   }, []);
 
   const handleClear = () => {
@@ -67,7 +64,6 @@ const SfpTable = () => {
     const filteredTable = data.filter(
       (item) =>
         item.location.includes(states.location) &&
-        item.form.includes(states.form) &&
         moment(item.expiration_date)
           .format("YYYYMMDD")
           .includes(
@@ -77,7 +73,9 @@ const SfpTable = () => {
               states.expiration_date[1]
             )
           ) &&
-        getPriority(item.priority).toLowerCase().includes(states.priority)
+        getPriority(item.expiration_date)
+          .toLowerCase()
+          .includes(states.priority)
     );
     setRowCount(filteredTable.length);
     setTable(filteredTable);

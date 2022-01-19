@@ -1,13 +1,6 @@
 import { useState, useEffect } from "react";
-import { Tabs, Table, Spin, Button, Checkbox, message, Avatar } from "antd";
-import {
-  PlusOutlined,
-  AppstoreOutlined,
-  EditOutlined,
-  InfoCircleOutlined,
-} from "@ant-design/icons";
+import { Table, Spin, Checkbox, message, Avatar } from "antd";
 import * as Columns from "./RawMaterialColumns";
-import TooltipComponent from "../../components/General/TooltipComponent";
 import EditRawMaterial from "../../components/Inventory/EditRawMaterial";
 import HandleStock from "../../components/Inventory/HandleStock";
 import { API } from "../../api";
@@ -15,11 +8,10 @@ import "./RawMaterial.scss";
 import { useEditRawMaterial } from "../../context/edit-raw-material";
 import Template from "../Template";
 import { useHistory } from "react-router";
-
-const { TabPane } = Tabs;
+import InventoryInterface from "../InventoryInterface";
 
 const RawMaterial = (props) => {
-  const { openEdit, closeEdit, editVisible } = useEditRawMaterial(); //context
+  const { openEdit, closeEdit, editVisible } = useEditRawMaterial();
   const [materialData, setMaterialData] = useState([]);
   const [materialName, setMaterialName] = useState([]);
   const [reStock, setReStock] = useState();
@@ -96,149 +88,99 @@ const RawMaterial = (props) => {
     });
   };
 
+  const informationTab = (
+    <div className="material-header">
+      <section className="item-image">
+        <div name="image">
+          <Avatar
+            size={275}
+            shape="square"
+            alt="Company Logotype"
+            src={image}
+          />
+        </div>
+        <div className="shopping-list">
+          <Checkbox checked={reStock} onChange={handleRestock}>
+            Add to Shopping List
+          </Checkbox>
+        </div>
+      </section>
+      <section className="material-information">
+        <div className="table-section-header">
+          <h3> General Information </h3>
+          <Spin spinning={tableLoading1} tip="Loading..." size="medium">
+            <Table
+              columns={Columns.general_columns.filter(
+                (col) => col.dataIndex !== "raw_material_id"
+              )}
+              dataSource={materialData}
+              pagination={false}
+              scroll={{ x: "400px" }}
+              rowKey={"material_name"}
+            />
+          </Spin>
+        </div>
+        <div className="table-section-header">
+          <h3> Nuitritional Facts (per 100g) </h3>
+          <Spin spinning={tableLoading1} tip="Loading..." size="medium">
+            <Table
+              columns={Columns.nuitrition_columns}
+              dataSource={materialData}
+              pagination={false}
+              rowKey={"fat"}
+            />
+          </Spin>
+        </div>
+        <div className="table-section-header">
+          <h3> In Stock </h3>
+          <Spin spinning={tableLoading2} tip="Loading..." size="medium">
+            <Table
+              className="table-logistics"
+              columns={Columns.stocks_columns.filter(
+                (col) => col.dataIndex !== "stock_id"
+              )}
+              dataSource={logistics}
+              pagination={{ pageSize: 7 }}
+              rowKey={"stock_id"}
+            />
+          </Spin>
+        </div>
+      </section>
+    </div>
+  );
+
   return (
     <Template
       content={
-        <section className="RawMaterial">
-          <div className="content-header">
-            <div>
-              <div className="header-information">
-                <h1 className="blue-text"> Inventory </h1>
-                <TooltipComponent
-                  text={
-                    "Create, edit and retrieve information of a raw material"
-                  }
-                  component={<InfoCircleOutlined />}
-                  trigger={"hover"}
-                />
-              </div>
-              <span className="sub-header">{materialName}</span>
-            </div>
-            <div className="buttons">
-              <Button
-                className="table-add"
-                type="primary"
-                size="large"
-                icon={<PlusOutlined />}
-                onClick={() => setShowAddReduce(true)}
-              >
-                Handle Stock
-                <HandleStock
-                  close={(e) => {
-                    e.stopPropagation();
-                    setShowAddReduce(false);
-                  }}
-                  visible={showAddReduce}
-                  id={id}
-                  unit={unit}
-                  logistics={logistics}
-                  sendAddToParent={addStocks}
-                  sendReductionToParent={reduceStocks}
-                />
-              </Button>
-              <Button
-                className="table-add"
-                type="primary"
-                size="large"
-                icon={<EditOutlined />}
-                onClick={() => openEdit(id)}
-              >
-                Edit
-                <EditRawMaterial
-                  visible={editVisible[id]}
-                  close={(e) => closeEdit(e, id)}
-                  data={materialData[0]}
-                  sendChangesToParent={handleEdit}
-                  deleteRawMaterial={deleteRawMaterial}
-                />
-              </Button>
-            </div>
-          </div>
-          <div />
-          <div className="tabs">
-            <Tabs
-              defaultActiveKey="1"
-              size={"large"}
-              style={{ marginBottom: 32 }}
-              tabPosition="top"
-            >
-              <TabPane tab="Information" key="1">
-                <div className="material-header">
-                  <section className="item-image">
-                    <div name="image">
-                      <Avatar
-                        size={275}
-                        shape="square"
-                        alt="Company Logotype"
-                        src={image}
-                      />
-                    </div>
-                    <div className="shopping-list">
-                      <Checkbox checked={reStock} onChange={handleRestock}>
-                        Add to Shopping List
-                      </Checkbox>
-                    </div>
-                  </section>
-                  <section className="material-information">
-                    <div className="table-section-header">
-                      <h3> General Information </h3>
-                      <Spin
-                        spinning={tableLoading1}
-                        tip="Loading..."
-                        size="medium"
-                      >
-                        <Table
-                          columns={Columns.general_columns.filter(
-                            (col) => col.dataIndex !== "raw_material_id"
-                          )}
-                          dataSource={materialData}
-                          pagination={false}
-                          scroll={{ x: "400px" }}
-                          rowKey={"material_name"}
-                        />
-                      </Spin>
-                    </div>
-                    <div className="table-section-header">
-                      <h3> Nuitritional Facts (per 100g) </h3>
-                      <Spin
-                        spinning={tableLoading1}
-                        tip="Loading..."
-                        size="medium"
-                      >
-                        <Table
-                          columns={Columns.nuitrition_columns}
-                          dataSource={materialData}
-                          pagination={false}
-                          rowKey={"fat"}
-                        />
-                      </Spin>
-                    </div>
-                    <div className="table-section-header">
-                      <h3> In Stock </h3>
-                      <Spin
-                        spinning={tableLoading2}
-                        tip="Loading..."
-                        size="medium"
-                      >
-                        <Table
-                          className="table-logistics"
-                          columns={Columns.stocks_columns.filter(
-                            (col) => col.dataIndex !== "stock_id"
-                          )}
-                          dataSource={logistics}
-                          pagination={{ pageSize: 7 }}
-                          rowKey={"stock_id"}
-                        />
-                      </Spin>
-                    </div>
-                  </section>
-                </div>
-              </TabPane>
-              <TabPane tab="Products" key="2" disabled></TabPane>
-              <TabPane tab="History" key="3" disabled></TabPane>
-            </Tabs>
-          </div>
-        </section>
+        <InventoryInterface
+          name={materialName}
+          openHandleStock={() => setShowAddReduce(true)}
+          handleStock={
+            <HandleStock
+              close={(e) => {
+                e.stopPropagation();
+                setShowAddReduce(false);
+              }}
+              visible={showAddReduce}
+              id={id}
+              unit={unit}
+              logistics={logistics}
+              sendAddToParent={addStocks}
+              sendReductionToParent={reduceStocks}
+            />
+          }
+          openEdit={() => openEdit(id)}
+          edit={
+            <EditRawMaterial
+              visible={editVisible[id]}
+              close={(e) => closeEdit(e, id)}
+              data={materialData[0]}
+              sendChangesToParent={handleEdit}
+              deleteRawMaterial={deleteRawMaterial}
+            />
+          }
+          information={informationTab}
+        />
       }
     />
   );
