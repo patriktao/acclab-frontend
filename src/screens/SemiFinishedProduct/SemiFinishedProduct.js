@@ -33,6 +33,16 @@ const SemiFinishedProduct = (props) => {
       setImage(res[0].image);
       setTableLoading1(false);
     });
+
+    API.sfp.fetchFormulation(id).then((res) => {
+      console.log(res);
+      setFormulation(res);
+    });
+
+    API.sfp.fetchLogistics(id).then((res) => {
+      console.log(res);
+      setLogistic(res);
+    });
   }, []);
 
   const informationTab = (
@@ -68,6 +78,8 @@ const SemiFinishedProduct = (props) => {
               columns={formulation_columns.filter(
                 (col) => col.dataIndex !== "raw_material_id"
               )}
+              dataSource={formulation}
+              rowKey={"raw_material_id"}
             />
           </Spin>
         </div>
@@ -77,7 +89,6 @@ const SemiFinishedProduct = (props) => {
             showCount
             rows={8}
             value={processSteps}
-            bordered
             onChange={(e) => setProcessSteps(e.target.value)}
           />
         </div>

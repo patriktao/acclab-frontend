@@ -23,3 +23,27 @@ export const fetchSfp = async (id) => {
     return [];
   }
 };
+
+export const fetchFormulation = async (id) => {
+  try {
+    const response = await axios.get(`/sfp/${id}/formulation`);
+    return response.data;
+  } catch (err) {
+    if (err.response) {
+      console.log(`Error: ${err.message}`);
+    }
+    return [];
+  }
+};
+
+export const fetchLogistics = async (id) => {
+  try {
+    const response = await axios.get(`/sfp/${id}/logistics`);
+    return response.data;
+  } catch (err) {
+    if (err.response) {
+      console.log(`Error: ${err.message}`);
+    }
+    return [];
+  }
+};
