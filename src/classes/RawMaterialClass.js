@@ -164,7 +164,7 @@ class RawMaterialClass {
     this.propTypes = {
       input: PropTypes.string,
     };
-    if (checkString(input, this.name)) {
+    if (checkString(input, this.#name)) {
       this.#name = input;
     }
     return this;

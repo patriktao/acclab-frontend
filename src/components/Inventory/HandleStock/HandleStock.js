@@ -78,7 +78,7 @@ const HandleStock = ({
       case "reduce":
         if (!isEqual(editForm, oldForm)) {
           reduceStock(e);
-          message.success("You have succesfully reduced stocks");
+          message.success("You have succesfully reduced stocks.");
         } else {
           message.success("No changes made.");
           close(e);
@@ -187,18 +187,6 @@ const HandleStock = ({
       reductionAmount += editForm[index].subtracted_amount;
       // Setting the stock in the list after reduction
       logisticList[index].amount -= editForm[index].subtracted_amount;
-      // TODO: Notification
-      /* const stock = editForm[index];
-      if (stock.old_amount > stock.new_amount) {
-        SuccessNotification(
-          "You have reduced Stock " +
-            stock.stock_id +
-            " from " +
-            stock.old_amount +
-            " to " +
-            stock.new_amount
-        );
-      } */
     }
 
     logisticList.forEach((e) => {
@@ -437,7 +425,7 @@ const HandleStock = ({
                 />
                 <Table
                   columns={logistic_columns}
-                  dataSource={logisticList || []}
+                  dataSource={logisticList}
                   size={"middle"}
                   pagination={{ pageSize: 6, position: ["bottomRight"] }}
                   rowKey={"stock_id"}

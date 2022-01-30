@@ -3,11 +3,12 @@ import { InputNumber as AntInputNumber } from "antd";
 import PropTypes from "prop-types";
 import "../../../styles/inputfields.scss";
 
-const InputNumber = ({ children, value, onChange }) => {
+const InputNumber = ({ children, value, onChange, defaultValue }) => {
   InputNumber.propTypes = {
     value: PropTypes.string,
     children: PropTypes.any,
     onChange: PropTypes.func,
+    defaultValue: PropTypes.any,
   };
 
   return (
@@ -20,6 +21,7 @@ const InputNumber = ({ children, value, onChange }) => {
       min={0}
       max={100}
       step={0.1}
+      defaultValue={defaultValue}
     >
       {children}
     </AntInputNumber>

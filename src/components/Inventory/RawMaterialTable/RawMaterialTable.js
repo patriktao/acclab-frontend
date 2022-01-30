@@ -23,8 +23,7 @@ import { useEditRawMaterial } from "../../../context/edit-raw-material";
 import EditRawMaterial from "../EditRawMaterial";
 import CreateRawMaterial from "../CreateRawMaterial";
 
-
-const RawMaterialTable = () => {
+const RawMaterialTable = ({ rowSelection }) => {
   const { Text } = Typography;
   const { Search } = Input;
   const [data, setData] = useState([]);
@@ -200,7 +199,7 @@ const RawMaterialTable = () => {
 
   const RawMaterialTableColumns = [
     {
-      title: "id",
+      title: "raw_material_id",
       dataIndex: "raw_material_id",
       key: "raw_material_id",
     },
@@ -399,9 +398,10 @@ const RawMaterialTable = () => {
               col.dataIndex !== "raw_material_id"
           )}
           dataSource={table}
-          rowKey={"id"}
+          rowKey={"raw_material_id"}
           pagination={{ pageSize: 8, position: ["bottomCenter"] }}
           size="small"
+          rowSelection={rowSelection}
         />
       </Spin>
     </div>

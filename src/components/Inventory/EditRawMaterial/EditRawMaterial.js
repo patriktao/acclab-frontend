@@ -20,7 +20,7 @@ import RawMaterialClass from "../../../classes/RawMaterialClass";
 import EditBrands from "../EditBrands";
 import EditLocations from "../EditLocations";
 import ImageUploader from "../../General/ImageUploader";
-import Units from "./Units";
+import Units from "../../General/Units";
 import { useEditRawMaterial } from "../../../context/edit-raw-material";
 
 const { TextArea } = Input;
@@ -359,7 +359,6 @@ const EditRawMaterial = ({
                   <span className="sub-header">Unit</span>
                   <Select
                     options={Units}
-                    placeholder="Select here..."
                     onChange={(e) => e !== unit && setUnit(e)}
                     value={unit}
                   />

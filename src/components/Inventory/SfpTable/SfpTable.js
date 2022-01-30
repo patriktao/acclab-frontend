@@ -163,7 +163,7 @@ const SfpTable = () => {
               col.dataIndex !== "sfp_id"
           )}
           dataSource={table}
-          rowKey={"id"}
+          rowKey={"sfp_id"}
           pagination={{ pageSize: 8, position: ["bottomCenter"] }}
           size="small"
         />

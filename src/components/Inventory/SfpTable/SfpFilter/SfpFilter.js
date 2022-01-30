@@ -72,6 +72,7 @@ const SfpFilter = ({
               value={location}
               placeholder="All locations..."
               onChange={(e) => setLocation(e)}
+              allowClear={true}
             />
             <InputRangePicker
               header="Expiration Date"

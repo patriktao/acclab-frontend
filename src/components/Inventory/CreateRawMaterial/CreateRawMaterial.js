@@ -133,7 +133,7 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
     if (image !== undefined || image !== null) {
       await API.rawMaterial.uploadImage(image, id).then((res) => {
         console.log("uploading picture");
-        console.log(res)
+        console.log(res);
         rawMaterialForm.image = res;
       });
     }

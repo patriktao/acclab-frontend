@@ -2,14 +2,13 @@ import Template from "../Template";
 import { useEffect, useState } from "react";
 import { API } from "../../api";
 import InventoryInterface from "../InventoryInterface";
-import { Avatar, Spin, Table, Input } from "antd";
+import { Avatar, Spin, Table, Input, Card } from "antd";
 import {
   general_columns,
   stocks_columns,
   formulation_columns,
 } from "./SemiFinishedProductColumns";
-
-const { TextArea } = Input;
+import EditSfp from "../../components/Inventory/EditSfp";
 
 const SemiFinishedProduct = (props) => {
   const id = props.match.params.id;
@@ -23,10 +22,10 @@ const SemiFinishedProduct = (props) => {
   const [tableLoading1, setTableLoading1] = useState(true);
   const [tableLoading2, setTableLoading2] = useState(false);
   const [tableLoading3, setTableLoading3] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   useEffect(() => {
     API.sfp.fetchSfp(id).then((res) => {
-      console.log(res);
       setData(res);
       setProcessSteps(res[0].process_steps);
       setName(res[0].sfp_name);
@@ -35,15 +34,26 @@ const SemiFinishedProduct = (props) => {
     });
 
     API.sfp.fetchFormulation(id).then((res) => {
-      console.log(res);
       setFormulation(res);
     });
 
     API.sfp.fetchLogistics(id).then((res) => {
-      console.log(res);
       setLogistic(res);
     });
   }, []);
+
+  const editFormulation = (form) => {
+    data[0].sfp_name = form.sfp_name;
+    data[0].location = form.location;
+    data[0].unit = form.unit;
+    data[0].process_steps = form.process_steps;
+    setImage(form.image);
+    setName(form.name);
+    setProcessSteps(form.process_steps);
+    setFormulation(form.editForm);
+
+    /* setFormulation(editForm); */
+  };
 
   const informationTab = (
     <div className="material-header">
@@ -80,19 +90,14 @@ const SemiFinishedProduct = (props) => {
               )}
               dataSource={formulation}
               rowKey={"raw_material_id"}
+              pagination={false}
             />
           </Spin>
         </div>
         <div className="table-section-header">
           <h3> Process Steps </h3>
-          <TextArea
-            showCount
-            rows={8}
-            value={processSteps}
-            onChange={(e) => setProcessSteps(e.target.value)}
-          />
+          <Card>{processSteps}</Card>
         </div>
-
         <div className="table-section-header">
           <h3> In Stock </h3>
           <Spin spinning={tableLoading3} tip="Loading..." size="medium">
@@ -100,6 +105,7 @@ const SemiFinishedProduct = (props) => {
               columns={stocks_columns.filter(
                 (col) => col.dataIndex !== "stock_id"
               )}
+              rowKey={"stock_id"}
               dataSource={logistic}
             />
           </Spin>
@@ -108,9 +114,30 @@ const SemiFinishedProduct = (props) => {
     </div>
   );
 
+  const editModal = (
+    <EditSfp
+      visible={showEditModal}
+      onClose={(e) => {
+        e.stopPropagation();
+        setShowEditModal(false);
+      }}
+      data={data[0]}
+      formulationData={formulation}
+      id={id}
+      sendChanges={editFormulation}
+    />
+  );
+
   return (
     <Template
-      content={<InventoryInterface name={name} information={informationTab} />}
+      content={
+        <InventoryInterface
+          name={name}
+          information={informationTab}
+          openEdit={() => setShowEditModal(true)}
+          edit={editModal}
+        />
+      }
     />
   );
 };

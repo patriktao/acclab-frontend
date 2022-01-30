@@ -74,7 +74,6 @@ const EditBrands = ({ visible, close, sendChangesToParent }) => {
     );
   };
 
-
   const brandField = (name) => {
     if (state[name]) {
       return (
@@ -185,10 +184,10 @@ const EditBrands = ({ visible, close, sendChangesToParent }) => {
       onCancel={close}
       onOk={close}
       maskClosable={false}
-      footer = {[
+      footer={[
         <Button key="submit" type="primary" onClick={close}>
           Close
-        </Button>
+        </Button>,
       ]}
     >
       <section className="EditBrands">
@@ -206,11 +205,7 @@ const EditBrands = ({ visible, close, sendChangesToParent }) => {
               allowClear
               enterbutton="true"
             />
-            <Popover
-              trigger="click"
-              placement={"bottom"}
-              content={addNewBrand}
-            >
+            <Popover trigger="click" placement={"bottom"} content={addNewBrand}>
               <Button
                 type="primary"
                 style={{ height: "100%", borderRadius: "12px" }}

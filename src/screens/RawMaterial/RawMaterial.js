@@ -9,11 +9,12 @@ import { useEditRawMaterial } from "../../context/edit-raw-material";
 import Template from "../Template";
 import { useHistory } from "react-router";
 import InventoryInterface from "../InventoryInterface";
+import ManageRawMaterialStock from "../../components/Inventory/ManageRawMaterialStock";
 
 const RawMaterial = (props) => {
   const { openEdit, closeEdit, editVisible } = useEditRawMaterial();
   const [materialData, setMaterialData] = useState([]);
-  const [materialName, setMaterialName] = useState([]);
+  const [materialName, setMaterialName] = useState("");
   const [reStock, setReStock] = useState();
   const [logistics, setLogistics] = useState([]);
   const [tableLoading1, setTableLoading1] = useState(true);
@@ -156,7 +157,22 @@ const RawMaterial = (props) => {
           name={materialName}
           openHandleStock={() => setShowAddReduce(true)}
           handleStock={
-            <HandleStock
+            ((
+              <HandleStock
+                close={(e) => {
+                  e.stopPropagation();
+                  setShowAddReduce(false);
+                }}
+                visible={showAddReduce}
+                id={id}
+                unit={unit}
+                logistics={logistics}
+                sendAddToParent={addStocks}
+                sendReductionToParent={reduceStocks}
+              />
+            )/* ,
+            {
+              <ManageRawMaterialStock
               close={(e) => {
                 e.stopPropagation();
                 setShowAddReduce(false);
@@ -168,6 +184,7 @@ const RawMaterial = (props) => {
               sendAddToParent={addStocks}
               sendReductionToParent={reduceStocks}
             />
+            } */)
           }
           openEdit={() => openEdit(id)}
           edit={
