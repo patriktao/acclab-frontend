@@ -150,52 +150,40 @@ const RawMaterial = (props) => {
     </div>
   );
 
+  const manageStock = (
+    <ManageRawMaterialStock
+      close={(e) => {
+        e.stopPropagation();
+        setShowAddReduce(false);
+      }}
+      visible={showAddReduce}
+      id={id}
+      unit={unit}
+      logistics={logistics}
+      sendAddToParent={addStocks}
+      sendReductionToParent={reduceStocks}
+    />
+  );
+
+  const edit = (
+    <EditRawMaterial
+      visible={editVisible[id]}
+      close={(e) => closeEdit(e, id)}
+      data={materialData[0]}
+      sendChangesToParent={handleEdit}
+      deleteRawMaterial={deleteRawMaterial}
+    />
+  );
+
   return (
     <Template
       content={
         <InventoryInterface
           name={materialName}
           openHandleStock={() => setShowAddReduce(true)}
-          handleStock={
-            ((
-              <HandleStock
-                close={(e) => {
-                  e.stopPropagation();
-                  setShowAddReduce(false);
-                }}
-                visible={showAddReduce}
-                id={id}
-                unit={unit}
-                logistics={logistics}
-                sendAddToParent={addStocks}
-                sendReductionToParent={reduceStocks}
-              />
-            )/* ,
-            {
-              <ManageRawMaterialStock
-              close={(e) => {
-                e.stopPropagation();
-                setShowAddReduce(false);
-              }}
-              visible={showAddReduce}
-              id={id}
-              unit={unit}
-              logistics={logistics}
-              sendAddToParent={addStocks}
-              sendReductionToParent={reduceStocks}
-            />
-            } */)
-          }
+          manageStock={manageStock}
           openEdit={() => openEdit(id)}
-          edit={
-            <EditRawMaterial
-              visible={editVisible[id]}
-              close={(e) => closeEdit(e, id)}
-              data={materialData[0]}
-              sendChangesToParent={handleEdit}
-              deleteRawMaterial={deleteRawMaterial}
-            />
-          }
+          edit={edit}
           information={informationTab}
         />
       }

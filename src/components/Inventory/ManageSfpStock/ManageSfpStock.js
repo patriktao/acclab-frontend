@@ -1,15 +1,15 @@
 import React from "react";
+import { useEffect, useState } from "react";
 import StockInterface from "../StockInterface";
-import { useState, useEffect } from "react";
-import moment from "moment";
-import { message } from "antd";
-import { API } from "../../../api";
-import { SuccessNotification } from "../../General/Notifications";
-import InputNumber from "../../General/InputNumber";
 import EditStockForm from "../../../classes/EditStockForm";
-import InputDatePicker from "../../InputFields/InputDatePicker";
+import { InputDatePicker } from "../../InputFields";
+import InputNumber from "../../General/InputNumber";
+import { API } from "../../../api";
+import { message } from "antd";
+import moment from "moment";
+import { SuccessNotification } from "../../General/Notifications";
 
-const ManageRawMaterialStock = ({
+const ManageSfpStock = ({
   close,
   visible,
   unit,
@@ -22,8 +22,7 @@ const ManageRawMaterialStock = ({
   const [editForm, setEditForm] = useState();
   const [originalForm, setOriginalForm] = useState();
   const [amount, setAmount] = useState();
-  const [orderDate, setOrderDate] = useState("");
-  const [receivedDate, setReceivedDate] = useState("");
+  const [productionDate, setProductionDate] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
   const [totalAmount, setTotalAmount] = useState(0);
   const [counter, setCounter] = useState(0);
@@ -38,41 +37,31 @@ const ManageRawMaterialStock = ({
     }
   }, [logistics, counter]);
 
-  const checkEmptyInput = (input) => {
-    return input === "" || input === "Invalid date" || input === null
-      ? null
-      : moment(input).format("YYYYMMDD");
-  };
-
   const isPassingRestrictions = () => {
     if (
       amount != null &&
-      dateFormChecker(receivedDate) &&
+      dateFormChecker(productionDate) &&
       dateFormChecker(expirationDate)
     ) {
       if (amount <= 0) {
         message.error("The amount needs to be a positive number!");
         return false;
-      } else if (dateFormChecker(orderDate)) {
-        if (
-          orderDate.isSameOrAfter(receivedDate) &&
-          orderDate.isSameOrAfter(expirationDate)
-        ) {
-          message.error(
-            "Order date must come before received date and expiration date!"
-          );
-          return false;
-        }
-      } else if (expirationDate.isSameOrBefore(receivedDate)) {
-        message.error("Received date must come before expiration date!");
+      } else if (expirationDate.isSameOrBefore(productionDate)) {
+        message.error("Production date must come before expiration date!");
         return false;
       }
       return true;
     }
     message.error(
-      "Amount, received date and expiration date needs to be filled!"
+      "Amount, production date and expiration date needs to be filled!"
     );
     return false;
+  };
+
+  const checkEmptyInput = (input) => {
+    return input === "" || input === "Invalid date" || input === null
+      ? null
+      : moment(input).format("YYYYMMDD");
   };
 
   const addStock = (e) => {
@@ -85,13 +74,12 @@ const ManageRawMaterialStock = ({
       raw_material_id: parseInt(id),
       stock_id: "",
       amount: amount,
-      order_date: checkEmptyInput(orderDate),
-      received_date: checkEmptyInput(receivedDate),
+      production_date: checkEmptyInput(productionDate),
       expiration_date: checkEmptyInput(expirationDate),
     };
 
     // API call and get the new generated stock_id
-    API.rawMaterial.addStock(id, data).then((res) => {
+    API.sfp.addStock(id, data).then((res) => {
       data.stock_id = res.stock_id;
       console.log(data);
 
@@ -114,11 +102,6 @@ const ManageRawMaterialStock = ({
     sendAddToParent(mergedList);
     SuccessNotification("You have successfully added a new stock");
     close(e);
-  };
-
-  /* Return true if date is not empty string or null */
-  const dateFormChecker = (date) => {
-    return date !== "" && date !== null;
   };
 
   const reduceStock = (e) => {
@@ -149,22 +132,26 @@ const ManageRawMaterialStock = ({
     close(e);
   };
 
+  const dateFormChecker = (date) => {
+    return date !== "" && date !== null;
+  };
+
   const updateTotalAmount = (id, amount) => {
     editForm.updateTotalAmount(amount);
-    API.rawMaterial.updateTotalAmount(id, amount);
+    API.sfp.updateTotalAmount(id, amount);
     setTotalAmount(amount);
   };
 
   const sendReductionsToAPI = () => {
     editForm.stocks.forEach((e) => {
       if (e.new_amount === 0) {
-        API.rawMaterial.disableStock(id, e);
+        API.sfp.disableStock(id, e);
       } else if (
         e.new_amount !== e.old_amount &&
         e.new_amount > 0 &&
         e.new_amount < e.old_amount
       ) {
-        API.rawMaterial.updateStock(id, e);
+        API.sfp.updateStock(id, e);
       }
     });
   };
@@ -188,14 +175,9 @@ const ManageRawMaterialStock = ({
       </div>
       <div className="column-2">
         <InputDatePicker
-          header="Order Date"
-          value={orderDate}
-          onChange={setOrderDate}
-        />
-        <InputDatePicker
-          header="Received Date"
-          value={receivedDate}
-          onChange={setReceivedDate}
+          header="Production Date"
+          value={productionDate}
+          onChange={setProductionDate}
         />
         <InputDatePicker
           header="Expiration Date"
@@ -220,4 +202,4 @@ const ManageRawMaterialStock = ({
   );
 };
 
-export default ManageRawMaterialStock;
+export default ManageSfpStock;

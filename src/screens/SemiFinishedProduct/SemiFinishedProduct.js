@@ -9,26 +9,30 @@ import {
   formulation_columns,
 } from "./SemiFinishedProductColumns";
 import EditSfp from "../../components/Inventory/EditSfp";
+import ManageSfpStock from "../../components/Inventory/ManageSfpStock/ManageSfpStock";
 
 const SemiFinishedProduct = (props) => {
   const id = props.match.params.id;
 
   const [data, setData] = useState([]);
-  const [logistic, setLogistic] = useState([]);
+  const [logistics, setLogistics] = useState([]);
   const [formulation, setFormulation] = useState([]);
   const [processSteps, setProcessSteps] = useState("");
   const [name, setName] = useState("");
+  const [unit, setUnit] = useState("g");
   const [image, setImage] = useState("");
   const [tableLoading1, setTableLoading1] = useState(true);
   const [tableLoading2, setTableLoading2] = useState(false);
   const [tableLoading3, setTableLoading3] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showStockModal, setShowStockModal] = useState(false);
 
   useEffect(() => {
     API.sfp.fetchSfp(id).then((res) => {
       setData(res);
       setProcessSteps(res[0].process_steps);
       setName(res[0].sfp_name);
+      setUnit(res[0].unit);
       setImage(res[0].image);
       setTableLoading1(false);
     });
@@ -38,7 +42,7 @@ const SemiFinishedProduct = (props) => {
     });
 
     API.sfp.fetchLogistics(id).then((res) => {
-      setLogistic(res);
+      setLogistics(res);
     });
   }, []);
 
@@ -106,7 +110,7 @@ const SemiFinishedProduct = (props) => {
                 (col) => col.dataIndex !== "stock_id"
               )}
               rowKey={"stock_id"}
-              dataSource={logistic}
+              dataSource={logistics}
             />
           </Spin>
         </div>
@@ -128,6 +132,32 @@ const SemiFinishedProduct = (props) => {
     />
   );
 
+  const addStocks = (list) => {
+    const new_amount = list[list.length - 1].amount;
+    data[0].total_amount += new_amount;
+    setLogistics(list);
+  };
+
+  const reduceStocks = (list, reductionAmount) => {
+    data[0].total_amount -= reductionAmount;
+    setLogistics(list);
+  };
+
+  const manageStock = (
+    <ManageSfpStock
+      visible={showStockModal}
+      close={(e) => {
+        e.stopPropagation();
+        setShowStockModal(false);
+      }}
+      logistics={logistics}
+      unit={unit}
+      id={id}
+      sendAddToParent={addStocks}
+      sendReductionToParent={reduceStocks}
+    />
+  );
+
   return (
     <Template
       content={
@@ -136,6 +166,8 @@ const SemiFinishedProduct = (props) => {
           information={informationTab}
           openEdit={() => setShowEditModal(true)}
           edit={editModal}
+          manageStock={manageStock}
+          openManageStock={() => setShowStockModal(true)}
         />
       }
     />

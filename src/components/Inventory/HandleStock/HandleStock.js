@@ -18,6 +18,7 @@ import { API } from "../../../api";
 import { getPriorityIcon } from "../../General/Priority";
 import { SuccessNotification } from "../../General/Notifications";
 import { isEqual } from "lodash/fp";
+import EditStockForm from "../../../classes/EditStockForm";
 
 const { TabPane } = Tabs;
 
@@ -46,29 +47,23 @@ const HandleStock = ({
   const [receivedDate, setReceivedDate] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
   const [tabPane, setTabPane] = useState("add");
-  const [editForm, setEditForm] = useState([]);
-  const [oldForm, setOldForm] = useState([]);
-  const [logisticList, setLogisticList] = useState([]);
+  const [editForm, setEditForm] = useState();
+  const [originalForm, setOriginalForm] = useState();
+  const [logisticList, setLogisticList] = useState();
   const [totalAmount, setTotalAmount] = useState(0);
+  const [counter, setCounter] = useState(0);
 
   /* tabPane 1 is add, tabPane 2 is reduce */
 
   useEffect(() => {
-    if (logistics.length > 0) {
+    if (logistics.length > 0 && counter === 0) {
       setLogisticList(logistics);
-      logistics.forEach((e) => {
-        editForm.push({
-          stock_id: e.stock_id,
-          old_amount: e.amount,
-          subtracted_amount: 0,
-          new_amount: e.amount,
-          total_amount: e.total_amount,
-        });
-        setTotalAmount(e.total_amount);
-      });
-      setOldForm(editForm);
+      setEditForm(new EditStockForm(logistics));
+      setOriginalForm(new EditStockForm(logistics));
+      setTotalAmount(logistics[0].total_amount);
+      setCounter(1);
     }
-  }, [logisticList, logistics, editForm]);
+  }, [logistics, counter]);
 
   const handleOk = (e) => {
     switch (tabPane) {
@@ -76,7 +71,7 @@ const HandleStock = ({
         addFormRestrictions(e);
         break;
       case "reduce":
-        if (!isEqual(editForm, oldForm)) {
+        if (!isEqual(editForm.stocks, originalForm.stocks)) {
           reduceStock(e);
           message.success("You have succesfully reduced stocks.");
         } else {
@@ -137,7 +132,6 @@ const HandleStock = ({
   };
 
   const addStock = () => {
-    const newTotalAmount = totalAmount + amount;
     const data = {
       raw_material_id: parseInt(id),
       stock_id: "",
@@ -153,16 +147,15 @@ const HandleStock = ({
       console.log(data);
 
       // Update total amount
+      const newTotalAmount = totalAmount + amount;
       API.rawMaterial.updateTotalAmount(id, newTotalAmount);
       setTotalAmount(newTotalAmount);
 
       /* Edit the total amount in the Edit Form */
-      editForm.forEach((e) => {
-        e.total_amount += amount;
-      });
+      editForm.updateTotalAmount(newTotalAmount);
 
       /* Push new stock to form with new stock_id*/
-      editForm.push({
+      editForm.add({
         stock_id: res.stock_id,
         old_amount: data.amount,
         subtracted_amount: 0,
@@ -171,11 +164,8 @@ const HandleStock = ({
       });
     });
 
-    //Add the stock by merging the list
-    const mergedList = logistics.concat(data);
-    console.log(mergedList);
-
     /* Update the lists */
+    const mergedList = logistics.concat(data);
     setLogisticList(mergedList);
     sendAddToParent(mergedList);
     SuccessNotification("You have successfully added a new stock");
@@ -184,9 +174,8 @@ const HandleStock = ({
   const reduceStock = (e) => {
     let reductionAmount = 0;
     for (let index = 0; index < logisticList.length; index++) {
-      reductionAmount += editForm[index].subtracted_amount;
-      // Setting the stock in the list after reduction
-      logisticList[index].amount -= editForm[index].subtracted_amount;
+      reductionAmount += editForm.stocks[index].subtracted_amount;
+      logisticList[index].amount -= editForm.stocks[index].subtracted_amount;
     }
 
     logisticList.forEach((e) => {
@@ -198,32 +187,27 @@ const HandleStock = ({
     });
 
     //send changes to API
-    console.log("Form before reduction: " + editForm);
+    console.log("Form before reduction: " + editForm.stocks);
     sendReductionToAPI();
 
     // Update total amount of the raw material
     const newTotalAmount = totalAmount - reductionAmount;
+    editForm.updateTotalAmount(newTotalAmount);
     API.rawMaterial.updateTotalAmount(id, newTotalAmount);
     setTotalAmount(newTotalAmount);
 
-    // Update total amount in the edit forms
-    editForm.forEach((e) => {
-      e.total_amount = newTotalAmount;
-    });
-
     //if amount = 0: remove the item from the array and update both EditForm and Logistic List
     const filtered_list = logisticList.filter((e) => e.amount !== 0);
-    const newEditForm = editForm.filter((e) => e.new_amount !== 0);
-    setEditForm(newEditForm);
     setLogisticList(filtered_list);
-    console.log("New Form: " + newEditForm);
+    editForm.updateForm();
+    console.log("New Form: " + editForm.stocks);
 
     sendReductionToParent(filtered_list, reductionAmount);
     close(e);
   };
 
   const sendReductionToAPI = () => {
-    editForm.forEach((e) => {
+    editForm.stocks.forEach((e) => {
       if (e.new_amount === 0) {
         API.rawMaterial.disableStock(id, e);
       } else if (
@@ -238,23 +222,7 @@ const HandleStock = ({
 
   /* Edits the stock based on what you input */
   const editStock = (e, record) => {
-    const stock_id = record.stock_id;
-    if (e === 0) {
-      editForm.some((item) => {
-        if (item.stock_id === stock_id) {
-          item.subtracted_amount = 0;
-          item.new_amount = item.old_amount;
-        }
-      });
-    } else if (e !== null && e <= record.amount && e >= 0) {
-      editForm.some((item) => {
-        if (item.stock_id === stock_id) {
-          item.subtracted_amount = e;
-          item.new_amount = item.old_amount - e;
-          console.log(item);
-        }
-      });
-    }
+    editForm.edit(record.stock_id, e, record.amount);
   };
 
   const popconfirmMessage = () => {

@@ -14,8 +14,8 @@ const InventoryInterface = ({
   information,
   products,
   history,
-  handleStock,
-  openHandleStock,
+  manageStock,
+  openManageStock,
   edit,
   openEdit,
 }) => {
@@ -24,8 +24,8 @@ const InventoryInterface = ({
     information: PropTypes.any,
     products: PropTypes.any,
     history: PropTypes.any,
-    handleStock: PropTypes.object,
-    openHandleStock: PropTypes.func,
+    manageStock: PropTypes.object,
+    openManageStock: PropTypes.func,
     edit: PropTypes.object,
     openEdit: PropTypes.func,
   };
@@ -50,10 +50,10 @@ const InventoryInterface = ({
             type="primary"
             size="large"
             icon={<PlusOutlined />}
-            onClick={openHandleStock}
+            onClick={openManageStock}
           >
-            Handle Stock
-            {handleStock}
+            Manage Stock
+            {manageStock}
           </Button>
           <Button
             className="table-add"

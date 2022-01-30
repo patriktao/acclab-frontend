@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Tabs, message, Modal, Button, Popconfirm, Select, Table } from "antd";
 import { isEqual } from "lodash/fp";
 import InputNumber from "../../General/InputNumber";
+import PropTypes from "prop-types";
 
 const { TabPane } = Tabs;
 
@@ -16,10 +17,21 @@ const StockInterface = ({
   addStock,
   reduceStock,
   editForm,
-  oldForm,
+  originalForm,
   AddStockComponents,
   logistics,
 }) => {
+  StockInterface.propTypes = {
+    visible: PropTypes.bool,
+    close: PropTypes.func,
+    addStock: PropTypes.func,
+    reduceStock: PropTypes.func,
+    editForm: PropTypes.object,
+    originalForm: PropTypes.object,
+    AddStockComponents: PropTypes.object,
+    logistics: PropTypes.array,
+  };
+
   const [reason, setReason] = useState("Spill");
   const [tabPane, setTabPane] = useState("add");
 
@@ -31,15 +43,13 @@ const StockInterface = ({
         addStock(e);
         break;
       case "reduce":
-        console.log(editForm);
-        console.log(oldForm);
-        if (!isEqual(editForm, oldForm)) {
+        if (!isEqual(editForm.stocks, originalForm.stocks)) {
           reduceStock(e);
           message.success("You have succesfully reduced stocks.");
         } else {
           message.success("No changes made.");
+          close(e);
         }
-        close(e);
         break;
       default:
         console.log("reached default");
@@ -56,23 +66,7 @@ const StockInterface = ({
 
   /* Edits the stock based on what you input */
   const editStock = (e, record) => {
-    const stock_id = record.stock_id;
-    if (e === 0) {
-      editForm.some((item) => {
-        if (item.stock_id === stock_id) {
-          item.subtracted_amount = 0;
-          item.new_amount = item.old_amount;
-        }
-      });
-    } else if (e !== null && e <= record.amount && e >= 0) {
-      editForm.some((item) => {
-        if (item.stock_id === stock_id) {
-          item.subtracted_amount = e;
-          item.new_amount = item.old_amount - e;
-          console.log(item);
-        }
-      });
-    }
+    editForm.edit(record.stock_id, e, record.amount);
   };
 
   const logistic_columns = [
@@ -86,11 +80,8 @@ const StockInterface = ({
       key: "amount",
       render: (record) => (
         <InputNumber
-          className="input-number"
-          size={"small"}
           style={{ width: "8rem" }}
-          placeholder={0}
-          min={0}
+          placeholder={`0 - ${record.amount}`}
           max={record.amount}
           defaultValue={0}
           onChange={(e) => editStock(e, record)}
@@ -100,7 +91,7 @@ const StockInterface = ({
     {
       title: "In Stock",
       dataIndex: "amount",
-      key: "in_stock",
+      key: "amount",
     },
     {
       title: "Order Date",
