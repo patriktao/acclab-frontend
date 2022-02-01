@@ -8,6 +8,7 @@ import { SuccessNotification } from "../../General/Notifications";
 import InputNumber from "../../General/InputNumber";
 import EditStockForm from "../../../classes/EditStockForm";
 import InputDatePicker from "../../InputFields/InputDatePicker";
+import { dateFormChecker } from "../../../helper/Checker";
 
 const ManageRawMaterialStock = ({
   close,
@@ -17,6 +18,7 @@ const ManageRawMaterialStock = ({
   id,
   sendAddToParent,
   sendReductionToParent,
+  totalAmount,
 }) => {
   const [logisticList, setLogisticList] = useState([]);
   const [editForm, setEditForm] = useState();
@@ -25,18 +27,14 @@ const ManageRawMaterialStock = ({
   const [orderDate, setOrderDate] = useState("");
   const [receivedDate, setReceivedDate] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
-  const [totalAmount, setTotalAmount] = useState(0);
-  const [counter, setCounter] = useState(0);
 
   useEffect(() => {
-    if (logistics.length > 0 && counter === 0) {
+    if (logistics.length >= 0) {
       setLogisticList(logistics);
       setEditForm(new EditStockForm(logistics));
       setOriginalForm(new EditStockForm(logistics));
-      setTotalAmount(logistics[0].total_amount);
-      setCounter(1);
     }
-  }, [logistics, counter]);
+  }, [logistics, EditStockForm]);
 
   const checkEmptyInput = (input) => {
     return input === "" || input === "Invalid date" || input === null
@@ -75,12 +73,10 @@ const ManageRawMaterialStock = ({
     return false;
   };
 
-  const addStock = (e) => {
+  const addStock = async (e) => {
     if (!isPassingRestrictions()) {
       return;
     }
-    const newTotalAmount = totalAmount + amount;
-
     const data = {
       raw_material_id: parseInt(id),
       stock_id: "",
@@ -90,42 +86,24 @@ const ManageRawMaterialStock = ({
       expiration_date: checkEmptyInput(expirationDate),
     };
 
-    // API call and get the new generated stock_id
-    API.rawMaterial.addStock(id, data).then((res) => {
+    await API.rawMaterial.addStock(id, data).then((res) => {
       data.stock_id = res.stock_id;
-      console.log(data);
-
-      // Update total amount
-      updateTotalAmount(id, totalAmount + amount);
-
-      /* Push new stock to form */
-      editForm.add({
-        stock_id: res.stock_id,
-        old_amount: data.amount,
-        subtracted_amount: 0,
-        new_amount: data.amount,
-        total_amount: newTotalAmount,
-      });
+      editForm.add(res.stock_id, amount);
     });
+    API.rawMaterial.updateTotalAmount(id);
 
-    /* Update the lists */
     const mergedList = logistics.concat(data);
     setLogisticList(mergedList);
     sendAddToParent(mergedList);
     SuccessNotification("You have successfully added a new stock");
     close(e);
   };
-
-  /* Return true if date is not empty string or null */
-  const dateFormChecker = (date) => {
-    return date !== "" && date !== null;
-  };
-
+  
   const reduceStock = (e) => {
     let totalReducedAmount = 0;
     for (let index = 0; index < logisticList.length; index++) {
-      logisticList[index].amount -= editForm.stocks[index].subtracted_amount;
       totalReducedAmount += editForm.stocks[index].subtracted_amount;
+      logisticList[index].amount -= editForm.stocks[index].subtracted_amount;
     }
 
     logisticList.forEach((e) => {
@@ -135,24 +113,15 @@ const ManageRawMaterialStock = ({
         );
       }
     });
-
-    console.log("Form before reduction: " + editForm.stocks);
     sendReductionsToAPI();
-    updateTotalAmount(id, totalAmount - totalReducedAmount);
+    API.rawMaterial.updateTotalAmount(id);
 
     //Update the lists
-    const filteredList = logisticList.filter((e) => e.amount !== 0);
     editForm.updateForm();
+    const filteredList = logisticList.filter((e) => e.amount !== 0);
     setLogisticList(filteredList);
     sendReductionToParent(filteredList, totalReducedAmount);
-    console.log("New Form: " + editForm.stocks);
     close(e);
-  };
-
-  const updateTotalAmount = (id, amount) => {
-    editForm.updateTotalAmount(amount);
-    API.rawMaterial.updateTotalAmount(id, amount);
-    setTotalAmount(amount);
   };
 
   const sendReductionsToAPI = () => {

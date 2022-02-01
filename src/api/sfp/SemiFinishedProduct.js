@@ -1,5 +1,5 @@
-import { message } from "antd";
 import axios from "axios";
+import { message } from "antd";
 
 export const fetchTable = async () => {
   try {
@@ -39,7 +39,7 @@ export const fetchFormulation = async (id) => {
 
 export const fetchLogistics = async (id) => {
   try {
-    const response = await axios.get(`/sfp/${id}/logistics`);
+    const response = await axios.get(`/sfp_logistics/${id}`);
     return response.data;
   } catch (err) {
     if (err.response) {
@@ -133,4 +133,53 @@ export const updateImage = async (image, id) => {
         });
     });
   return response.data.Location;
+};
+
+export const updateExpirationDate = async (id) => {
+  try {
+    await axios.put(`/sfp/${id}/update_expiration_date`);
+  } catch (err) {
+    if (err.response) {
+      console.log(`Error: ${err.message}`);
+    }
+  }
+};
+
+export const addStock = async (id, data) => {
+  const res = await axios
+    .post(`/sfp_logistics/${id}/add`, data)
+    .catch((err) => {
+      if (err.response) {
+        console.log(`Error: ${err.message}`);
+      }
+    });
+  updateExpirationDate(id);
+  return res.data;
+};
+
+export const updateStock = async (id, data) => {
+  await axios.put(`/sfp_logistics/${id}/update`, data).catch((err) => {
+    if (err.response) {
+      console.log(`Error: ${err.message}`);
+    }
+  });
+  updateExpirationDate(id);
+};
+
+export const disableStock = async (id, data) => {
+  await axios.put(`/sfp_logistics/${id}/disable`, data).catch((err) => {
+    if (err.response) {
+      console.log(`Error: ${err.message}`);
+    }
+  });
+  updateExpirationDate(id);
+};
+
+export const updateTotalAmount = async (id) => {
+  try {
+    await axios.put(`/sfp_logistics/${id}/update_total_amount`);
+  } catch (err) {
+    console.log(`Error: ${err.message}`);
+    message.error("Failed updating the total amount.");
+  }
 };

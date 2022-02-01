@@ -52,12 +52,17 @@ export const sfp_columns = [
     title: "Expiration Date",
     dataIndex: "expiration_date",
     key: "expiration_date",
-    render: (expiration_date) => (
-      <p style={{ marginBottom: "auto" }}>
-        {moment(expiration_date).format("MMM D, YYYY")}
-      </p>
-    ),
-    sorter: (a, b) => a.expiration_date - b.expiration_date,
+    render: (expiration_date) =>
+      expiration_date === null ? (
+        <p> </p>
+      ) : (
+        <p style={{ marginBottom: "auto" }}>
+          {moment(expiration_date).format("MMM D, YYYY")}
+        </p>
+      ),
+    sorter: (a, b) =>
+      moment(a.expiration_date).format("YYYYMMDD") -
+      moment(b.expiration_date).format("YYYYMMDD"),
   },
   {
     title: "Priority",

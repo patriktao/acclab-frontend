@@ -10,6 +10,7 @@ import moment from "moment";
 import { checkDate } from "../../../helper/Checker";
 import { getPriority } from "../../General/Priority/Priority";
 import { API } from "../../../api";
+import CreateSfp from "../CreateSfp";
 
 const { Search } = Input;
 
@@ -23,6 +24,7 @@ const SfpTable = () => {
   const [itemNames] = useState([]);
   const [rowCount, setRowCount] = useState(0);
   const [activeFilters, setActiveFilters] = useState(0);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   useEffect(() => {
     API.sfp.fetchTable().then((res) => {
@@ -81,7 +83,22 @@ const SfpTable = () => {
     setTable(filteredTable);
   };
 
-  const openCreateModal = () => {};
+  const openCreateModal = () => {
+    setShowCreateModal(true);
+  };
+
+  const closeCreateModal = (e) => {
+    e.stopPropagation();
+    setShowCreateModal(false);
+  };
+
+  const createSfpModal = (
+    <CreateSfp
+      visible={showCreateModal}
+      onClose={closeCreateModal}
+      data={data}
+    />
+  );
 
   return (
     <div className="SfpTable">
@@ -147,6 +164,7 @@ const SfpTable = () => {
                   onClick={openCreateModal}
                 >
                   Add SFP
+                  {createSfpModal}
                 </Button>
               </div>
             </div>

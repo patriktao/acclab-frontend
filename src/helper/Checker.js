@@ -38,3 +38,7 @@ export const checkDate = (inputData, startDate, endDate) => {
     return date.format("YYYYMMDD");
   }
 };
+
+export const dateFormChecker = (date) => {
+  return date !== "" && date !== null;
+};

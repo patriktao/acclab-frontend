@@ -4,7 +4,7 @@ import { DatePicker } from "antd";
 const InputDatePicker = ({ header, value, onChange }) => {
   InputDatePicker.propTypes = {
     header: PropTypes.string,
-    value: PropTypes.string,
+    value: PropTypes.object,
     onChange: PropTypes.func,
   };
 

@@ -107,23 +107,17 @@ export const addStock = async (id, data) => {
         console.log(`Error: ${err.message}`);
       }
     });
-  //update the soonest exp_date raw material column
-  adjustExpirationDate(id);
+  updateExpirationDate(id);
   return res.data;
 };
 
 export const updateStock = async (id, data) => {
-  await axios
-    .put(`/raw_material_logistics/${id}/update`, data)
-    .catch((err) => {
-      if (err.response) {
-        console.log(`Error: ${err.message}`);
-      }
-    })
-    .then(
-      //update the soonest exp_date raw material column
-      adjustExpirationDate(id)
-    );
+  await axios.put(`/raw_material_logistics/${id}/update`, data).catch((err) => {
+    if (err.response) {
+      console.log(`Error: ${err.message}`);
+    }
+  });
+  updateExpirationDate(id);
 };
 
 export const disableStock = async (id, data) => {
@@ -133,18 +127,13 @@ export const disableStock = async (id, data) => {
       if (err.response) {
         console.log(`Error: ${err.message}`);
       }
-    })
-    .then(
-      //update the soonest exp_date raw material column
-      adjustExpirationDate(id)
-    );
+    });
+  updateExpirationDate(id);
 };
 
-export const updateTotalAmount = async (id, amount) => {
+export const updateTotalAmount = async (id) => {
   try {
-    await axios.put(`/raw_material_logistics/${id}/total_amount`, {
-      amount: amount,
-    });
+    await axios.put(`/raw_material_logistics/${id}/update_total_amount`);
   } catch (err) {
     console.log(`Error: ${err.message}`);
     message.error("Failed updating the total amount.");
@@ -215,12 +204,15 @@ export const updateImage = async (image, id) => {
   return response.data.Location;
 };
 
-export const adjustExpirationDate = async (id) => {
-  await axios.put(`/raw_material/${id}/adjustExpirationDate`).catch((err) => {
-    console.log(`Error: ${err.message}`);
-  });
+export const updateExpirationDate = async (id) => {
+  try {
+    await axios.put(`/raw_material/${id}/update_expiration_date`);
+  } catch (err) {
+    if (err.response) {
+      console.log(`Error: ${err.message}`);
+    }
+  }
 };
-
 export const createRawMaterial = async (form) => {
   try {
     let response = 0;

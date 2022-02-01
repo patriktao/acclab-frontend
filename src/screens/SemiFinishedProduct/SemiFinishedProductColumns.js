@@ -55,11 +55,14 @@ export const stocks_columns = [
     title: "Expiration Date",
     dataIndex: "expiration_date",
     key: "expiration_date",
-    render: (date) => (
-      <p style={{ marginBottom: "auto" }}>
-        {moment(date).format("MMM D, YYYY")}
-      </p>
-    ),
+    render: (date) =>
+      date === null ? (
+        <p />
+      ) : (
+        <p style={{ marginBottom: "auto" }}>
+          {moment(date).format("MMM D, YYYY")}
+        </p>
+      ),
   },
   {
     title: "Priority of Usage",

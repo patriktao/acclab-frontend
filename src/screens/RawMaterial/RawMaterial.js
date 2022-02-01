@@ -13,7 +13,7 @@ import ManageRawMaterialStock from "../../components/Inventory/ManageRawMaterial
 
 const RawMaterial = (props) => {
   const { openEdit, closeEdit, editVisible } = useEditRawMaterial();
-  const [materialData, setMaterialData] = useState([]);
+  const [data, setData] = useState([]);
   const [materialName, setMaterialName] = useState("");
   const [reStock, setReStock] = useState();
   const [logistics, setLogistics] = useState([]);
@@ -22,21 +22,25 @@ const RawMaterial = (props) => {
   const [showAddReduce, setShowAddReduce] = useState(false);
   const [unit, setUnit] = useState("");
   const [image, setImage] = useState("");
+  const [totalAmount, setTotalAmount] = useState(0);
 
   const id = props.match.params.id;
   const history = useHistory();
 
   useEffect(() => {
     API.rawMaterial.fetchMaterial(id).then((res) => {
-      setMaterialData(res);
+      setData(res);
       setMaterialName(res[0].material_name);
       setUnit(res[0].unit);
       setImage(res[0].image);
       setReStock(res[0].shopping_list);
+      setTotalAmount(res[0].total_amount);
       setTableLoading1(false);
     });
+
     API.rawMaterial.fetchLogistics(id).then((res) => {
       setLogistics(res);
+      console.log(res);
       setTableLoading2(false);
     });
   }, [id]);
@@ -50,20 +54,20 @@ const RawMaterial = (props) => {
   };
 
   const handleEdit = (form) => {
-    materialData[0].material_name = form.name;
-    materialData[0].content = form.content;
-    materialData[0].unit = form.unit;
-    materialData[0].fat = form.fat;
-    materialData[0].carbohydrate = form.carb;
-    materialData[0].protein = form.protein;
-    materialData[0].salt = form.salt;
-    materialData[0].fiber = form.fiber;
-    materialData[0].sugar = form.sugar;
-    materialData[0].country = form.country;
-    materialData[0].company = form.brand;
-    materialData[0].location = form.location;
-    materialData[0].form = form.form;
-    materialData[0].image = form.image;
+    data[0].material_name = form.name;
+    data[0].content = form.content;
+    data[0].unit = form.unit;
+    data[0].fat = form.fat;
+    data[0].carbohydrate = form.carb;
+    data[0].protein = form.protein;
+    data[0].salt = form.salt;
+    data[0].fiber = form.fiber;
+    data[0].sugar = form.sugar;
+    data[0].country = form.country;
+    data[0].company = form.brand;
+    data[0].location = form.location;
+    data[0].form = form.form;
+    data[0].image = form.image;
     if (typeof form.image === "string") {
       setImage(form.image);
     }
@@ -72,12 +76,14 @@ const RawMaterial = (props) => {
 
   const addStocks = (list) => {
     const new_amount = list[list.length - 1].amount;
-    materialData[0].total_amount += new_amount;
+    data[0].total_amount += new_amount;
+    setTotalAmount(data[0].totalAmount);
     setLogistics(list);
   };
 
   const reduceStocks = (list, reductionAmount) => {
-    materialData[0].total_amount -= reductionAmount;
+    data[0].total_amount -= reductionAmount;
+    setTotalAmount(data[0].total_amount);
     setLogistics(list);
   };
 
@@ -114,7 +120,7 @@ const RawMaterial = (props) => {
               columns={Columns.general_columns.filter(
                 (col) => col.dataIndex !== "raw_material_id"
               )}
-              dataSource={materialData}
+              dataSource={data}
               pagination={false}
               scroll={{ x: "400px" }}
               rowKey={"material_name"}
@@ -126,7 +132,7 @@ const RawMaterial = (props) => {
           <Spin spinning={tableLoading1} tip="Loading..." size="medium">
             <Table
               columns={Columns.nuitrition_columns}
-              dataSource={materialData}
+              dataSource={data}
               pagination={false}
               rowKey={"fat"}
             />
@@ -162,6 +168,7 @@ const RawMaterial = (props) => {
       logistics={logistics}
       sendAddToParent={addStocks}
       sendReductionToParent={reduceStocks}
+      totalAmount={totalAmount}
     />
   );
 
@@ -169,7 +176,7 @@ const RawMaterial = (props) => {
     <EditRawMaterial
       visible={editVisible[id]}
       close={(e) => closeEdit(e, id)}
-      data={materialData[0]}
+      data={data[0]}
       sendChangesToParent={handleEdit}
       deleteRawMaterial={deleteRawMaterial}
     />
@@ -180,7 +187,7 @@ const RawMaterial = (props) => {
       content={
         <InventoryInterface
           name={materialName}
-          openHandleStock={() => setShowAddReduce(true)}
+          openManageStock={() => setShowAddReduce(true)}
           manageStock={manageStock}
           openEdit={() => openEdit(id)}
           edit={edit}

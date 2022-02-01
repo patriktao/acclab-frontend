@@ -8,6 +8,7 @@ import { API } from "../../../api";
 import { message } from "antd";
 import moment from "moment";
 import { SuccessNotification } from "../../General/Notifications";
+import { dateFormChecker } from "../../../helper/Checker";
 
 const ManageSfpStock = ({
   close,
@@ -17,6 +18,7 @@ const ManageSfpStock = ({
   id,
   sendAddToParent,
   sendReductionToParent,
+  totalAmount,
 }) => {
   const [logisticList, setLogisticList] = useState([]);
   const [editForm, setEditForm] = useState();
@@ -24,37 +26,24 @@ const ManageSfpStock = ({
   const [amount, setAmount] = useState();
   const [productionDate, setProductionDate] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
-  const [totalAmount, setTotalAmount] = useState(0);
-  const [counter, setCounter] = useState(0);
 
   useEffect(() => {
-    if (logistics.length > 0 && counter === 0) {
+    if (logistics.length >= 0) {
       setLogisticList(logistics);
       setEditForm(new EditStockForm(logistics));
       setOriginalForm(new EditStockForm(logistics));
-      setTotalAmount(logistics[0].total_amount);
-      setCounter(1);
     }
-  }, [logistics, counter]);
+  }, [logistics]);
 
   const isPassingRestrictions = () => {
-    if (
-      amount != null &&
-      dateFormChecker(productionDate) &&
-      dateFormChecker(expirationDate)
-    ) {
+    if (amount != null && dateFormChecker(productionDate)) {
       if (amount <= 0) {
         message.error("The amount needs to be a positive number!");
-        return false;
-      } else if (expirationDate.isSameOrBefore(productionDate)) {
-        message.error("Production date must come before expiration date!");
         return false;
       }
       return true;
     }
-    message.error(
-      "Amount, production date and expiration date needs to be filled!"
-    );
+    message.error("Amount and production date need to be filled!");
     return false;
   };
 
@@ -64,11 +53,10 @@ const ManageSfpStock = ({
       : moment(input).format("YYYYMMDD");
   };
 
-  const addStock = (e) => {
+  const addStock = async (e) => {
     if (!isPassingRestrictions()) {
       return;
     }
-    const newTotalAmount = totalAmount + amount;
 
     const data = {
       raw_material_id: parseInt(id),
@@ -79,24 +67,12 @@ const ManageSfpStock = ({
     };
 
     // API call and get the new generated stock_id
-    API.sfp.addStock(id, data).then((res) => {
+    await API.sfp.addStock(id, data).then((res) => {
       data.stock_id = res.stock_id;
-      console.log(data);
-
-      // Update total amount
-      updateTotalAmount(id, totalAmount + amount);
-
-      /* Push new stock to form */
-      editForm.add({
-        stock_id: res.stock_id,
-        old_amount: data.amount,
-        subtracted_amount: 0,
-        new_amount: data.amount,
-        total_amount: newTotalAmount,
-      });
+      editForm.add(res.stock_id, amount);
     });
 
-    /* Update the lists */
+    API.sfp.updateTotalAmount(id);
     const mergedList = logistics.concat(data);
     setLogisticList(mergedList);
     sendAddToParent(mergedList);
@@ -119,27 +95,15 @@ const ManageSfpStock = ({
       }
     });
 
-    console.log("Form before reduction: " + editForm.stocks);
     sendReductionsToAPI();
-    updateTotalAmount(id, totalAmount - totalReducedAmount);
+    API.sfp.updateTotalAmount(id);
 
     //Update the lists
     const filteredList = logisticList.filter((e) => e.amount !== 0);
     editForm.updateForm();
     setLogisticList(filteredList);
     sendReductionToParent(filteredList, totalReducedAmount);
-    console.log("New Form: " + editForm.stocks);
     close(e);
-  };
-
-  const dateFormChecker = (date) => {
-    return date !== "" && date !== null;
-  };
-
-  const updateTotalAmount = (id, amount) => {
-    editForm.updateTotalAmount(amount);
-    API.sfp.updateTotalAmount(id, amount);
-    setTotalAmount(amount);
   };
 
   const sendReductionsToAPI = () => {

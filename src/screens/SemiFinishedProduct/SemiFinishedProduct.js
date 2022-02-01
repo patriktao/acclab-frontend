@@ -21,6 +21,7 @@ const SemiFinishedProduct = (props) => {
   const [name, setName] = useState("");
   const [unit, setUnit] = useState("g");
   const [image, setImage] = useState("");
+  const [totalAmount, setTotalAmount] = useState();
   const [tableLoading1, setTableLoading1] = useState(true);
   const [tableLoading2, setTableLoading2] = useState(false);
   const [tableLoading3, setTableLoading3] = useState(false);
@@ -34,6 +35,7 @@ const SemiFinishedProduct = (props) => {
       setName(res[0].sfp_name);
       setUnit(res[0].unit);
       setImage(res[0].image);
+      setTotalAmount(res[0].total_amount);
       setTableLoading1(false);
     });
 
@@ -55,8 +57,6 @@ const SemiFinishedProduct = (props) => {
     setName(form.name);
     setProcessSteps(form.process_steps);
     setFormulation(form.editForm);
-
-    /* setFormulation(editForm); */
   };
 
   const informationTab = (
@@ -135,11 +135,13 @@ const SemiFinishedProduct = (props) => {
   const addStocks = (list) => {
     const new_amount = list[list.length - 1].amount;
     data[0].total_amount += new_amount;
+    setTotalAmount(data[0].total_amount);
     setLogistics(list);
   };
 
   const reduceStocks = (list, reductionAmount) => {
     data[0].total_amount -= reductionAmount;
+    setTotalAmount(data[0].total_amount);
     setLogistics(list);
   };
 
@@ -155,6 +157,7 @@ const SemiFinishedProduct = (props) => {
       id={id}
       sendAddToParent={addStocks}
       sendReductionToParent={reduceStocks}
+      totalAmount={totalAmount}
     />
   );
 
