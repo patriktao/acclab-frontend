@@ -3,7 +3,6 @@ import { SearchOutlined, PlusOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import "./CreateRawMaterial.scss";
 import InputNumber from "../../General/InputNumber";
-import { isEqual } from "lodash/fp";
 import {
   Modal,
   Input,
@@ -21,6 +20,7 @@ import EditBrands from "../EditBrands";
 import EditLocations from "../EditLocations";
 import ImageUploader from "../../General/ImageUploader";
 import Units from "./Units";
+import { useHistory } from "react-router";
 
 const { TextArea } = Input;
 
@@ -30,6 +30,8 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
     close: PropTypes.func,
     sendChangesToParent: PropTypes.func,
   };
+
+  const history = useHistory();
 
   /* Modal States */
   const [brandModalVisible, setBrandModalVisible] = useState(false);
@@ -59,7 +61,7 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
   const [rawMaterialForm, setRawMaterialForm] = useState();
 
   /* Image States */
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState();
 
   useEffect(() => {
     API.brands.fetchAllCompanies().then((res) => setBrands(res));
@@ -87,16 +89,16 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
 
   const passRestrictions = () => {
     if (name === "" || name === null) {
-      message.error("Please type a material name!");
+      message.warning("Please type a material name!");
       return false;
     } else if (!ifExistsInList(brands, brand)) {
-      message.error("Please select a brand from the list!");
+      message.warning("Please select a brand from the list!");
       return false;
     } else if (!ifExistsInList(countries, country)) {
-      message.error("Please select a country from the list!");
+      message.warning("Please select a country from the list!");
       return false;
     } else if (!ifExistsInList(locations, location)) {
-      message.error("Please select a storage location");
+      message.warning("Please select a storage location");
       return false;
     }
     return true;
@@ -120,23 +122,28 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
     rawMaterialForm.sugar = sugar;
     rawMaterialForm.fiber = fiber;
     rawMaterialForm.content = content;
-    await createAPI().then((res) => {
+    await createAPI().then(async (res) => {
       if (res !== "failed") {
-        imageAPI();
-        sendChangesToParent(rawMaterialForm);
+        await imageAPI().then(() => {
+          sendChangesToParent(rawMaterialForm);
+          history.push(`/inventory/rawmaterial/${rawMaterialForm.id}`);
+        });
       }
     });
     close(e);
   };
 
   const imageAPI = async () => {
-    if (image !== undefined || image !== null) {
-      await API.rawMaterial.uploadImage(image, id).then((res) => {
-        console.log("uploading picture");
-        console.log(res);
-        rawMaterialForm.image = res;
-      });
+    if (image !== undefined && image !== null && image !== "") {
+      await API.rawMaterial
+        .uploadImage(image, rawMaterialForm.id)
+        .then((res) => {
+          console.log("uploading picture");
+          console.log(res);
+          rawMaterialForm.image = res;
+        });
     }
+    return;
   };
 
   const createAPI = async () => {
@@ -198,7 +205,7 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
       >
         <section className="CreateRawMaterial">
           <section className="GeneralInformation">
-            <h1>Add a new raw material</h1>
+            <h1>Add a Raw Material</h1>
             <div className="rows">
               <div className="image-general-information">
                 <div className="column-wrapper">

@@ -139,18 +139,19 @@ const EditRawMaterial = ({
     rawMaterialForm.sugar = sugar;
     rawMaterialForm.fiber = fiber;
     rawMaterialForm.content = content;
+
     await handleImageAPI().then(() => {
       if (
-        !isEqual(rawMaterialForm.toJsonObject(), oldRawMaterial.toJsonObject())
+        isEqual(rawMaterialForm.toJsonObject(), oldRawMaterial.toJsonObject())
       ) {
+        message.success("No changes made.");
+      } else {
         API.rawMaterial.editMaterial(
           data.raw_material_id,
           rawMaterialForm.toJsonObject()
         );
         sendChangesToParent(rawMaterialForm);
         message.success("Successfully edited raw material.");
-      } else {
-        message.success("No changes made.");
       }
       closeEdit(e, id);
     });

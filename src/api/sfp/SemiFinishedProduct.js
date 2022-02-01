@@ -183,3 +183,29 @@ export const updateTotalAmount = async (id) => {
     message.error("Failed updating the total amount.");
   }
 };
+
+export const createSfp = async (form) => {
+  try {
+    let response = 0;
+    await axios.post(`/sfp`, form).then((res) => {
+      response = res.data.sfp_id[0];
+    });
+    message.success(form.sfp_name + " has been added to inventory.");
+    return response;
+  } catch (err) {
+    console.log(`Error: ${err.message}`);
+    message.error("Unable to add new raw material.");
+    return "failed";
+  }
+};
+
+export const createFormulation = async (id, form) => {
+  try {
+    console.log(form);
+    await form.forEach((rawMaterial) => {
+      axios.post(`/sfp/${id}/formulation`, rawMaterial);
+    });
+  } catch (err) {
+    console.log(`Error: ${err.message}`);
+  }
+};

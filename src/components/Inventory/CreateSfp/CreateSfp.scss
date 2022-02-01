@@ -1,0 +1,46 @@
+.CreateSfp {
+  display: grid;
+  row-gap: 1rem;
+
+  .rows {
+    display: grid;
+    grid-template-columns: 1.9fr 1fr;
+    column-gap: 2rem;
+
+    .information {
+      display: grid;
+      row-gap: 1rem;
+
+      .side-by-side {
+        display: grid;
+        grid-template-columns: 0.4fr 1fr;
+        column-gap: 2rem;
+      }
+    }
+  }
+
+  .formulation {
+    .formulation-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .table {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .ant-table-thead > tr > th {
+    background: #fafafa;
+  }
+
+  .ant-table-footer {
+    background: white;
+  }
+  .table {
+    padding: 0;
+    padding-top: 0.5rem;
+  }
+}

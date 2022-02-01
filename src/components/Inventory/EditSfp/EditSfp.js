@@ -14,12 +14,11 @@ import { isEqual } from "lodash/fp";
 const { TextArea } = Input;
 const { TabPane } = Tabs;
 
-const EditSfp = ({ visible, onClose, data, id, sendChanges }) => {
+const EditSfp = ({ visible, onClose, data, sendChanges }) => {
   EditSfp.propTypes = {
     visible: PropTypes.bool,
     onClose: PropTypes.func,
     data: PropTypes.array,
-    id: PropTypes.string,
     sendChanges: PropTypes.func,
   };
 
@@ -32,9 +31,10 @@ const EditSfp = ({ visible, onClose, data, id, sendChanges }) => {
   const [unit, setUnit] = useState("");
   const [location, setLocation] = useState("");
   const [processSteps, setProcessSteps] = useState("");
-  const [sfpId, setSfpId] = useState();
   const [currentImage, setCurrentImage] = useState("");
   const [image, setImage] = useState("");
+  const [originalFormulation, setOriginalFormulation] = useState([]);
+  const [id, setId] = useState();
 
   useEffect(() => {
     API.locations.fetchLocations().then((res) => setLocations(res));
@@ -45,18 +45,16 @@ const EditSfp = ({ visible, onClose, data, id, sendChanges }) => {
       setLocation(data.location);
       setProcessSteps(data.process_steps);
       setCurrentImage(data.image);
+      setId(data.sfp_id);
       setEditData(new SfpClass(data));
       setOriginalData(new SfpClass(data));
-    }
-
-    if (id !== undefined) {
-      setSfpId(id);
       API.sfp
-        .fetchFormulation(id)
+        .fetchFormulation(data.sfp_id)
         .then((res) => {
           setFormulation(res);
         })
-        .then(setEditForm(formulation));
+        .then(setEditForm(formulation))
+        .then(setOriginalFormulation(formulation));
     }
   }, [data]);
 
@@ -112,20 +110,23 @@ const EditSfp = ({ visible, onClose, data, id, sendChanges }) => {
     });
   };
 
-  const handleOk = async (e) => {
+  const handleEdit = async (e) => {
     editData.name = name;
     editData.unit = unit;
     editData.location = location;
     editData.process_steps = processSteps;
 
     await handleImageAPI().then(() => {
-      if (!isEqual(editData.toJsonObject(), originalData.toJsonObject())) {
-        API.sfp.editInformation(sfpId, editData.toJsonObject());
-
+      if (
+        isEqual(editData.toJsonObject(), originalData.toJsonObject()) &&
+        isEqual(formulation, originalFormulation)
+      ) {
+        message.success("No changes made.");
+      } else {
+        API.sfp.editInformation(id, editData.toJsonObject());
         editForm.forEach((item) => {
-          API.sfp.editFormulation(sfpId, item);
+          API.sfp.editFormulation(id, item);
         });
-
         sendChanges({
           editForm: editForm,
           sfp_name: name,
@@ -135,8 +136,6 @@ const EditSfp = ({ visible, onClose, data, id, sendChanges }) => {
           image: editData.image,
         });
         message.success("Successfully edited SFP.");
-      } else {
-        message.success("No changes made.");
       }
       onClose(e);
     });
@@ -175,7 +174,7 @@ const EditSfp = ({ visible, onClose, data, id, sendChanges }) => {
       centered
       footer={[
         <Button onClick={(e) => onClose(e)}>Close</Button>,
-        <Button type="primary" onClick={(e) => handleOk(e)}>
+        <Button type="primary" onClick={(e) => handleEdit(e)}>
           OK
         </Button>,
       ]}

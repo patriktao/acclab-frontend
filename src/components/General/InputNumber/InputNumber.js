@@ -35,6 +35,7 @@ const InputNumber = ({
       type="number"
       placeholder={placeholder}
       value={inputValue}
+      size={"small"}
       onChange={onChange}
       min={0}
       max={max}

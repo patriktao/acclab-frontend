@@ -213,6 +213,7 @@ export const updateExpirationDate = async (id) => {
     }
   }
 };
+
 export const createRawMaterial = async (form) => {
   try {
     let response = 0;
@@ -228,10 +229,21 @@ export const createRawMaterial = async (form) => {
   }
 };
 
+export const deleteAllLogistics = async (id) => {
+  try {
+    await axios.delete(`/raw_material_logistics/${id}/all`);
+    return;
+  } catch (err) {
+    console.log(`Error: ${err.message}`);
+    message.error("Unable to delete all");
+  }
+};
+
 export const deleteRawMaterial = async (id) => {
   let response = "failed";
   try {
-    await axios.delete(`/raw_material_logistics/${id}/all`);
+    deleteImage(id);
+    deleteAllLogistics(id);
     await axios.delete(`/raw_material/${id}`).then(() => {
       message.success("Successfully deleted the raw material.");
       response = "success";

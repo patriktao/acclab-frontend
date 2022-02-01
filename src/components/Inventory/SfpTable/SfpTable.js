@@ -19,7 +19,6 @@ const SfpTable = () => {
   const [searchText, setSearchText] = useState("");
   const [data, setData] = useState([]);
   const [table, setTable] = useState([]);
-  const [counter, setCounter] = useState(0);
   const [filterVisible, setFilterVisible] = useState(false);
   const [itemNames] = useState([]);
   const [rowCount, setRowCount] = useState(0);
@@ -30,6 +29,7 @@ const SfpTable = () => {
     API.sfp.fetchTable().then((res) => {
       setTable(res);
       setData(res);
+      setRowCount(res.length);
       setTableLoading(false);
     });
   }, []);
@@ -92,11 +92,27 @@ const SfpTable = () => {
     setShowCreateModal(false);
   };
 
+  const createSfp = (form) => {
+    const newMaterial = table.concat({
+      sfp_id: form.sfp_id,
+      sfp_name: form.sfp_name,
+      total_amount: 0,
+      location: form.location,
+      expiration_date: null,
+      unit: form.unit,
+      image: "",
+      country: "Sweden",
+      company: "Accelerator Lab",
+    });
+    setTable(newMaterial);
+    setData(newMaterial);
+  };
+
   const createSfpModal = (
     <CreateSfp
       visible={showCreateModal}
       onClose={closeCreateModal}
-      data={data}
+      sendChangesToParent={createSfp}
     />
   );
 

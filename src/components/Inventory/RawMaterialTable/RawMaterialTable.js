@@ -161,6 +161,7 @@ const RawMaterialTable = ({ rowSelection }) => {
       country: form.country,
       total_amount: 0,
       location: form.location,
+      unit: form.unit,
       expiration_date: null,
       image: "",
     });
