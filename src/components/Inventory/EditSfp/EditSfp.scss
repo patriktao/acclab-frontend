@@ -7,6 +7,12 @@
     grid-template-columns: 1.9fr 1fr;
     column-gap: 2rem;
 
+    .ant-upload {
+      width: 125px;
+      height: 145px;
+      margin-bottom: 0;
+    }
+    
     .information {
       display: grid;
       row-gap: 1rem;
@@ -39,7 +45,7 @@
   .ant-table-footer {
     background: white;
   }
-  .table{
+  .table {
     padding: 0;
     padding-top: 0.5rem;
   }

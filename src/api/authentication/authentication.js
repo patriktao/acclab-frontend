@@ -16,9 +16,9 @@ export const login = async (email, password) => {
       });
     if (response.data.message === "success") {
       const user = response.data.user;
-      sessionStorage.setItem("email", user.email);
-      sessionStorage.setItem("firstname", user.firstname);
-      sessionStorage.setItem("lastname", user.lastname);
+      localStorage.setItem("email", user.email);
+      localStorage.setItem("firstname", user.firstname);
+      localStorage.setItem("lastname", user.lastname);
     }
     return response.data;
   } catch (err) {

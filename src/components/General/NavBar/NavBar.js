@@ -19,15 +19,15 @@ const NavBar = () => {
 
   useEffect(() => {
     setUser({
-      firstname: sessionStorage.getItem("firstname"),
-      lastname: sessionStorage.getItem("lastname"),
+      firstname: localStorage.getItem("firstname"),
+      lastname: localStorage.getItem("lastname"),
     });
   }, [userSession]);
 
   const handleLogout = async () => {
     message.success("You successfully logged out");
     await logout();
-    sessionStorage.clear();
+    localStorage.clear();
     return history.push("/");
   };
 

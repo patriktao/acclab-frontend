@@ -1,13 +1,13 @@
 import React from "react";
 import { getPriorityIcon } from "../../General/Priority";
 import "./StockInterface.scss";
-import reduction_reasons from "../HandleStock/ReductionReasons";
 import moment from "moment";
 import { useState } from "react";
 import { Tabs, message, Modal, Button, Popconfirm, Select, Table } from "antd";
 import { isEqual } from "lodash/fp";
 import InputNumber from "../../General/InputNumber";
 import PropTypes from "prop-types";
+import ReductionReasons from "../../General/ReductionReasons";
 
 const { TabPane } = Tabs;
 
@@ -32,7 +32,7 @@ const StockInterface = ({
     logistics: PropTypes.array,
   };
 
-  const [reason, setReason] = useState("Spill");
+  const [reason, setReason] = useState("Consumtion");
   const [tabPane, setTabPane] = useState("add");
 
   /* tabPane 1 is add, tabPane 2 is reduce */
@@ -176,7 +176,7 @@ const StockInterface = ({
                 <span className="sub-header">Reason:</span>
                 <Select
                   className="input-select"
-                  options={reduction_reasons}
+                  options={ReductionReasons}
                   defaultValue={reason}
                   style={{ width: "450px" }}
                   onSelect={(e) => setReason(e)}

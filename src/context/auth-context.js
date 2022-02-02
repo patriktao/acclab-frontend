@@ -11,7 +11,7 @@ const AuthProvider = (props) => {
 
   useEffect(() => {
     const getUserSession = async () => {
-      const storedUserEmail = sessionStorage.getItem("email");
+      const storedUserEmail = localStorage.getItem("email");
       if (storedUserEmail !== null) {
         await API.authentication.loggedIn(storedUserEmail).then((res) => {
           if (res.loggedIn) {

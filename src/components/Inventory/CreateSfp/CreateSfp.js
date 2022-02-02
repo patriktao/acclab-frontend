@@ -9,6 +9,7 @@ import PropTypes from "prop-types";
 import ManageFormulation from "../ManageFormulation/";
 import InputNumber from "../../General/InputNumber";
 import SfpClass from "../../../classes/SfpClass";
+import { Link } from "react-router-dom";
 
 import { useHistory } from "react-router";
 
@@ -50,8 +51,10 @@ const CreateSfp = ({ visible, onClose, sendChangesToParent }) => {
       title: "Material Name",
       dataIndex: "material_name",
       key: "material_name",
-      render: (material_name) => (
-        <span style={{ fontWeight: "500" }}>{material_name}</span>
+      render: (material_name, record) => (
+        <Link to={`/inventory/rawmaterial/${record.raw_material_id}`}>
+          {material_name}
+        </Link>
       ),
     },
     {
@@ -176,7 +179,7 @@ const CreateSfp = ({ visible, onClose, sendChangesToParent }) => {
     <Modal
       maskClosable={false}
       visible={visible}
-      width={"750px"}
+      width={"800px"}
       centered
       onCancel={(e) => onClose(e)}
       onOk={(e) => handleOk(e)}
@@ -214,7 +217,10 @@ const CreateSfp = ({ visible, onClose, sendChangesToParent }) => {
               />
             </div>
           </div>
-          <ImageUploader imageURL={""} handleImage={handleImage} />
+          <div className="header-field-wrapper">
+            <span className="sub-header">Image</span>
+            <ImageUploader handleImage={handleImage} imageURL={""} />
+          </div>
         </div>
 
         <Tabs defaultActiveKey={1}>

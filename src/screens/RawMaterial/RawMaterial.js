@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Table, Spin, Checkbox, message, Avatar } from "antd";
 import * as Columns from "./RawMaterialColumns";
 import EditRawMaterial from "../../components/Inventory/EditRawMaterial";
-import HandleStock from "../../components/Inventory/HandleStock";
 import { API } from "../../api";
 import "./RawMaterial.scss";
 import { useEditRawMaterial } from "../../context/edit-raw-material";

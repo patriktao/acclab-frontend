@@ -1,5 +1,6 @@
 import { checkString, checkURLString } from "../helper/Checker";
 import PropTypes from "prop-types";
+import { isEqual } from "lodash/fp";
 
 class SfpClass {
   #sfp_id = null;
@@ -29,6 +30,10 @@ class SfpClass {
       image: this.#image,
       process_steps: this.#process_steps,
     };
+  }
+
+  isEqual(sfpClass) {
+    return isEqual(this.toJsonObject(), sfpClass.toJsonObject());
   }
 
   /* Get functions */

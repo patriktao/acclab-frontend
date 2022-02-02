@@ -2,6 +2,11 @@
   display: grid;
   row-gap: 1rem;
 
+  .ant-upload {
+    width: 128px;
+    height: 148px;
+  }
+
   .rows {
     display: grid;
     grid-template-columns: 1.9fr 1fr;
@@ -14,7 +19,7 @@
       .side-by-side {
         display: grid;
         grid-template-columns: 0.4fr 1fr;
-        column-gap: 2rem;
+        column-gap: 1.5rem;
       }
     }
   }

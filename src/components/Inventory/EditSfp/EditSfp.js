@@ -10,22 +10,29 @@ import PropTypes from "prop-types";
 import { InputNumber } from "antd";
 import SfpClass from "../../../classes/SfpClass";
 import { isEqual } from "lodash/fp";
+import { Link } from "react-router-dom";
 
 const { TextArea } = Input;
 const { TabPane } = Tabs;
 
-const EditSfp = ({ visible, onClose, data, sendChanges }) => {
+const EditSfp = ({ visible, onClose, data, sendChangesToParent }) => {
   EditSfp.propTypes = {
     visible: PropTypes.bool,
     onClose: PropTypes.func,
     data: PropTypes.array,
-    sendChanges: PropTypes.func,
+    sendChangesToParent: PropTypes.func,
   };
 
-  const [originalData, setOriginalData] = useState(null);
-  const [editData, setEditData] = useState(null);
-  const [formulation, setFormulation] = useState([]);
-  const [editForm, setEditForm] = useState([]);
+  const [{ originalData, editData }, setData] = useState({
+    originalData: null,
+    editData: null,
+  });
+
+  const [{ editForm, originalForm }, setForm] = useState({
+    editForm: [],
+    originalForm: [],
+  });
+
   const [locations, setLocations] = useState([]);
   const [name, setName] = useState("");
   const [unit, setUnit] = useState("");
@@ -33,11 +40,19 @@ const EditSfp = ({ visible, onClose, data, sendChanges }) => {
   const [processSteps, setProcessSteps] = useState("");
   const [currentImage, setCurrentImage] = useState("");
   const [image, setImage] = useState("");
-  const [originalFormulation, setOriginalFormulation] = useState([]);
   const [id, setId] = useState();
 
   useEffect(() => {
     API.locations.fetchLocations().then((res) => setLocations(res));
+
+    const fetchFormulation = () => {
+      API.sfp.fetchFormulation(data.sfp_id).then((res) => {
+        setForm({
+          editForm: JSON.parse(JSON.stringify(res)),
+          originalForm: JSON.parse(JSON.stringify(res)),
+        });
+      });
+    };
 
     if (data !== null && data !== undefined) {
       setName(data.sfp_name);
@@ -46,15 +61,11 @@ const EditSfp = ({ visible, onClose, data, sendChanges }) => {
       setProcessSteps(data.process_steps);
       setCurrentImage(data.image);
       setId(data.sfp_id);
-      setEditData(new SfpClass(data));
-      setOriginalData(new SfpClass(data));
-      API.sfp
-        .fetchFormulation(data.sfp_id)
-        .then((res) => {
-          setFormulation(res);
-        })
-        .then(setEditForm(formulation))
-        .then(setOriginalFormulation(formulation));
+      setData({
+        originalData: new SfpClass(data),
+        editData: new SfpClass(data),
+      });
+      fetchFormulation();
     }
   }, [data]);
 
@@ -68,8 +79,10 @@ const EditSfp = ({ visible, onClose, data, sendChanges }) => {
       title: "Material Name",
       dataIndex: "material_name",
       key: "material_name",
-      render: (material_name) => (
-        <span style={{ fontWeight: "500" }}>{material_name}</span>
+      render: (material_name, record) => (
+        <Link to={`/inventory/rawmaterial/${record.raw_material_id}`}>
+          {material_name}
+        </Link>
       ),
     },
     {
@@ -116,18 +129,11 @@ const EditSfp = ({ visible, onClose, data, sendChanges }) => {
     editData.location = location;
     editData.process_steps = processSteps;
 
-    await handleImageAPI().then(() => {
-      if (
-        isEqual(editData.toJsonObject(), originalData.toJsonObject()) &&
-        isEqual(formulation, originalFormulation)
-      ) {
+    await handleImageAPI().then(async () => {
+      if (editData.isEqual(originalData) && isEqual(editForm, originalForm)) {
         message.success("No changes made.");
       } else {
-        API.sfp.editInformation(id, editData.toJsonObject());
-        editForm.forEach((item) => {
-          API.sfp.editFormulation(id, item);
-        });
-        sendChanges({
+        sendChangesToParent({
           editForm: editForm,
           sfp_name: name,
           unit: unit,
@@ -135,6 +141,21 @@ const EditSfp = ({ visible, onClose, data, sendChanges }) => {
           process_steps: processSteps,
           image: editData.image,
         });
+
+        //API
+        API.sfp.editInformation(id, editData.toJsonObject());
+
+        editForm.forEach((item) => {
+          API.sfp.editFormulation(id, item);
+        });
+
+        //update the originaldata
+        originalData.name = name;
+        originalData.unit = unit;
+        originalData.location = location;
+        originalData.process_steps = processSteps;
+
+        //success
         message.success("Successfully edited SFP.");
       }
       onClose(e);
@@ -170,7 +191,7 @@ const EditSfp = ({ visible, onClose, data, sendChanges }) => {
     <Modal
       maskClosable={false}
       visible={visible}
-      width={"750px"}
+      width={"800px"}
       centered
       footer={[
         <Button onClick={(e) => onClose(e)}>Close</Button>,
@@ -215,7 +236,10 @@ const EditSfp = ({ visible, onClose, data, sendChanges }) => {
               />
             </div>
           </div>
-          <ImageUploader handleImage={handleImage} imageURL={currentImage} />
+          <div className="header-field-wrapper">
+            <span className="sub-header">Image</span>
+            <ImageUploader handleImage={handleImage} imageURL={currentImage} />
+          </div>
         </div>
 
         <Tabs defaultActiveKey={1}>
@@ -226,10 +250,11 @@ const EditSfp = ({ visible, onClose, data, sendChanges }) => {
                   columns={formulation_columns.filter(
                     (col) => col.dataIndex !== "raw_material_id"
                   )}
-                  dataSource={formulation}
+                  dataSource={originalForm || []}
                   rowKey={"raw_material_id"}
                   bordered
                   pagination={false}
+                  size="middle"
                 />
               </div>
             </div>

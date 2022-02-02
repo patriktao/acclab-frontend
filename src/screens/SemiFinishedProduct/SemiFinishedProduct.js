@@ -128,7 +128,7 @@ const SemiFinishedProduct = (props) => {
       data={data[0]}
       formulationData={formulation}
       id={id}
-      sendChanges={editFormulation}
+      sendChangesToParent={editFormulation}
     />
   );
 

@@ -1,6 +1,7 @@
 import moment from "moment";
 import InputNumber from "../../components/General/InputNumber";
 import { getPriorityIcon } from "../../components/General/Priority";
+import { Link } from "react-router-dom";
 
 export const general_columns = [
   {
@@ -82,8 +83,10 @@ export const formulation_columns = [
     title: "Material Name",
     dataIndex: "material_name",
     key: "material_name",
-    render: (material_name) => (
-      <span style={{ fontWeight: "500" }}>{material_name}</span>
+    render: (material_name, record) => (
+      <Link to={`/inventory/rawmaterial/${record.raw_material_id}`}>
+        {material_name}
+      </Link>
     ),
   },
   {
