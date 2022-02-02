@@ -5,6 +5,7 @@ import Inventory from "./screens/Inventory/Inventory";
 import RawMaterial from "./screens/RawMaterial/RawMaterial";
 import { useAuth } from "./context/auth-context";
 import SemiFinishedProduct from "./screens/SemiFinishedProduct";
+import PageNotFound from "./screens/PageNotFound";
 
 const App = () => {
   const { loggedIn } = useAuth();
@@ -16,6 +17,7 @@ const App = () => {
       <Route exact path="/inventory" component={Inventory} />
       <Route path="/inventory/rawmaterial/:id" component={RawMaterial} />
       <Route path="/inventory/sfp/:id" component={SemiFinishedProduct} />
+      <Route component={PageNotFound} />
     </Switch>
   ) : (
     <Switch>

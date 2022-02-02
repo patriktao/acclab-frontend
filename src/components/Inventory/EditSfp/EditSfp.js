@@ -155,6 +155,8 @@ const EditSfp = ({ visible, onClose, data, sendChangesToParent }) => {
         originalData.location = location;
         originalData.process_steps = processSteps;
 
+        //TODO: set ORIGINALFORM to EDITFORM, CURRENTLY NOT WORKING.
+
         //success
         message.success("Successfully edited SFP.");
       }

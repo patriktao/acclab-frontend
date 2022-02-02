@@ -182,16 +182,9 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
         <Button key="submit" onClick={(e) => close(e)}>
           Cancel
         </Button>,
-        <Popconfirm
-          title={"Are you sure?"}
-          onConfirm={handleOk}
-          okText="Yes"
-          cancelText="No"
-        >
-          <Button key="submit" type="primary">
-            OK
-          </Button>
-        </Popconfirm>,
+        <Button key="submit" onClick={handleOk} type="primary">
+          OK
+        </Button>,
       ]}
     >
       <Form
