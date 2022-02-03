@@ -36,11 +36,14 @@ const ExpiringColumns = [
     sorter: (a, b) =>
       moment(a.expiration_date).format("YYYYMMDD") -
       moment(b.expiration_date).format("YYYYMMDD"),
-    render: (expiration_date) => (
-      <p style={{ marginBottom: "auto" }}>
-        {moment(expiration_date).format("MMM D, YYYY")}
-      </p>
-    ),
+    render: (expiration_date) =>
+      expiration_date === null ? (
+        <p> </p>
+      ) : (
+        <p style={{ marginBottom: "auto" }}>
+          {moment(expiration_date).format("MMM D, YYYY")}
+        </p>
+      ),
   },
   {
     title: "Priority",
