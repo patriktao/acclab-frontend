@@ -11,16 +11,18 @@ import { InputNumber } from "antd";
 import SfpClass from "../../../classes/SfpClass";
 import { isEqual } from "lodash/fp";
 import { Link } from "react-router-dom";
+import { useEditSfp } from "../../../context/edit-sfp";
+import { Popconfirm } from "antd";
 
 const { TextArea } = Input;
 const { TabPane } = Tabs;
 
-const EditSfp = ({ visible, onClose, data, sendChangesToParent }) => {
+const EditSfp = ({ visible, data, sendChangesToParent, deleteSfp }) => {
   EditSfp.propTypes = {
     visible: PropTypes.bool,
-    onClose: PropTypes.func,
     data: PropTypes.array,
     sendChangesToParent: PropTypes.func,
+    deleteSfp: PropTypes.func,
   };
 
   const [{ originalData, editData }, setData] = useState({
@@ -41,6 +43,7 @@ const EditSfp = ({ visible, onClose, data, sendChangesToParent }) => {
   const [currentImage, setCurrentImage] = useState("");
   const [image, setImage] = useState("");
   const [id, setId] = useState();
+  const { closeEdit } = useEditSfp();
 
   useEffect(() => {
     API.locations.fetchLocations().then((res) => setLocations(res));
@@ -135,6 +138,7 @@ const EditSfp = ({ visible, onClose, data, sendChangesToParent }) => {
       } else {
         sendChangesToParent({
           editForm: editForm,
+          sfp_id: id,
           sfp_name: name,
           unit: unit,
           location: location,
@@ -160,7 +164,7 @@ const EditSfp = ({ visible, onClose, data, sendChangesToParent }) => {
         //success
         message.success("Successfully edited SFP.");
       }
-      onClose(e);
+      closeEdit(e, id);
     });
   };
 
@@ -196,12 +200,28 @@ const EditSfp = ({ visible, onClose, data, sendChangesToParent }) => {
       width={"800px"}
       centered
       footer={[
-        <Button onClick={(e) => onClose(e)}>Close</Button>,
-        <Button type="primary" onClick={(e) => handleEdit(e)}>
-          OK
-        </Button>,
+        <section className="edit-raw-material-footer">
+          <div>
+            <Popconfirm
+              title={"Are you sure?"}
+              okType={"danger"}
+              okText={"Delete"}
+              onConfirm={(e) => deleteSfp(e, id)}
+            >
+              <Button type="danger">Delete</Button>
+            </Popconfirm>
+          </div>
+          <div>
+            <Button key="submit" onClick={(e) => closeEdit(e, id)}>
+              Cancel
+            </Button>
+            <Button key="submit" type="primary" onClick={(e) => handleEdit(e)}>
+              OK
+            </Button>
+          </div>
+        </section>,
       ]}
-      onCancel={(e) => onClose(e)}
+      onCancel={(e) => closeEdit(e, id)}
     >
       <section className="EditSfp">
         <h1>Edit {name}</h1>

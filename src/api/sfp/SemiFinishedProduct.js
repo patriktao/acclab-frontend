@@ -209,3 +209,61 @@ export const createFormulation = async (id, form) => {
     console.log(`Error: ${err.message}`);
   }
 };
+
+export const deleteAllLogistics = async (id) => {
+  try {
+    await axios.delete(`/sfp_logistics/${id}/all`);
+    return;
+  } catch (err) {
+    console.log(`Error: ${err.message}`);
+    message.error("Unable to delete all");
+  }
+};
+
+export const deleteSfp = async (id) => {
+  let response = "failed";
+  try {
+    deleteImage(id);
+    deleteAllLogistics(id);
+    await axios.delete(`/sfp/${id}`).then(() => {
+      message.success("Successfully deleted the raw material.");
+      response = "success";
+    });
+    return response;
+  } catch (err) {
+    if (err.response) {
+      console.log(`Error: ${err.message}`);
+      message.error("Unable to delete the raw material.");
+      return response;
+    }
+  }
+};
+
+export const disableAllLogistics = async (id) => {
+  try {
+    await axios.put(`/sfp_logistics/${id}/disable_all`);
+    return;
+  } catch (err) {
+    console.log(`Error: ${err.message}`);
+    message.error("Unable to delete logistics");
+  }
+};
+
+export const disableSfp = async (id) => {
+  let response = "failed";
+  try {
+    deleteImage(id);
+    disableAllLogistics(id);
+    await axios.put(`/sfp/${id}/disable`).then(() => {
+      message.success("Successfully deleted the Semi-Finished Product.");
+      response = "success";
+    });
+    return response;
+  } catch (err) {
+    if (err.response) {
+      console.log(`Error: ${err.message}`);
+      message.error("Unable to delete the Semi-Finished Product.");
+      return response;
+    }
+  }
+};

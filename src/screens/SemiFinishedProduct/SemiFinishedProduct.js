@@ -2,7 +2,7 @@ import Template from "../Template";
 import { useEffect, useState } from "react";
 import { API } from "../../api";
 import InventoryInterface from "../InventoryInterface";
-import { Avatar, Spin, Table, Input, Card } from "antd";
+import { Avatar, Spin, Table, Card } from "antd";
 import {
   general_columns,
   stocks_columns,
@@ -10,10 +10,15 @@ import {
 } from "./SemiFinishedProductColumns";
 import EditSfp from "../../components/Inventory/EditSfp";
 import ManageSfpStock from "../../components/Inventory/ManageSfpStock/ManageSfpStock";
+import { useEditSfp } from "../../context/edit-sfp";
+import { useHistory } from "react-router";
 
 const SemiFinishedProduct = (props) => {
   const id = props.match.params.id;
+  const history = useHistory();
+  const { openEdit, closeEdit, editVisible } = useEditSfp();
 
+  /* States */
   const [data, setData] = useState([]);
   const [logistics, setLogistics] = useState([]);
   const [formulation, setFormulation] = useState([]);
@@ -23,9 +28,8 @@ const SemiFinishedProduct = (props) => {
   const [image, setImage] = useState("");
   const [totalAmount, setTotalAmount] = useState();
   const [tableLoading1, setTableLoading1] = useState(true);
-  const [tableLoading2, setTableLoading2] = useState(false);
-  const [tableLoading3, setTableLoading3] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
+  const [tableLoading2, setTableLoading2] = useState(true);
+  const [tableLoading3, setTableLoading3] = useState(true);
   const [showStockModal, setShowStockModal] = useState(false);
 
   useEffect(() => {
@@ -41,10 +45,12 @@ const SemiFinishedProduct = (props) => {
 
     API.sfp.fetchFormulation(id).then((res) => {
       setFormulation(res);
+      setTableLoading2(false);
     });
 
     API.sfp.fetchLogistics(id).then((res) => {
       setLogistics(res);
+      setTableLoading3(false);
     });
   }, []);
 
@@ -57,6 +63,19 @@ const SemiFinishedProduct = (props) => {
     setName(form.name);
     setProcessSteps(form.process_steps);
     setFormulation(form.editForm);
+  };
+
+  const addStocks = (list) => {
+    const new_amount = list[list.length - 1].amount;
+    data[0].total_amount += new_amount;
+    setTotalAmount(data[0].total_amount);
+    setLogistics(list);
+  };
+
+  const reduceStocks = (list, reductionAmount) => {
+    data[0].total_amount -= reductionAmount;
+    setTotalAmount(data[0].total_amount);
+    setLogistics(list);
   };
 
   const informationTab = (
@@ -118,32 +137,23 @@ const SemiFinishedProduct = (props) => {
     </div>
   );
 
+  const deleteSfp = (e, id) => {
+    API.sfp.disableSfp(id).then((res) => {
+      if (res === "success") {
+        return history.push("/inventory");
+      }
+    });
+  };
+
   const editModal = (
     <EditSfp
-      visible={showEditModal}
-      onClose={(e) => {
-        e.stopPropagation();
-        setShowEditModal(false);
-      }}
+      visible={editVisible[id]}
+      onClose={(e) => closeEdit(e, id)}
       data={data[0]}
-      formulationData={formulation}
-      id={id}
       sendChangesToParent={editFormulation}
+      deleteSfp={deleteSfp}
     />
   );
-
-  const addStocks = (list) => {
-    const new_amount = list[list.length - 1].amount;
-    data[0].total_amount += new_amount;
-    setTotalAmount(data[0].total_amount);
-    setLogistics(list);
-  };
-
-  const reduceStocks = (list, reductionAmount) => {
-    data[0].total_amount -= reductionAmount;
-    setTotalAmount(data[0].total_amount);
-    setLogistics(list);
-  };
 
   const manageStock = (
     <ManageSfpStock
@@ -167,7 +177,7 @@ const SemiFinishedProduct = (props) => {
         <InventoryInterface
           name={name}
           information={informationTab}
-          openEdit={() => setShowEditModal(true)}
+          openEdit={() => openEdit(id)}
           edit={editModal}
           manageStock={manageStock}
           openManageStock={() => setShowStockModal(true)}

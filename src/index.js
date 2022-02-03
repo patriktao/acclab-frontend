@@ -7,6 +7,7 @@ import { AuthProvider } from "./context/auth-context";
 import { BrowserRouter as Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import { EditRawMaterialProvider } from "./context/edit-raw-material";
+import { EditSfpProvider } from "./context/edit-sfp";
 
 const history = createBrowserHistory();
 
@@ -14,7 +15,9 @@ ReactDOM.render(
   <Router {...{ history }}>
     <AuthProvider>
       <EditRawMaterialProvider>
-        <App />,
+        <EditSfpProvider>
+          <App />,
+        </EditSfpProvider>
       </EditRawMaterialProvider>
     </AuthProvider>
     ,

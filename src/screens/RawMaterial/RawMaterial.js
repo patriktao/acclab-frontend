@@ -87,7 +87,7 @@ const RawMaterial = (props) => {
   };
 
   const deleteRawMaterial = (e, id) => {
-    API.rawMaterial.deleteRawMaterial(id).then((res) => {
+    API.rawMaterial.disableRawMaterial(id).then((res) => {
       if (res === "success") {
         return history.push("/inventory");
       }

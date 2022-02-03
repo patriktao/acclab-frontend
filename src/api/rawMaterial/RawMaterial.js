@@ -257,3 +257,32 @@ export const deleteRawMaterial = async (id) => {
     }
   }
 };
+
+export const disableRawMaterial = async (id) => {
+  let response = "failed";
+  try {
+    deleteImage(id);
+    deleteAllLogistics(id);
+    await axios.put(`/raw_material/${id}/disable`).then(() => {
+      message.success("Successfully deleted the raw material.");
+      response = "success";
+    });
+    return response;
+  } catch (err) {
+    if (err.response) {
+      console.log(`Error: ${err.message}`);
+      message.error("Unable to delete the raw material.");
+      return response;
+    }
+  }
+};
+
+export const disableAllLogistics = async (id) => {
+  try {
+    await axios.put(`/raw_material_logistics/${id}/disable_all`);
+    return;
+  } catch (err) {
+    console.log(`Error: ${err.message}`);
+    message.error("Unable to delete all");
+  }
+};

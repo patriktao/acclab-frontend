@@ -1,8 +1,8 @@
 import React, { createContext, useState } from "react";
 
-const RawMaterialContext = createContext({});
+const SfpContext = createContext({});
 
-const EditRawMaterialProvider = (props) => {
+const EditSfpProvider = (props) => {
   const [editVisible, setEditVisible] = useState({});
 
   const openEdit = (id) => {
@@ -19,9 +19,9 @@ const EditRawMaterialProvider = (props) => {
     closeEdit,
     editVisible,
   };
-  return <RawMaterialContext.Provider value={editContextCalue} {...props} />;
+  return <SfpContext.Provider value={editContextCalue} {...props} />;
 };
 
-const useEditRawMaterial = () => React.useContext(RawMaterialContext);
+const useEditSfp = () => React.useContext(SfpContext);
 
-export { EditRawMaterialProvider, useEditRawMaterial };
+export { EditSfpProvider, useEditSfp };

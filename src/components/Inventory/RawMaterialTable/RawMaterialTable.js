@@ -68,6 +68,13 @@ const RawMaterialTable = ({ rowSelection }) => {
         item.material_name.toLowerCase().includes(input.toLowerCase())
       )
     );
+    let count = 0;
+    data.forEach((item) => {
+      if (item.material_name.toLowerCase().includes(input.toLowerCase())) {
+        count++;
+      }
+    });
+    setRowCount(count);
   };
 
   const handleClear = () => {
@@ -148,7 +155,7 @@ const RawMaterialTable = ({ rowSelection }) => {
     let newTable = table.filter((item) => item.raw_material_id !== id);
     setTable(newTable);
     setData(newTable);
-    API.rawMaterial.deleteRawMaterial(id).then((res) => {
+    API.rawMaterial.disableRawMaterial(id).then((res) => {
       console.log(res);
     });
   };

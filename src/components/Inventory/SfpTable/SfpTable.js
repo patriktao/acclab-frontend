@@ -1,17 +1,30 @@
 import "./SfpTable.scss";
 import React, { useState, useEffect } from "react";
-import { sfp_columns } from "./SfpTableColumns";
-import { Table, Spin, Input, Button } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import {
+  Table,
+  Spin,
+  Input,
+  Button,
+  Tooltip,
+  Dropdown,
+  Menu,
+  Typography,
+} from "antd";
+import { PlusOutlined, EllipsisOutlined } from "@ant-design/icons";
 import TooltipComponent from "../../General/TooltipComponent";
 import { AutoComplete } from "antd";
 import SfpFilter from "./SfpFilter";
 import moment from "moment";
+import { Link } from "react-router-dom";
 import { checkDate } from "../../../helper/Checker";
 import { getPriority } from "../../General/Priority/Priority";
 import { API } from "../../../api";
 import CreateSfp from "../CreateSfp";
+import { getPriorityIcon } from "../../General/Priority/Priority";
+import { useEditSfp } from "../../../context/edit-sfp";
+import EditSfp from "../EditSfp";
 
+const { Text } = Typography;
 const { Search } = Input;
 
 const SfpTable = () => {
@@ -24,6 +37,9 @@ const SfpTable = () => {
   const [rowCount, setRowCount] = useState(0);
   const [activeFilters, setActiveFilters] = useState(0);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [itemData, setItemData] = useState([]);
+  const [itemForm, setItemForm] = useState([]);
+  const { openEdit, editVisible, closeEdit } = useEditSfp();
 
   useEffect(() => {
     API.sfp.fetchTable().then((res) => {
@@ -48,6 +64,13 @@ const SfpTable = () => {
         item.sfp_name.toLowerCase().includes(input.toLowerCase())
       )
     );
+    let count = 0;
+    data.forEach((item) => {
+      if (item.sfp_name.toLowerCase().includes(input.toLowerCase())) {
+        count++;
+      }
+    });
+    setRowCount(count);
   };
 
   const handleFilter = (fields) => {
@@ -115,6 +138,152 @@ const SfpTable = () => {
       sendChangesToParent={createSfp}
     />
   );
+
+  const fetchItemData = (record) => {
+    setItemData(record);
+  };
+
+  const fetchItemFormulation = async (record) => {
+    await API.sfp.fetchFormulation(record.sfp_id).then((res) => {
+      setItemForm(res);
+    });
+  };
+
+  const deleteSfp = (e, id) => {
+    closeEdit(e);
+    let newTable = table.filter((item) => item.sfp_id !== id);
+    setTable(newTable);
+    setData(newTable);
+    API.sfp.disableSfp(id).then((res) => {
+      console.log(res);
+    });
+  };
+
+  const handleSfpEdit = (form) => {
+    let itemIndex = table.findIndex((item) => item.sfp_id === form.sfp_id);
+    table[itemIndex].sfp_name = form.sfp_name;
+    table[itemIndex].location = form.location;
+    table[itemIndex].unit = form.unit;
+  };
+
+  const menuItems = (record) => {
+    return (
+      <Menu style={{ borderRadius: "4px" }}>
+        <Menu.Item
+          key="1"
+          onClick={() => openEdit(record.sfp_id)}
+          style={{ borderRadius: "4px" }}
+        >
+          <Text> Edit item </Text>
+          <EditSfp
+            visible={editVisible[record.sfp_id]}
+            data={itemData}
+            sendChangesToParent={handleSfpEdit}
+            deleteSfp={deleteSfp}
+          />
+        </Menu.Item>
+      </Menu>
+    );
+  };
+
+  const sfp_columns = [
+    {
+      title: "sfp_id",
+      dataIndex: "sfp_id",
+      key: "sfp_id",
+    },
+    {
+      title: "Item name",
+      dataIndex: "sfp_name",
+      key: "sfp_name",
+      render: (sfp_name, record) => (
+        <Link to={"/inventory/sfp/" + record.sfp_id}>{sfp_name}</Link>
+      ),
+      sorter: (a, b) => a.name.localeCompare(b.name),
+    },
+    {
+      title: "Brand",
+      dataIndex: "company",
+      key: "company",
+      sorter: (a, b) => a.company.localeCompare(b.company),
+    },
+    {
+      title: "Country",
+      dataIndex: "country",
+      key: "country",
+      sorter: true,
+    },
+    {
+      title: "Amount (g/unit)",
+      dataIndex: "total_amount",
+      key: "total_amount",
+      sorter: (a, b) => a.amount - b.amount,
+    },
+    {
+      title: "Unit",
+      dataIndex: "unit",
+      key: "unit",
+    },
+    {
+      title: "Location",
+      dataIndex: "location",
+      key: "location",
+      sorter: (a, b) => a.location.localeCompare(b.location),
+    },
+    {
+      title: "Expiration Date",
+      dataIndex: "expiration_date",
+      key: "expiration_date",
+      render: (expiration_date) =>
+        expiration_date === null ? (
+          <p> </p>
+        ) : (
+          <p style={{ marginBottom: "auto" }}>
+            {moment(expiration_date).format("MMM D, YYYY")}
+          </p>
+        ),
+      sorter: (a, b) =>
+        moment(a.expiration_date).format("YYYYMMDD") -
+        moment(b.expiration_date).format("YYYYMMDD"),
+    },
+    {
+      title: "Priority",
+      sorter: (a, b) =>
+        moment(a.expiration_date).format("YYYYMMDD") -
+        moment(b.expiration_date).format("YYYYMMDD"),
+      render: (priority, record) => getPriorityIcon(record.expiration_date),
+    },
+    {
+      title: "Edit",
+      dataIndex: "",
+      key: "",
+      render: (record) => (
+        <div
+          style={{
+            display: "grid",
+            justifyContent: "center",
+            alignContent: "center",
+          }}
+        >
+          <Dropdown
+            overlay={() => menuItems(record)}
+            placement="bottomCenter"
+            trigger="hover"
+          >
+            <Button
+              className="edit-button"
+              onClick={() => {
+                fetchItemData(record);
+                fetchItemFormulation(record);
+              }}
+            >
+              <EllipsisOutlined style={{ fontSize: "22px" }} />{" "}
+            </Button>
+          </Dropdown>
+        </div>
+      ),
+    },
+  ];
 
   return (
     <div className="SfpTable">
