@@ -12,7 +12,7 @@ import { EditSfpProvider } from "./context/edit-sfp";
 const history = createBrowserHistory();
 
 ReactDOM.render(
-  <Router {...{ history }}>
+  <Router history={history}>
     <AuthProvider>
       <EditRawMaterialProvider>
         <EditSfpProvider>

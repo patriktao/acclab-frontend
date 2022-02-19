@@ -3,7 +3,8 @@ import moment from "moment";
 /* Check if input and existing data is the same */
 
 export const checkString = (o1, o2) => {
-  return o1 !== null && o1 !== "" && o1 !== o2 ? true : false;
+  return o1 !== null && o1 !== o2 ? true : false;
+  //return o1 !== null && o1 !== "" && o1 !== o2 ? true : false;
 };
 
 /* Check if input are equal, if input is empty string => return false */

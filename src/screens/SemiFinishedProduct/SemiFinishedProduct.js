@@ -12,6 +12,7 @@ import EditSfp from "../../components/Inventory/EditSfp";
 import ManageSfpStock from "../../components/Inventory/ManageSfpStock/ManageSfpStock";
 import { useEditSfp } from "../../context/edit-sfp";
 import { useHistory } from "react-router";
+import HTMLRenderer from "react-html-renderer";
 
 const SemiFinishedProduct = (props) => {
   const id = props.match.params.id;
@@ -119,8 +120,7 @@ const SemiFinishedProduct = (props) => {
         </div>
         <div className="table-section-header">
           <h3> Process Steps </h3>
-          <Card>{processSteps}</Card>
-        </div>
+          <Card>{<HTMLRenderer html={processSteps} />}</Card>
         <div className="table-section-header">
           <h3> In Stock </h3>
           <Spin spinning={tableLoading3} tip="Loading..." size="medium">
@@ -132,6 +132,7 @@ const SemiFinishedProduct = (props) => {
               dataSource={logistics}
             />
           </Spin>
+        </div>
         </div>
       </section>
     </div>

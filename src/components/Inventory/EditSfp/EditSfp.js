@@ -13,6 +13,7 @@ import { isEqual } from "lodash/fp";
 import { Link } from "react-router-dom";
 import { useEditSfp } from "../../../context/edit-sfp";
 import { Popconfirm } from "antd";
+import TextEditor from "../../General/TextEditor";
 
 const { TextArea } = Input;
 const { TabPane } = Tabs;
@@ -283,11 +284,15 @@ const EditSfp = ({ visible, data, sendChangesToParent, deleteSfp }) => {
           </TabPane>
           <TabPane tab={"Process Steps"} key="2">
             <div className="process-steps">
-              <TextArea
+              {/*               <TextArea
                 showCount
                 rows={10}
                 defaultValue={processSteps}
                 onChange={(e) => setProcessSteps(e.target.value)}
+              /> */}
+              <TextEditor
+                originalData={processSteps}
+                onChange={(data) => setProcessSteps(data)}
               />
             </div>
           </TabPane>

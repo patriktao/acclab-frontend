@@ -5,6 +5,8 @@
   "proxy": "http://localhost:4000",
   "main": "index.js",
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^32.0.0",
+    "@ckeditor/ckeditor5-react": "^4.0.0",
     "@craco/craco": "^6.3.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -12,9 +14,11 @@
     "antd": "^4.16.11",
     "axios": "^0.21.4",
     "craco-less": "^1.18.0",
+    "history": "^5.2.0",
     "moment": "^2.29.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-html-renderer": "^0.3.3",
     "react-infinite-scroller": "^1.2.4",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
@@ -47,5 +51,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@ckeditor/ckeditor5-alignment": "^32.0.0"
   }
 }
