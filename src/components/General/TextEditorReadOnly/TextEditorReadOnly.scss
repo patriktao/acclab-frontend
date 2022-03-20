@@ -1,0 +1,17 @@
+.TextEditorReadOnly {
+  .ck-editor__editable_inline {
+    min-height: 500px !important;
+  }
+  .ck.ck-editor__main > .ck-editor__editable:not(.ck-focused) {
+    border-color: white;
+  }
+
+  border: px none !important;
+  border-color: white;
+
+  .ck-content {
+    .table {
+      box-shadow: none;
+    }
+  }
+}

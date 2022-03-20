@@ -8,21 +8,22 @@ export const login = async (email, password) => {
   };
   try {
     const response = await axios
-      .post("/authentication/login", data)
-      .catch((err) => {
-        if (err.response) {
-          message.error("Not connected to server.");
+      .post("/authentication/login", data, {
+        timeout: 1500,
+      })
+      .then(() => {
+        if (response.data.message === "success") {
+          const user = response.data.user;
+          localStorage.setItem("email", user.email);
+          localStorage.setItem("firstname", user.firstname);
+          localStorage.setItem("lastname", user.lastname);
         }
       });
-    if (response.data.message === "success") {
-      const user = response.data.user;
-      localStorage.setItem("email", user.email);
-      localStorage.setItem("firstname", user.firstname);
-      localStorage.setItem("lastname", user.lastname);
-    }
     return response.data;
   } catch (err) {
     if (err.response) {
+      localStorage.clear();
+      message.error("Not connected to server.");
       console.log(`Error: ${err.message}`);
       console.log("Error in HTTP Request to API");
     }
@@ -38,6 +39,7 @@ export const loggedIn = async (user) => {
     return response.data;
   } catch (err) {
     if (err.response) {
+      localStorage.clear();
       console.log(`Error: ${err.message}`);
     }
     return null;

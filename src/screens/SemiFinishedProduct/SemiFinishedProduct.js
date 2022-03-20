@@ -12,7 +12,8 @@ import EditSfp from "../../components/Inventory/EditSfp";
 import ManageSfpStock from "../../components/Inventory/ManageSfpStock/ManageSfpStock";
 import { useEditSfp } from "../../context/edit-sfp";
 import { useHistory } from "react-router";
-import HTMLRenderer from "react-html-renderer";
+import DOMPurify from "dompurify";
+import TextEditorReadOnly from "../../components/General/TextEditorReadOnly";
 
 const SemiFinishedProduct = (props) => {
   const id = props.match.params.id;
@@ -79,6 +80,14 @@ const SemiFinishedProduct = (props) => {
     setLogistics(list);
   };
 
+  const deleteSfp = (e, id) => {
+    API.sfp.disableSfp(id).then((res) => {
+      if (res === "success") {
+        return history.push("/inventory");
+      }
+    });
+  };
+
   const informationTab = (
     <div className="material-header">
       <section className="item-image">
@@ -120,31 +129,25 @@ const SemiFinishedProduct = (props) => {
         </div>
         <div className="table-section-header">
           <h3> Process Steps </h3>
-          <Card>{<HTMLRenderer html={processSteps} />}</Card>
-        <div className="table-section-header">
-          <h3> In Stock </h3>
-          <Spin spinning={tableLoading3} tip="Loading..." size="medium">
-            <Table
-              columns={stocks_columns.filter(
-                (col) => col.dataIndex !== "stock_id"
-              )}
-              rowKey={"stock_id"}
-              dataSource={logistics}
+            <TextEditorReadOnly
+              originalData={DOMPurify.sanitize(processSteps)}
             />
-          </Spin>
-        </div>
+          <div className="table-section-header">
+            <h3> In Stock </h3>
+            <Spin spinning={tableLoading3} tip="Loading..." size="medium">
+              <Table
+                columns={stocks_columns.filter(
+                  (col) => col.dataIndex !== "stock_id"
+                )}
+                rowKey={"stock_id"}
+                dataSource={logistics}
+              />
+            </Spin>
+          </div>
         </div>
       </section>
     </div>
   );
-
-  const deleteSfp = (e, id) => {
-    API.sfp.disableSfp(id).then((res) => {
-      if (res === "success") {
-        return history.push("/inventory");
-      }
-    });
-  };
 
   const editModal = (
     <EditSfp

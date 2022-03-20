@@ -31,7 +31,7 @@ const ExpiringTable = () => {
   const today_date = moment().format("MMMM D YYYY").toUpperCase()
 
   return (
-    <div className="table">
+    <div className="ExpiringTable">
       <div className="table-headers">
         <div>
           <span className="sub-header-table">TODAY, {today_date}</span>

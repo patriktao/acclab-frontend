@@ -284,12 +284,6 @@ const EditSfp = ({ visible, data, sendChangesToParent, deleteSfp }) => {
           </TabPane>
           <TabPane tab={"Process Steps"} key="2">
             <div className="process-steps">
-              {/*               <TextArea
-                showCount
-                rows={10}
-                defaultValue={processSteps}
-                onChange={(e) => setProcessSteps(e.target.value)}
-              /> */}
               <TextEditor
                 originalData={processSteps}
                 onChange={(data) => setProcessSteps(data)}

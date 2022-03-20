@@ -13,10 +13,10 @@ const App = () => {
   return loggedIn ? (
     <Switch>
       <Route exact path="/" component={Dashboard} />
-      <Route path="/dashboard" component={Dashboard} />
+      <Route exact path="/dashboard" component={Dashboard} />
       <Route exact path="/inventory" component={Inventory} />
-      <Route path="/inventory/rawmaterial/:id" component={RawMaterial} />
-      <Route path="/inventory/sfp/:id" component={SemiFinishedProduct} />
+      <Route exact path="/inventory/rawmaterial/:id" component={RawMaterial} />
+      <Route exact path="/inventory/sfp/:id" component={SemiFinishedProduct} />
       <Route component={PageNotFound} />
     </Switch>
   ) : (

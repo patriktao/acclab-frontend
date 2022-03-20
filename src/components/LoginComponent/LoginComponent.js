@@ -17,11 +17,11 @@ const LoginComponent = () => {
   };
 
   const onFinish = async (values) => {
-    const response = await API.authentication.login(
-      values.email,
-      values.password
-    );
     try {
+      const response = await API.authentication.login(
+        values.email,
+        values.password
+      );
       switch (response.message) {
         case "success":
           loginSuccess();
@@ -43,7 +43,7 @@ const LoginComponent = () => {
           break;
       }
     } catch (err) {
-      <Redirect to="/" />;
+      message.error("Not connected to server.");
     }
   };
 
