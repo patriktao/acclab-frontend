@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
-import { Upload, Button, message } from "antd";
+import { Upload, message } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 
 const ImageUploader = ({ handleImage, imageURL }) => {

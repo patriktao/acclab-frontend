@@ -1,4 +1,4 @@
-import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import Dashboard from "./screens/Dashboard/Dashboard";
 import LoginPage from "./screens/LoginPage/LoginPage";
 import Inventory from "./screens/Inventory/Inventory";

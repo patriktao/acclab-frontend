@@ -8,7 +8,6 @@ import {
 } from "@ant-design/icons";
 import { useState, useEffect } from "react";
 import { API } from "../../../api";
-import { PresetColorTypes } from "antd/lib/_util/colors";
 import lightBlue from "../../../constants/Colors";
 
 const DashboardCards = () => {

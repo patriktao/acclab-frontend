@@ -15,7 +15,6 @@ import {
   message,
 } from "antd";
 import { API } from "../../../api";
-import { sortCompanies } from "../../../helper/Sort";
 import RawMaterialClass from "../../../classes/RawMaterialClass";
 import EditBrands from "../EditBrands";
 import EditLocations from "../EditLocations";

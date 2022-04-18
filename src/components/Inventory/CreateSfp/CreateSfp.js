@@ -34,7 +34,6 @@ const CreateSfp = ({ visible, onClose, sendChangesToParent }) => {
   const [location, setLocation] = useState("Ambient");
   const [processSteps, setProcessSteps] = useState("");
   const [showFormulationModal, setShowFormulationModal] = useState(false);
-  const [id, setId] = useState();
 
   useEffect(() => {
     API.locations.fetchLocations().then((res) => setLocations(res));
@@ -155,7 +154,6 @@ const CreateSfp = ({ visible, onClose, sendChangesToParent }) => {
       .createSfp(sfpForm.toJsonObject())
       .then((res) => {
         sfpForm.sfp_id = res;
-        setId(res);
       });
 
     await API.sfp.createFormulation(sfpForm.sfp_id, formulation);

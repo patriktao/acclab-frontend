@@ -2,7 +2,7 @@ import Template from "../Template";
 import { useEffect, useState } from "react";
 import { API } from "../../api";
 import InventoryInterface from "../InventoryInterface";
-import { Avatar, Spin, Table, Card } from "antd";
+import { Avatar, Spin, Table } from "antd";
 import {
   general_columns,
   stocks_columns,

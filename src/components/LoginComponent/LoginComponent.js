@@ -21,7 +21,7 @@ const LoginComponent = () => {
       const response = await API.authentication.login(
         values.email,
         values.password
-      );
+        );
       switch (response.message) {
         case "success":
           loginSuccess();

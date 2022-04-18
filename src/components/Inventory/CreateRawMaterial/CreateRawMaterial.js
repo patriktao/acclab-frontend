@@ -7,14 +7,12 @@ import {
   Modal,
   Input,
   AutoComplete,
-  Popconfirm,
   Button,
   Select,
   Form,
   message,
 } from "antd";
 import { API } from "../../../api";
-import { sortCompanies } from "../../../helper/Sort";
 import RawMaterialClass from "../../../classes/RawMaterialClass";
 import EditBrands from "../EditBrands";
 import EditLocations from "../EditLocations";
@@ -42,7 +40,6 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
   const [countries, setCountries] = useState([]);
   const [forms, setForms] = useState([]);
   const [locations, setLocations] = useState([]);
-  const [id, setId] = useState();
 
   /* Input Field States */
   const [name, setName] = useState("");
@@ -151,7 +148,6 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
       .createRawMaterial(rawMaterialForm.toJsonObject())
       .then((res) => {
         rawMaterialForm.id = res;
-        setId(res);
         console.log(res);
       });
     return response;

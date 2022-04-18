@@ -7,18 +7,16 @@ export const login = async (email, password) => {
     password: password,
   };
   try {
-    const response = await axios
-      .post("/authentication/login", data, {
-        timeout: 1500,
-      })
-      .then(() => {
-        if (response.data.message === "success") {
-          const user = response.data.user;
-          localStorage.setItem("email", user.email);
-          localStorage.setItem("firstname", user.firstname);
-          localStorage.setItem("lastname", user.lastname);
-        }
-      });
+    const response = await axios.post("/authentication/login", data, {
+      timeout: 1500,
+    });
+    if (response.data.message === "success") {
+      const user = response.data.user;
+      localStorage.setItem("email", user.email);
+      localStorage.setItem("firstname", user.firstname);
+      localStorage.setItem("lastname", user.lastname);
+      console.log(response.data);
+    }
     return response.data;
   } catch (err) {
     if (err.response) {
