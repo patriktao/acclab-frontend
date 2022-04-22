@@ -10,7 +10,7 @@ import ManageFormulation from "../ManageFormulation/";
 import InputNumber from "../../General/InputNumber";
 import SfpClass from "../../../classes/SfpClass";
 import { Link } from "react-router-dom";
-
+import TextEditor from "../../General/TextEditor";
 import { useHistory } from "react-router";
 
 const { TextArea } = Input;
@@ -251,10 +251,9 @@ const CreateSfp = ({ visible, onClose, sendChangesToParent }) => {
           </TabPane>
           <TabPane tab={"Process Steps"} key="2">
             <div className="process-steps">
-              <TextArea
-                showCount
-                rows={8}
-                onChange={(e) => setProcessSteps(e.target.value)}
+              <TextEditor
+                originalData={processSteps}
+                onChange={(data) => setProcessSteps(data)}
               />
             </div>
           </TabPane>

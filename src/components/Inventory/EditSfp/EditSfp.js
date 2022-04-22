@@ -14,14 +14,12 @@ import { Link } from "react-router-dom";
 import { useEditSfp } from "../../../context/edit-sfp";
 import { Popconfirm } from "antd";
 import TextEditor from "../../General/TextEditor";
-
-const { TextArea } = Input;
 const { TabPane } = Tabs;
 
 const EditSfp = ({ visible, data, sendChangesToParent, deleteSfp }) => {
   EditSfp.propTypes = {
     visible: PropTypes.bool,
-    data: PropTypes.array,
+    data: PropTypes.object,
     sendChangesToParent: PropTypes.func,
     deleteSfp: PropTypes.func,
   };
@@ -128,7 +126,7 @@ const EditSfp = ({ visible, data, sendChangesToParent, deleteSfp }) => {
   };
 
   const handleEdit = async (e) => {
-    editData.name = name;
+    editData.sfp_name = name;
     editData.unit = unit;
     editData.location = location;
     editData.process_steps = processSteps;
@@ -213,7 +211,7 @@ const EditSfp = ({ visible, data, sendChangesToParent, deleteSfp }) => {
             </Popconfirm>
           </div>
           <div>
-            <Button key="submit" onClick={(e) => closeEdit(e, id)}>
+            <Button key="close" onClick={(e) => closeEdit(e, id)}>
               Cancel
             </Button>
             <Button key="submit" type="primary" onClick={(e) => handleEdit(e)}>

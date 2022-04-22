@@ -76,6 +76,7 @@ class SfpClass {
     this.propTypes = {
       s: PropTypes.string,
     };
+    console.log("HERE" + s);
     if (checkString(s, this.#sfp_name)) {
       this.#sfp_name = s;
     }

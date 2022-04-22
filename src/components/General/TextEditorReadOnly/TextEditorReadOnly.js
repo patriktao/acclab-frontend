@@ -19,7 +19,7 @@ const TextEditorReadOnly = ({ originalData }) => {
         toolbar: [],
       }}
       onReady={(editor) => {
-        console.log("Editor is ready to use!", editor);
+        console.log("Ready to read!", editor);
       }}
       onBlur={(event, editor) => {
         console.log("Blur.", editor);
