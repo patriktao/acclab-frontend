@@ -21,7 +21,7 @@ export const login = async (email, password) => {
   } catch (err) {
     if (err.response) {
       sessionStorage.clear();
-      message.error("Not connected to server.");
+      message.error("Error in HTTP request to API.");
       console.log(`Error: ${err.message}`);
       console.log("Error in HTTP Request to API");
     }
