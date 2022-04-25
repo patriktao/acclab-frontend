@@ -1,0 +1,27 @@
+
+# Step 1: Building Image
+FROM node:14-alpine AS build
+
+WORKDIR /app
+
+ENV PATH /app/node_modules/.bin:$PATH
+
+COPY package.json .
+COPY yarn.lock .
+
+RUN yarn install --frozen-lockfile
+RUN yarn add @craco/craco
+
+#copy react app to container
+COPY . .
+
+RUN yarn build
+
+# Step 2: Running Image
+FROM nginx
+COPY --from=build /app/build /usr/share/nginx/html
+COPY nginx/nginx.conf /etc/nginx/conf.d
+
+# Fire Up
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

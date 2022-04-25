@@ -7,7 +7,7 @@ services:
   acclab-app:
     build: 
       context: ./
-      dockerfile: Dockerfile.prod
+      dockerfile: Dockerfile.dev
     container_name: acclab_app
     ports:
       - 3000:3000
