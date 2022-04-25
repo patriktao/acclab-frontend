@@ -1,0 +1,16 @@
+version: "3.9"
+
+volumes:
+  data:
+
+services:
+  acclab-app:
+    build: 
+      context: ./
+      dockerfile: Dockerfile
+    container_name: acclab_app
+    ports:
+      - 3000:3000
+    volumes:
+    - .:/app
+    - /app/node_modules

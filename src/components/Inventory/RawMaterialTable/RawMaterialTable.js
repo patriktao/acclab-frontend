@@ -33,7 +33,7 @@ const RawMaterialTable = ({ rowSelection }) => {
   const [activeFilters, setActiveFilters] = useState(0);
   const [filterVisible, setFilterVisible] = useState(false);
   const [createModalVisible, setCreateModalVisible] = useState(false);
-  const [itemNames, setItemNames] = useState([]);
+  const [itemNames] = useState([]);
   const [rowCount, setRowCount] = useState(0);
   const [firstRender, setFirstRender] = useState(true);
 
@@ -59,7 +59,7 @@ const RawMaterialTable = ({ rowSelection }) => {
       }
     };
     fetchAll();
-  }, [itemNames]);
+  }, [itemNames, firstRender]);
 
   const handleSearch = (input) => {
     setSearchText(input);
@@ -177,14 +177,6 @@ const RawMaterialTable = ({ rowSelection }) => {
     setData(newMaterial);
   };
 
-  /* TODO: bug, can't add item to searchList and table simultaniously */
-  const test = (form) => {
-    const newName = itemNames.concat({
-      value: form.name,
-    });
-    setItemNames(newName);
-  };
-
   const menuItems = (record) => {
     return (
       <Menu style={{ borderRadius: "4px" }}>
@@ -294,7 +286,7 @@ const RawMaterialTable = ({ rowSelection }) => {
         >
           <Dropdown
             overlay={() => menuItems(record)}
-            placement="bottomCenter"
+            placement="bottom"
             trigger="hover"
           >
             <Button
@@ -407,7 +399,7 @@ const RawMaterialTable = ({ rowSelection }) => {
           )}
           dataSource={table}
           rowKey={"raw_material_id"}
-          pagination={{ pageSize: 8, position: ["bottomCenter"] }}
+          pagination={{ pageSize: 8, position: ["bottom"] }}
           size="small"
           rowSelection={rowSelection}
         />

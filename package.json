@@ -31,8 +31,8 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "react-scripts eject",
-    "dev": "react-scripts start"
+    "eject": "react-scripts --openssl-legacy-provider eject",
+    "dev": "react-scripts --openssl-legacy-provider start"
   },
   "eslintConfig": {
     "extends": [

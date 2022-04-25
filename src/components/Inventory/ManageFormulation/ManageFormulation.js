@@ -27,7 +27,7 @@ const ManageFormulation = ({
       );
       setSelected(formulationArray);
     }
-  }, []);
+  }, [formulation]);
 
   const rowSelection = {
     type: () => <Radio>Checkbox</Radio>,

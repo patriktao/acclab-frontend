@@ -139,6 +139,7 @@ const SfpTable = () => {
   );
 
   const fetchItemData = (record) => {
+    console.log(record)
     setItemData(record);
   };
 

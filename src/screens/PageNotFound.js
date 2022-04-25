@@ -7,7 +7,7 @@ const PageNotFound = () => {
     <Template
       content={
         <div style={wrapper} id="wrapper">
-          <img style={image} src={Photo} alt="image" />
+          <img style={image} src={Photo} alt="" />
           <div id="info">
             <h3>This page could not be found.</h3>
           </div>

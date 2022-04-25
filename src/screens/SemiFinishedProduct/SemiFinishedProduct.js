@@ -54,7 +54,7 @@ const SemiFinishedProduct = (props) => {
       setLogistics(res);
       setTableLoading3(false);
     });
-  }, []);
+  }, [id]);
 
   const editFormulation = (form) => {
     data[0].sfp_name = form.sfp_name;

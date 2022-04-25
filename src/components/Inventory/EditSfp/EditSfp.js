@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Table, Input, Button, Tabs, message } from "antd";
+import { Modal, Table, Button, Tabs, message } from "antd";
 import { useState, useEffect } from "react";
 import { InputField, InputSelect } from "../../InputFields";
 import Units from "../../General/Units";

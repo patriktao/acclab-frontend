@@ -1,5 +1,5 @@
 import "./CreateSfp.scss";
-import { Modal, Table, Input, Button, Tabs, message } from "antd";
+import { Modal, Table, Button, Tabs, message } from "antd";
 import { useState, useEffect } from "react";
 import { InputField, InputSelect } from "../../InputFields";
 import Units from "../../General/Units";
@@ -13,7 +13,6 @@ import { Link } from "react-router-dom";
 import TextEditor from "../../General/TextEditor";
 import { useHistory } from "react-router";
 
-const { TextArea } = Input;
 const { TabPane } = Tabs;
 
 const CreateSfp = ({ visible, onClose, sendChangesToParent }) => {

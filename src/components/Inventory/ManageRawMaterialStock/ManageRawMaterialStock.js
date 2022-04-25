@@ -34,7 +34,7 @@ const ManageRawMaterialStock = ({
       setEditForm(new EditStockForm(logistics));
       setOriginalForm(new EditStockForm(logistics));
     }
-  }, [logistics, EditStockForm]);
+  }, [logistics]);
 
   const checkEmptyInput = (input) => {
     return input === "" || input === "Invalid date" || input === null
