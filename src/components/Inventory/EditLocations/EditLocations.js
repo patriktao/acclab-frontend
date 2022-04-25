@@ -200,7 +200,7 @@ const EditLocations = ({ visible, close, sendChangesToParent }) => {
               value={searchField}
               size={"large"}
               className="input-text"
-              placeholder="searchField for a location name..."
+              placeholder="Search for a location name..."
               allowClear
               enterbutton="true"
             />

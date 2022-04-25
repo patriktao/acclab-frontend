@@ -286,7 +286,7 @@ const RawMaterialTable = ({ rowSelection }) => {
         >
           <Dropdown
             overlay={() => menuItems(record)}
-            placement="bottom"
+            placement="bottomCenter"
             trigger="hover"
           >
             <Button

@@ -383,14 +383,14 @@ const EditRawMaterial = ({
                     />
                     <Button
                       className="button"
-                      onClick={() => setBrandModalVisible(true)}
+                      onClick={() => setLocationModalVisible(true)}
                     >
                       <PlusOutlined />
                       <EditLocations
                         visible={locationModalVisible}
                         close={(e) => {
                           e.stopPropagation();
-                          setBrandModalVisible(false);
+                          setLocationModalVisible(false);
                         }}
                         sendChangesToParent={setCurrentLocations}
                       />

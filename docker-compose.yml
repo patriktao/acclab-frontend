@@ -8,9 +8,5 @@ services:
     build: 
       context: ./
       dockerfile: Dockerfile.prod
-    container_name: acclab_app
-    ports:
-      - 3000:3000
-    volumes:
-    - .:/app
-    - /app/node_modules
+    
+    #docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d --build
