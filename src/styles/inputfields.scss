@@ -1,3 +1,5 @@
+$border-radius: 12px;
+
 /* Makes space between header and field */
 .header-field-wrapper {
   display: grid;
@@ -7,14 +9,14 @@
 /* Input Field */
 .input-text {
   padding: 0.85rem 1rem 0.85rem 1rem;
-  border-radius: 12px;
+  border-radius: $border-radius;
   width: 100%;
 }
 
 /* Input Number */
 .input-number {
-  padding: 0.85rem 1rem 0.85rem 1rem;
-  border-radius: 12px;
+  padding: 0.75rem 0.5rem 0.75rem 0.5rem;
+  border-radius: $border-radius;
   width: 100%;
 }
 
@@ -24,7 +26,7 @@
 }
 
 .ant-input-number-handler-wrap {
-  border-radius: 12px;
+  border-radius: $border-radius;
 }
 
 /* List Selection */
@@ -32,7 +34,7 @@
   display: flex;
   align-items: center;
   height: 53px;
-  border-radius: 12px;
+  border-radius: $border-radius;
   width: 100%;
   padding: 0.85rem 1rem 0.85rem 1rem;
 }
@@ -46,10 +48,10 @@
 /* Date Picker */
 .input-date {
   padding: 0.75rem 1rem 0.75rem 1rem;
-  border-radius: 12px;
+  border-radius: $border-radius;
 }
 
 /* Lists */
 .list {
-  border-radius: 12px;
+  border-radius: $border-radius;
 }

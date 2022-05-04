@@ -8,14 +8,13 @@
   display: grid;
   align-content: center;
   justify-content: center;
-  height: 5.5rem;
+  margin: 16px;
 }
 
 .sidebar-header {
   color: white;
-  text-align: left;
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-size: 1.3rem;
+  font-weight: 700;
 }
 
 .sub-header-background {
@@ -31,7 +30,7 @@
 .ant-menu-dark .ant-menu-item-selected > span > a,
 .ant-menu-dark .ant-menu-item-selected > a:hover,
 .ant-menu-dark .ant-menu-item-selected > span > a:hover {
-/*    color: #dde2ff; */
+  /*    color: #dde2ff; */
   color: #ffffff;
 }
 
@@ -42,7 +41,7 @@
   .ant-menu-item-selected
   .ant-menu-item-icon,
 .ant-menu-dark .ant-menu-item-selected .anticon {
-/*   color: #dde2ff; */
+  /*   color: #dde2ff; */
   color: #ffffff;
 }
 
@@ -60,7 +59,6 @@
   .ant-layout-sider.ant-layout-sider-dark {
     overflow: hidden;
     height: 100vh;
-    min-width: 240px !important;
   }
 
   .ant-menu.sidebar-menu {
@@ -87,7 +85,6 @@
   .ant-layout-sider.ant-layout-sider-dark {
     overflow: hidden;
     height: 100vh;
-    min-width: 270px !important;
   }
 
   .ant-menu.sidebar-menu {

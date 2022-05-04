@@ -8,9 +8,11 @@ const InputNumber = ({
   value,
   onChange,
   defaultValue,
+  min,
   max,
   style,
   placeholder,
+  step,
 }) => {
   InputNumber.propTypes = {
     value: PropTypes.number,
@@ -19,14 +21,20 @@ const InputNumber = ({
     defaultValue: PropTypes.any,
     max: PropTypes.number,
     placeholder: PropTypes.string,
+    step: PropTypes.number,
+    min: PropTypes.number,
   };
 
   const [inputValue, setInputValue] = useState();
+  const [stepValue, setStepValue] = useState();
 
   useEffect(() => {
     typeof value === String
       ? setInputValue(parseInt(value))
       : setInputValue(value);
+    if (step === undefined) {
+      setStepValue(0.1);
+    }
   }, [value]);
 
   return (
@@ -37,10 +45,10 @@ const InputNumber = ({
       value={inputValue}
       size={"small"}
       onChange={onChange}
-      min={0}
+      min={min}
       max={max}
       style={style}
-      step={0.1}
+      step={stepValue}
       defaultValue={defaultValue}
     >
       {children}

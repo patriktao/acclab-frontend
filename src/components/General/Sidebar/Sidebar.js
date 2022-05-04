@@ -32,6 +32,7 @@ const Sidebar = () => {
         breakpoint="lg"
         collapsedWidth="0"
         trigger={null}
+        width="240"
       >
         <div className="sidebar-wrapper">
           <div className="sidebar-header">
@@ -59,7 +60,7 @@ const Sidebar = () => {
           >
             <Link to="/inventory">Inventory</Link>
           </Menu.Item>
-          <Menu.Item
+          {/*           <Menu.Item
             className="sidebar-item"
             key="products"
             icon={<ProfileFilled />}
@@ -79,7 +80,7 @@ const Sidebar = () => {
             icon={<ClockCircleFilled />}
           >
             History
-          </Menu.Item>
+          </Menu.Item> */}
         </Menu>
       </Sider>
     </>

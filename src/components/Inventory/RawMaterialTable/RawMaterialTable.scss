@@ -4,7 +4,7 @@
   padding: 16px 16px 0 16px;
   box-shadow: 0px 16px 16px rgba(17, 17, 17, 5%);
   overflow-x: auto;
-  display:grid;
+  display: grid;
   row-gap: 0.5rem;
 
   @media (min-width: 0px) {
@@ -91,7 +91,7 @@
       grid-template-rows: none;
     }
 
-    .main-header-table{
+    .main-header-table {
       padding-bottom: 0.5rem;
       padding-left: 1rem;
       margin-bottom: 0rem;

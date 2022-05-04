@@ -1,6 +1,5 @@
-import React from "react";
 import { useEffect, useState } from "react";
-import StockInterface from "../StockInterface";
+import StockModal from "../StockModal";
 import EditStockForm from "../../../classes/EditStockForm";
 import { InputDatePicker } from "../../InputFields";
 import InputNumber from "../../General/InputNumber";
@@ -26,9 +25,10 @@ const ManageSfpStock = ({
   const [amount, setAmount] = useState();
   const [productionDate, setProductionDate] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
+  const [quantity, setQuantity] = useState();
 
   useEffect(() => {
-    if (logistics.length >= 0) {
+    if (logistics !== undefined) {
       setLogisticList(logistics);
       setEditForm(new EditStockForm(logistics));
       setOriginalForm(new EditStockForm(logistics));
@@ -58,24 +58,27 @@ const ManageSfpStock = ({
       return;
     }
 
-    const data = {
-      raw_material_id: parseInt(id),
-      stock_id: "",
-      amount: amount,
-      production_date: checkEmptyInput(productionDate),
-      expiration_date: checkEmptyInput(expirationDate),
-    };
+    let newList = logistics;
+    for (let i = 0; i < quantity; i++) {
+      const data = {
+        raw_material_id: parseInt(id),
+        stock_id: "",
+        amount: amount,
+        production_date: checkEmptyInput(productionDate),
+        expiration_date: checkEmptyInput(expirationDate),
+      };
 
-    // API call and get the new generated stock_id
-    await API.sfp.addStock(id, data).then((res) => {
-      data.stock_id = res.stock_id;
-      editForm.add(res.stock_id, amount);
-    });
+      // API call and get the new generated stock_id
+      await API.sfp.addStock(id, data).then((res) => {
+        data.stock_id = res.stock_id;
+        editForm.add(res.stock_id, amount);
+      });
 
+      newList = newList.concat(data);
+    }
+    setLogisticList(newList);
+    sendAddToParent(newList);
     API.sfp.updateTotalAmount(id);
-    const mergedList = logistics.concat(data);
-    setLogisticList(mergedList);
-    sendAddToParent(mergedList);
     SuccessNotification("You have successfully added a new stock");
     close(e);
   };
@@ -124,6 +127,17 @@ const ManageSfpStock = ({
     <div className="rows">
       <div className="column-1">
         <div className="header-field-wrapper">
+          <span className="sub-header">Quantity</span>
+          <InputNumber
+            onChange={(e) => setQuantity(e)}
+            value={quantity}
+            placeholder="e.g. 10"
+            min={0}
+            max={10}
+            step={1}
+          />
+        </div>
+        <div className="header-field-wrapper">
           <span className="sub-header">Amount</span>
           <InputNumber
             onChange={(e) => setAmount(e)}
@@ -153,7 +167,7 @@ const ManageSfpStock = ({
   );
 
   return (
-    <StockInterface
+    <StockModal
       visible={visible}
       close={close}
       editForm={editForm}

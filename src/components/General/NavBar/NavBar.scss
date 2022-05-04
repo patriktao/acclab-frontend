@@ -1,8 +1,6 @@
 .navbar-layout {
   @media (min-width: 0px) {
     .navbar {
-      height: 48px;
-      line-height: 22px;
       background: white;
       display: flex;
       justify-content: space-between;
@@ -12,13 +10,12 @@
       min-width: 100%;
       position: relative;
       top: 0;
-      overflow: hidden;
       padding-left: 32px;
       padding-right: 62px;
     }
 
     .right-side {
-      display:flex;
+      display: flex;
       column-gap: 2rem;
       align-items: center;
     }

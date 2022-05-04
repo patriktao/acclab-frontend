@@ -13,7 +13,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-body > iframe { display: none } /* Removes Error */
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
