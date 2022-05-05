@@ -35,16 +35,14 @@ const DashboardCards = () => {
 
   return (
     <div className="site-card-wrapper">
-      <Row gutter={(50, 24)}>
+      <Row gutter={[24, 24]}>
         <Col span={6}>
           <Card className="card" bordered={false}>
             <div className="card-container">
               <div>
                 <span className="card-header">Total Materials</span>
                 <br />
-                <span className="card-value">
-                  {TotalMaterials}
-                </span>
+                <span className="card-value">{TotalMaterials}</span>
               </div>
               <div>
                 <div className="icon-material-background">

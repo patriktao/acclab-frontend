@@ -16,11 +16,10 @@ ReactDOM.render(
     <AuthProvider>
       <EditRawMaterialProvider>
         <EditSfpProvider>
-          <App />,
+          <App />
         </EditSfpProvider>
       </EditRawMaterialProvider>
     </AuthProvider>
-    ,
   </Router>,
   document.getElementById("root")
 );

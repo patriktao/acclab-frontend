@@ -215,10 +215,10 @@ const EditRawMaterial = ({
             </Popconfirm>
           </div>
           <div>
-            <Button key="submit" onClick={(e) => closeEdit(e, id)}>
+            <Button key="cancel" onClick={(e) => closeEdit(e, id)}>
               Cancel
             </Button>
-            <Button key="submit" type="primary" onClick={handleOk}>
+            <Button key="ok" type="primary" onClick={handleOk}>
               OK
             </Button>
           </div>

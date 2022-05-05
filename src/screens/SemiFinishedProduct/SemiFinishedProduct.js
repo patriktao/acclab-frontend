@@ -129,9 +129,7 @@ const SemiFinishedProduct = (props) => {
         </div>
         <div className="table-section-header">
           <h3> Process Steps </h3>
-            <TextEditorReadOnly
-              originalData={DOMPurify.sanitize(processSteps)}
-            />
+          <TextEditorReadOnly originalData={DOMPurify.sanitize(processSteps)} />
           <div className="table-section-header">
             <h3> In Stock ({logistics.length}) </h3>
             <Spin spinning={tableLoading3} tip="Loading..." size="medium">
@@ -141,7 +139,7 @@ const SemiFinishedProduct = (props) => {
                 )}
                 rowKey={"stock_id"}
                 dataSource={logistics}
-                size='small'
+                size="small"
               />
             </Spin>
           </div>

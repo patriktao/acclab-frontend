@@ -214,7 +214,7 @@ const EditSfp = ({ visible, data, sendChangesToParent, deleteSfp }) => {
             <Button key="close" onClick={(e) => closeEdit(e, id)}>
               Cancel
             </Button>
-            <Button key="submit" type="primary" onClick={(e) => handleEdit(e)}>
+            <Button key="ok" type="primary" onClick={(e) => handleEdit(e)}>
               OK
             </Button>
           </div>

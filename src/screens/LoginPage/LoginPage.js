@@ -1,32 +1,28 @@
 import "./LoginPage.scss";
 import Logo from "../../images/tetrapak_logo.png";
-import LoginComponent from "../../components/LoginComponent";;
+import LoginComponent from "../../components/LoginComponent";
+import { Layout } from "antd";
 
 const LoginPage = () => {
   return (
-    <section className="LoginPage">
-      <div className="background">
-        <div className="main-container">
-          <div className="header-container">
-            <span className="header">
-              Log in to {<br />} Accelerator
-              <span className="blue-text">LAB</span>
-            </span>
-          </div>
-          <div className="login-container">
-            <div className="login-container-style">
-              <div className="login-header">Login</div>
-              <div className="login-form-container">
-                <LoginComponent />
-              </div>
+    <Layout>
+      <section className="LoginPage">
+        <div className="background">
+          <div className="main-container">
+            <div className="header-container">
+              <h2>
+                Log in to {<br />} Accelerator
+                <span className="blue-text">LAB</span>
+              </h2>
             </div>
+            <LoginComponent />
+          </div>
+          <div className="logo-container">
+            <img src={Logo} alt="Tetra Pak Logo" className="logo" />
           </div>
         </div>
-        <div className="logo-container">
-          <img src={Logo} alt="Tetra Pak Logo" className="logo" />
-        </div>
-      </div>
-    </section>
+      </section>
+    </Layout>
   );
 };
 
