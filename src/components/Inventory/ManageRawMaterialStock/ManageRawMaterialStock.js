@@ -27,8 +27,8 @@ const ManageRawMaterialStock = ({
   const [expirationDate, setExpirationDate] = useState("");
   const [quantity, setQuantity] = useState(1);
 
-  useEffect(async () => {
-    if (logistics.length >= 0) {
+  useEffect(() => {
+    if (logistics.length !== undefined) {
       setLogisticList(logistics);
       setEditForm(new EditStockForm(logistics));
       setOriginalForm(new EditStockForm(logistics));

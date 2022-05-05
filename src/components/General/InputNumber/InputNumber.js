@@ -35,7 +35,7 @@ const InputNumber = ({
     if (step === undefined) {
       setStepValue(0.1);
     }
-  }, [value]);
+  }, [value, step]);
 
   return (
     <AntInputNumber
