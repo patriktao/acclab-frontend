@@ -56,7 +56,7 @@ const EditSfp = ({ visible, data, sendChangesToParent, deleteSfp }) => {
       });
     };
 
-    if (data !== null && data !== undefined) {
+    if (data !== undefined) {
       setName(data.sfp_name);
       setUnit(data.unit);
       setLocation(data.location);

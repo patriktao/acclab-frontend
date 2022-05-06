@@ -67,17 +67,10 @@ const SemiFinishedProduct = (props) => {
     setFormulation(form.editForm);
   };
 
-  const addStocks = (list) => {
-    const new_amount = list[list.length - 1].amount;
-    data[0].total_amount += new_amount;
-    setTotalAmount(data[0].total_amount);
-    setLogistics(list);
-  };
-
-  const reduceStocks = (list, reductionAmount) => {
-    data[0].total_amount -= reductionAmount;
-    setTotalAmount(data[0].total_amount);
-    setLogistics(list);
+  const manageStocks = (newList, newAmount) => {
+    data[0].total_amount = newAmount;
+    setTotalAmount(newAmount);
+    setLogistics(newList);
   };
 
   const deleteSfp = (e, id) => {
@@ -168,8 +161,7 @@ const SemiFinishedProduct = (props) => {
       logistics={logistics}
       unit={unit}
       id={id}
-      sendAddToParent={addStocks}
-      sendReductionToParent={reduceStocks}
+      sendChangesToParent={manageStocks}
       totalAmount={totalAmount}
     />
   );

@@ -45,7 +45,8 @@ const ManageRawMaterialStock = ({
     if (
       amount != null &&
       dateFormChecker(receivedDate) &&
-      dateFormChecker(expirationDate)
+      dateFormChecker(expirationDate) &&
+      quantity !== null
     ) {
       if (amount <= 0) {
         message.error("The amount needs to be a positive number!");
@@ -67,7 +68,7 @@ const ManageRawMaterialStock = ({
       return true;
     }
     message.error(
-      "Amount, received date and expiration date needs to be filled!"
+      "Amount, quantity, received date, and expiration date needs to be filled correctly!"
     );
     return false;
   };
@@ -95,51 +96,55 @@ const ManageRawMaterialStock = ({
       newList = newList.concat(data);
       newAmount += amount;
     }
-    setLogisticList(newList);
-    sendChangesToParent(newList, newAmount);
-    API.rawMaterial.updateTotalAmount(id);
-    SuccessNotification("You have successfully added new stock");
-    close(e);
+    API.rawMaterial.updateTotalAmount(id).then(() => {
+      setLogisticList(newList);
+      sendChangesToParent(newList, newAmount);
+      SuccessNotification("You have successfully added new stock");
+      close(e);
+    });
   };
 
   const reduceStock = async (e) => {
-    console.log(editForm.stocks);
+    //Reduction
     let newAmount = totalAmount;
     for (let i = 0; i < logisticList.length; i++) {
       newAmount -= editForm.stocks[i].subtracted_amount;
       logisticList[i].amount -= editForm.stocks[i].subtracted_amount;
     }
-    //Clear all empty stocks from form
-    await editForm.updateForm();
-    console.log(editForm.stocks);
-    //contact API
-    editForm.stocks.forEach(async (e) => {
+
+    //API Calls
+    await editForm.stocks.forEach((e) => {
+      console.log(e);
       if (e.new_amount === 0) {
-        await API.rawMaterial.disableStock(id, e);
+        API.rawMaterial.disableStock(id, e);
       } else if (
         e.new_amount !== e.old_amount &&
         e.new_amount > 0 &&
         e.new_amount < e.old_amount
       ) {
-        await API.rawMaterial.updateStock(id, e);
+        API.rawMaterial.updateStock(id, e);
       }
     });
-    //Update Total Amount in DB
-    API.rawMaterial.updateTotalAmount(id);
-    //Update UI lists
-    const filteredList = logisticList.filter((e) => e.amount !== 0);
-    setLogisticList(filteredList);
-    sendChangesToParent(filteredList, newAmount);
-    //Notifications
-    logisticList.forEach((e) => {
-      if (e.amount === 0) {
-        SuccessNotification(
-          "You have successfully removed Stock " + e.stock_id
-        );
-      }
+    API.rawMaterial.updateTotalAmount(id).then(() => {
+      //Remove empty stocks
+      const filteredList = logisticList.filter((e) => e.amount !== 0);
+      editForm.updateForm();
+
+      //Update UI
+      setLogisticList(filteredList);
+      sendChangesToParent(filteredList, newAmount);
+
+      //Notifications
+      logisticList.forEach((e) => {
+        if (e.amount === 0) {
+          SuccessNotification(
+            "You have successfully removed Stock " + e.stock_id
+          );
+        }
+      });
+      //Close Modal
+      close(e);
     });
-    //Close Modal
-    close(e);
   };
 
   const AddStockComponents = (
@@ -150,7 +155,7 @@ const ManageRawMaterialStock = ({
           <InputNumber
             onChange={(e) => setQuantity(e)}
             value={quantity}
-            placeholder="e.g. 10"
+            placeholder="e.g. 2"
             min={1}
             max={24}
             step={1}

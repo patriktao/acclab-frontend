@@ -7,7 +7,6 @@ const InputNumber = ({
   children,
   value,
   onChange,
-  defaultValue,
   min,
   max,
   style,
@@ -18,7 +17,6 @@ const InputNumber = ({
     value: PropTypes.number,
     children: PropTypes.any,
     onChange: PropTypes.func,
-    defaultValue: PropTypes.any,
     max: PropTypes.number,
     placeholder: PropTypes.string,
     step: PropTypes.number,
@@ -34,6 +32,8 @@ const InputNumber = ({
       : setInputValue(value);
     if (step === undefined) {
       setStepValue(0.1);
+    } else {
+      setStepValue(step);
     }
   }, [value, step]);
 
@@ -49,7 +49,6 @@ const InputNumber = ({
       max={max}
       style={style}
       step={stepValue}
-      defaultValue={defaultValue}
     >
       {children}
     </AntInputNumber>
