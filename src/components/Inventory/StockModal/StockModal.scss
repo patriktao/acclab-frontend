@@ -1,4 +1,4 @@
-.StockInterface {
+.StockModal {
   padding-top: 1rem;
   h1 {
     padding-bottom: 1rem;
@@ -12,7 +12,7 @@
     .column-1 {
       display: grid;
       column-gap: 2rem;
-      grid-template-columns: 0.5fr 1fr;
+      grid-template-columns: 0.25fr 0.4fr 1fr;
     }
 
     .column-2 {

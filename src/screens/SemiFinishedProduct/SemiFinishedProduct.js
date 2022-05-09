@@ -67,17 +67,10 @@ const SemiFinishedProduct = (props) => {
     setFormulation(form.editForm);
   };
 
-  const addStocks = (list) => {
-    const new_amount = list[list.length - 1].amount;
-    data[0].total_amount += new_amount;
-    setTotalAmount(data[0].total_amount);
-    setLogistics(list);
-  };
-
-  const reduceStocks = (list, reductionAmount) => {
-    data[0].total_amount -= reductionAmount;
-    setTotalAmount(data[0].total_amount);
-    setLogistics(list);
+  const manageStocks = (newList, newAmount) => {
+    data[0].total_amount = newAmount;
+    setTotalAmount(newAmount);
+    setLogistics(newList);
   };
 
   const deleteSfp = (e, id) => {
@@ -129,11 +122,9 @@ const SemiFinishedProduct = (props) => {
         </div>
         <div className="table-section-header">
           <h3> Process Steps </h3>
-            <TextEditorReadOnly
-              originalData={DOMPurify.sanitize(processSteps)}
-            />
+          <TextEditorReadOnly originalData={DOMPurify.sanitize(processSteps)} />
           <div className="table-section-header">
-            <h3> In Stock </h3>
+            <h3> In Stock ({logistics.length}) </h3>
             <Spin spinning={tableLoading3} tip="Loading..." size="medium">
               <Table
                 columns={stocks_columns.filter(
@@ -141,6 +132,7 @@ const SemiFinishedProduct = (props) => {
                 )}
                 rowKey={"stock_id"}
                 dataSource={logistics}
+                size="small"
               />
             </Spin>
           </div>
@@ -169,8 +161,7 @@ const SemiFinishedProduct = (props) => {
       logistics={logistics}
       unit={unit}
       id={id}
-      sendAddToParent={addStocks}
-      sendReductionToParent={reduceStocks}
+      sendChangesToParent={manageStocks}
       totalAmount={totalAmount}
     />
   );

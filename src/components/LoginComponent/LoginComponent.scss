@@ -1,41 +1,88 @@
-.login-forms .ant-form-item {
-  margin-bottom: 20px;
-}
+.LoginComponent {
+  display: grid;
+  align-items: center;
 
-.login-form .ant-input-affix-wrapper {
-  width: 100%;
-  height: 60px;
-  border-radius: 16px;
-  color: black;
-}
+  .style {
+    background-color: #ffffff;
+    box-shadow: 4px 8px 16px rgba(17, 17, 17, 0.05);
+    border-radius: 32px;
+    width: 350px;
+    height: 384px;
+  }
 
-.login-form .ant-input-affix-wrapper:hover {
-  border-color: #00bdf2;
-  border-right-width: 1px !important;
-}
+  .header {
+    text-align: left;
+    padding-top: 3rem;
+    padding-left: 55px;
+    position: absolute;
+    font-size: 24px;
+    font-weight: bold;
+    position: relative;
+  }
 
-.login-button .ant-btn-primary {
-  width: 100%;
-  max-width: 100%;
-  border-radius: 16px;
-  height: 60px;
-  font-size: large;
-  background: #00bdf2;
-  border-color: #00bdf2;
-}
+  .inner-container {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
 
-.login-form .anticon {
-  padding-left: 10px;
-  padding-right: 15px;
-}
+  .form .ant-form-item {
+    margin-bottom: 20px;
+  }
 
-.login-button .ant-btn-primary:hover,
-.login-button .ant-btn-primary:focus {
-  color: #fff;
-  border-color: #00bdf2;
-  background: #00bdf2;
-}
+  .form .ant-input-affix-wrapper {
+    width: 100%;
+    height: 60px;
+    border-radius: 16px;
+    color: black;
+  }
 
-.login-button .ant-col-offset-8 {
-  margin-left: 0;
+  .form .ant-input-affix-wrapper:hover {
+    border-color: #00bdf2;
+    border-right-width: 1px !important;
+  }
+
+  .login-button .ant-btn-primary {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 16px;
+    height: 60px;
+    font-size: large;
+    background: #00bdf2;
+    border-color: #00bdf2;
+  }
+
+  .form .anticon {
+    padding-left: 10px;
+    padding-right: 15px;
+  }
+
+  .login-button .ant-btn-primary:hover,
+  .login-button .ant-btn-primary:focus {
+    color: #fff;
+    border-color: #00bdf2;
+    background: #00bdf2;
+  }
+
+  .login-button .ant-col-offset-8 {
+    margin-left: 0;
+  }
+
+  @media (min-width: 600px) {
+    .style {
+      width: 410px;
+      height: 444px;
+    }
+
+    .header {
+      text-align: left;
+      padding-top: 4rem;
+      padding-left: 55px;
+      position: absolute;
+      font-size: 24px;
+      font-weight: bold;
+      position: relative;
+    }
+  }
 }

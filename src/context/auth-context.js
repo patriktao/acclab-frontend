@@ -1,8 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import { API } from "../api";
 
-/* Context lets you pass states through your entire application  that is particularly below it*/
-
 const AuthContext = createContext({});
 
 const AuthProvider = (props) => {

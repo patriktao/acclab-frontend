@@ -215,10 +215,10 @@ const EditRawMaterial = ({
             </Popconfirm>
           </div>
           <div>
-            <Button key="submit" onClick={(e) => closeEdit(e, id)}>
+            <Button key="cancel" onClick={(e) => closeEdit(e, id)}>
               Cancel
             </Button>
-            <Button key="submit" type="primary" onClick={handleOk}>
+            <Button key="ok" type="primary" onClick={handleOk}>
               OK
             </Button>
           </div>
@@ -407,32 +407,44 @@ const EditRawMaterial = ({
                 <div className="header-field-wrapper">
                   <span className="sub-header">Fat</span>
                   <InputNumber
-                    value={fat}
+                    value={parseInt(fat)}
                     onChange={(e) => e !== fat && setFat(e)}
                   />
                 </div>
                 <div className="header-field-wrapper">
                   <span className="sub-header">Carbohydrate</span>
-                  <InputNumber value={carb} onChange={(e) => setCarb(e)} />
+                  <InputNumber
+                    value={parseInt(carb)}
+                    onChange={(e) => setCarb(e)}
+                  />
                 </div>
                 <div className="header-field-wrapper">
                   <span className="sub-header">Protein</span>
                   <InputNumber
-                    value={protein}
+                    value={parseInt(protein)}
                     onChange={(e) => setProtein(e)}
                   />
                 </div>
                 <div className="header-field-wrapper">
                   <span className="sub-header">Salt</span>
-                  <InputNumber value={salt} onChange={(e) => setSalt(e)} />
+                  <InputNumber
+                    value={parseInt(salt)}
+                    onChange={(e) => setSalt(e)}
+                  />
                 </div>
                 <div className="header-field-wrapper">
                   <span className="sub-header">Sugar</span>
-                  <InputNumber value={sugar} onChange={(e) => setSugar(e)} />
+                  <InputNumber
+                    value={parseInt(sugar)}
+                    onChange={(e) => setSugar(e)}
+                  />
                 </div>
                 <div className="header-field-wrapper">
                   <span className="sub-header">Fiber</span>
-                  <InputNumber value={fiber} onChange={(e) => setFiber(e)} />
+                  <InputNumber
+                    value={parseInt(fiber)}
+                    onChange={(e) => setFiber(e)}
+                  />
                 </div>
               </div>
               <div className="header-field-wrapper">

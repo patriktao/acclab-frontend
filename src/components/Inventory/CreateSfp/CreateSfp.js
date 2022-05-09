@@ -74,6 +74,7 @@ const CreateSfp = ({ visible, onClose, sendChangesToParent }) => {
           style={{ width: "8rem" }}
           placeholder={`0 - 100%`}
           max={100}
+          min={0}
           defaultValue={0}
           onChange={(e) => editPercentage(e, record)}
         />
@@ -95,13 +96,11 @@ const CreateSfp = ({ visible, onClose, sendChangesToParent }) => {
 
   const editPercentage = (e, record) => {
     if (0 <= e <= 100) {
-      formulation.forEach((item) => {
-        if (item.raw_material_id === record.raw_material_id) {
-          item.percentage = e;
-        }
-      });
+      let item = formulation.find(
+        (i) => i.raw_material__id === record.raw_material__id
+      );
+      item.percentage = e;
     }
-    console.log(formulation);
   };
 
   const handleImage = (file) => {

@@ -1,6 +1,6 @@
 import React from "react";
 import { getPriorityIcon } from "../../General/Priority";
-import "./StockInterface.scss";
+import "./StockModal.scss";
 import moment from "moment";
 import { useState } from "react";
 import { Tabs, message, Modal, Button, Popconfirm, Select, Table } from "antd";
@@ -11,7 +11,7 @@ import ReductionReasons from "../../General/ReductionReasons";
 
 const { TabPane } = Tabs;
 
-const StockInterface = ({
+const StockModal = ({
   visible,
   close,
   addStock,
@@ -21,7 +21,7 @@ const StockInterface = ({
   AddStockComponents,
   logistics,
 }) => {
-  StockInterface.propTypes = {
+  StockModal.propTypes = {
     visible: PropTypes.bool,
     close: PropTypes.func,
     addStock: PropTypes.func,
@@ -32,7 +32,7 @@ const StockInterface = ({
     logistics: PropTypes.array,
   };
 
-  const [reason, setReason] = useState("Consumtion");
+  const [reason, setReason] = useState("Consumption");
   const [tabPane, setTabPane] = useState("add");
 
   /* tabPane 1 is add, tabPane 2 is reduce */
@@ -45,7 +45,7 @@ const StockInterface = ({
       case "reduce":
         if (!isEqual(editForm.stocks, originalForm.stocks)) {
           reduceStock(e);
-          message.success("You have succesfully reduced stocks.");
+          message.success("You have successfully reduced stocks.");
         } else {
           message.success("No changes made.");
           close(e);
@@ -64,12 +64,11 @@ const StockInterface = ({
     );
   };
 
-  /* Edits the stock based on what you input */
   const editStock = (e, record) => {
     editForm.edit(record.stock_id, e, record.amount);
   };
 
-  const logistic_columns = [
+  const ReduceStocks = [
     {
       title: "Stock ID",
       dataIndex: "stock_id",
@@ -83,6 +82,7 @@ const StockInterface = ({
           style={{ width: "8rem" }}
           placeholder={`0 - ${record.amount}`}
           max={record.amount}
+          min={0}
           defaultValue={0}
           onChange={(e) => editStock(e, record)}
         />
@@ -161,7 +161,7 @@ const StockInterface = ({
         </Popconfirm>,
       ]}
     >
-      <section className="StockInterface">
+      <section className="StockModal">
         <Tabs tabPosition={"right"} onTabClick={(key) => changeTabPane(key)}>
           <TabPane tab="Add" key="1">
             <section className="add">
@@ -180,11 +180,12 @@ const StockInterface = ({
                   defaultValue={reason}
                   style={{ width: "450px" }}
                   onSelect={(e) => setReason(e)}
+                  key={"key"}
                 />
                 <Table
-                  columns={logistic_columns}
+                  columns={ReduceStocks}
                   dataSource={logistics}
-                  size={"middle"}
+                  size={"small"}
                   pagination={{ pageSize: 6, position: ["bottomRight"] }}
                   rowKey={"stock_id"}
                 />
@@ -197,4 +198,4 @@ const StockInterface = ({
   );
 };
 
-export default StockInterface;
+export default StockModal;

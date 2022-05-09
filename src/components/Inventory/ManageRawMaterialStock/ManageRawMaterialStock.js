@@ -1,5 +1,3 @@
-import React from "react";
-import StockInterface from "../StockInterface";
 import { useState, useEffect } from "react";
 import moment from "moment";
 import { message } from "antd";
@@ -9,6 +7,7 @@ import InputNumber from "../../General/InputNumber";
 import EditStockForm from "../../../classes/EditStockForm";
 import InputDatePicker from "../../InputFields/InputDatePicker";
 import { dateFormChecker } from "../../../helper/Checker";
+import StockModal from "../StockModal";
 
 const ManageRawMaterialStock = ({
   close,
@@ -16,8 +15,7 @@ const ManageRawMaterialStock = ({
   unit,
   logistics,
   id,
-  sendAddToParent,
-  sendReductionToParent,
+  sendChangesToParent,
   totalAmount,
 }) => {
   const [logisticList, setLogisticList] = useState([]);
@@ -27,9 +25,10 @@ const ManageRawMaterialStock = ({
   const [orderDate, setOrderDate] = useState("");
   const [receivedDate, setReceivedDate] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
-    if (logistics.length >= 0) {
+    if (logistics.length !== undefined) {
       setLogisticList(logistics);
       setEditForm(new EditStockForm(logistics));
       setOriginalForm(new EditStockForm(logistics));
@@ -46,7 +45,8 @@ const ManageRawMaterialStock = ({
     if (
       amount != null &&
       dateFormChecker(receivedDate) &&
-      dateFormChecker(expirationDate)
+      dateFormChecker(expirationDate) &&
+      quantity !== null
     ) {
       if (amount <= 0) {
         message.error("The amount needs to be a positive number!");
@@ -68,7 +68,7 @@ const ManageRawMaterialStock = ({
       return true;
     }
     message.error(
-      "Amount, received date and expiration date needs to be filled!"
+      "Amount, quantity, received date, and expiration date needs to be filled correctly!"
     );
     return false;
   };
@@ -77,55 +77,44 @@ const ManageRawMaterialStock = ({
     if (!isPassingRestrictions()) {
       return;
     }
-    const data = {
-      raw_material_id: parseInt(id),
-      stock_id: "",
-      amount: amount,
-      order_date: checkEmptyInput(orderDate),
-      received_date: checkEmptyInput(receivedDate),
-      expiration_date: checkEmptyInput(expirationDate),
-    };
 
-    await API.rawMaterial.addStock(id, data).then((res) => {
-      data.stock_id = res.stock_id;
-      editForm.add(res.stock_id, amount);
+    let newList = logistics;
+    let newAmount = totalAmount;
+    for (let i = 0; i < quantity; i++) {
+      const data = {
+        raw_material_id: parseInt(id),
+        stock_id: "",
+        amount: amount,
+        order_date: checkEmptyInput(orderDate),
+        received_date: checkEmptyInput(receivedDate),
+        expiration_date: checkEmptyInput(expirationDate),
+      };
+      await API.rawMaterial.addStock(id, data).then((res) => {
+        data.stock_id = res.stock_id;
+        editForm.add(res.stock_id, amount);
+      });
+      newList = newList.concat(data);
+      newAmount += amount;
+    }
+    API.rawMaterial.updateTotalAmount(id).then(() => {
+      setLogisticList(newList);
+      sendChangesToParent(newList, newAmount);
+      SuccessNotification("You have successfully added new stock");
+      close(e);
     });
-    API.rawMaterial.updateTotalAmount(id);
-
-    const mergedList = logistics.concat(data);
-    setLogisticList(mergedList);
-    sendAddToParent(mergedList);
-    SuccessNotification("You have successfully added a new stock");
-    close(e);
   };
-  
-  const reduceStock = (e) => {
-    let totalReducedAmount = 0;
-    for (let index = 0; index < logisticList.length; index++) {
-      totalReducedAmount += editForm.stocks[index].subtracted_amount;
-      logisticList[index].amount -= editForm.stocks[index].subtracted_amount;
+
+  const reduceStock = async (e) => {
+    //Reduction
+    let newAmount = totalAmount;
+    for (let i = 0; i < logisticList.length; i++) {
+      newAmount -= editForm.stocks[i].subtracted_amount;
+      logisticList[i].amount -= editForm.stocks[i].subtracted_amount;
     }
 
-    logisticList.forEach((e) => {
-      if (e.amount === 0) {
-        SuccessNotification(
-          "You have successfully removed Stock " + e.stock_id
-        );
-      }
-    });
-    sendReductionsToAPI();
-    API.rawMaterial.updateTotalAmount(id);
-
-    //Update the lists
-    editForm.updateForm();
-    const filteredList = logisticList.filter((e) => e.amount !== 0);
-    setLogisticList(filteredList);
-    sendReductionToParent(filteredList, totalReducedAmount);
-    close(e);
-  };
-
-  const sendReductionsToAPI = () => {
-    editForm.stocks.forEach((e) => {
+    //API Calls
+    await editForm.stocks.forEach((e) => {
+      console.log(e);
       if (e.new_amount === 0) {
         API.rawMaterial.disableStock(id, e);
       } else if (
@@ -136,13 +125,44 @@ const ManageRawMaterialStock = ({
         API.rawMaterial.updateStock(id, e);
       }
     });
+    API.rawMaterial.updateTotalAmount(id).then(() => {
+      //Remove empty stocks
+      const filteredList = logisticList.filter((e) => e.amount !== 0);
+      editForm.updateForm();
+
+      //Update UI
+      setLogisticList(filteredList);
+      sendChangesToParent(filteredList, newAmount);
+
+      //Notifications
+      logisticList.forEach((e) => {
+        if (e.amount === 0) {
+          SuccessNotification(
+            "You have successfully removed Stock " + e.stock_id
+          );
+        }
+      });
+      //Close Modal
+      close(e);
+    });
   };
 
   const AddStockComponents = (
     <div className="rows">
       <div className="column-1">
         <div className="header-field-wrapper">
-          <span className="sub-header">Amount</span>
+          <span className="sub-header">Quantity</span>
+          <InputNumber
+            onChange={(e) => setQuantity(e)}
+            value={quantity}
+            placeholder="e.g. 2"
+            min={1}
+            max={24}
+            step={1}
+          />
+        </div>
+        <div className="header-field-wrapper">
+          <span className="sub-header">Amount (In Each Package)</span>
           <InputNumber
             onChange={(e) => setAmount(e)}
             value={amount}
@@ -176,7 +196,7 @@ const ManageRawMaterialStock = ({
   );
 
   return (
-    <StockInterface
+    <StockModal
       visible={visible}
       close={close}
       editForm={editForm}

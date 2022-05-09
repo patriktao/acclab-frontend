@@ -21,7 +21,7 @@ const LoginComponent = () => {
       const response = await API.authentication.login(
         values.email,
         values.password
-        );
+      );
       switch (response.message) {
         case "success":
           loginSuccess();
@@ -51,61 +51,70 @@ const LoginComponent = () => {
     console.log("Failed:", errorInfo);
   };
 
+  const LoginForm = (
+    <Form
+      name="basic"
+      initialValues={{
+        remember: true,
+      }}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+    >
+      <div className="login-form">
+        <Form.Item
+          name="email"
+          rules={[
+            {
+              required: true,
+              message: "Please input your email",
+            },
+          ]}
+        >
+          <Input
+            prefix={<MailOutlined />}
+            placeholder="Enter your email"
+            className="username-input"
+          />
+        </Form.Item>
+        <Form.Item
+          className="input-bar"
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: "Please input your password",
+            },
+          ]}
+        >
+          <Input.Password
+            prefix={<EyeOutlined />}
+            placeholder="Enter your password"
+          />
+        </Form.Item>
+      </div>
+      <div className="login-button">
+        <Form.Item
+          wrapperCol={{
+            offset: 8,
+          }}
+        >
+          <Button type="primary" htmlType="submit">
+            Login
+          </Button>
+        </Form.Item>
+      </div>
+    </Form>
+  );
+
   return (
-    <div className="login-forms">
-      <Form
-        name="basic"
-        initialValues={{
-          remember: true,
-        }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-      >
-        <div className="login-form">
-          <Form.Item
-            name="email"
-            rules={[
-              {
-                required: true,
-                message: "Please input your email",
-              },
-            ]}
-          >
-            <Input
-              prefix={<MailOutlined />}
-              placeholder="Enter your email"
-              className="username-input"
-            />
-          </Form.Item>
-          <Form.Item
-            className="input-bar"
-            name="password"
-            rules={[
-              {
-                required: true,
-                message: "Please input your password",
-              },
-            ]}
-          >
-            <Input.Password
-              prefix={<EyeOutlined />}
-              placeholder="Enter your password"
-            />
-          </Form.Item>
+    <section className="LoginComponent">
+      <div className="style">
+        <div className="header">Login</div>
+        <div className="inner-container">
+          <div className="form">{LoginForm}</div>
         </div>
-        <div className="login-button">
-          <Form.Item
-            wrapperCol={{
-              offset: 8,
-            }}
-          >
-            <Button type="primary" htmlType="submit">
-              Login
-            </Button>
-          </Form.Item>
-        </div>
-      </Form>
-    </div>
+      </div>
+    </section>
   );
 };
 

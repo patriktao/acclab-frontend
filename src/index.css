@@ -13,7 +13,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-body > iframe { display: none } /* Removes Error */
+html {
+  height: 100%;
+}
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
@@ -22,7 +24,7 @@ code {
 
 /* Common Page Css */
 .sidebar-header-layout {
-  height: 100vh !important;
+  height: 100vh;
 }
 
 .content-wrapper {
@@ -63,8 +65,8 @@ code {
 }
 
 /* Lists */
-.ant-list-lg .ant-list-item{
-  padding:16px 12px;
+.ant-list-lg .ant-list-item {
+  padding: 16px 12px;
 }
 
 /* Avatar (ICON) */

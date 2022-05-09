@@ -18,15 +18,18 @@ class EditStockForm {
     return this.#stocks;
   }
 
-  edit(stock_id, editedAmount, currentAmount) {
-    if (editedAmount !== null && 0 <= editedAmount <= currentAmount) {
-      this.#stocks.forEach((stock) => {
-        if (stock.stock_id === stock_id) {
-          stock.subtracted_amount = editedAmount;
-          stock.new_amount = stock.old_amount - editedAmount;
-        }
-      });
+  edit(stock_id, editAmount, currentAmount) {
+    if (editAmount === null || editAmount === undefined) {
+      this.adjustStock(stock_id, 0);
+    } else if (0 <= editAmount <= currentAmount) {
+      this.adjustStock(stock_id, editAmount);
     }
+  }
+
+  async adjustStock(stock_id, editAmount) {
+    const stock = await this.#stocks.find((s) => s.stock_id === stock_id);
+    stock.subtracted_amount = editAmount;
+    stock.new_amount = stock.old_amount - editAmount;
   }
 
   add(stock_id, amount) {

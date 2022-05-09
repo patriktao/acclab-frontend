@@ -39,7 +39,6 @@ const RawMaterial = (props) => {
 
     API.rawMaterial.fetchLogistics(id).then((res) => {
       setLogistics(res);
-      console.log(res);
       setTableLoading2(false);
     });
   }, [id]);
@@ -73,17 +72,10 @@ const RawMaterial = (props) => {
     setMaterialName(form.name);
   };
 
-  const addStocks = (list) => {
-    const new_amount = list[list.length - 1].amount;
-    data[0].total_amount += new_amount;
-    setTotalAmount(data[0].totalAmount);
-    setLogistics(list);
-  };
-
-  const reduceStocks = (list, reductionAmount) => {
-    data[0].total_amount -= reductionAmount;
-    setTotalAmount(data[0].total_amount);
-    setLogistics(list);
+  const manageStocks = (newList, newAmount) => {
+    data[0].total_amount = newAmount;
+    setTotalAmount(newAmount);
+    setLogistics(newList);
   };
 
   const deleteRawMaterial = (e, id) => {
@@ -138,7 +130,7 @@ const RawMaterial = (props) => {
           </Spin>
         </div>
         <div className="table-section-header">
-          <h3> In Stock </h3>
+          <h3> In Stock ({logistics.length}) </h3>
           <Spin spinning={tableLoading2} tip="Loading..." size="medium">
             <Table
               className="table-logistics"
@@ -148,6 +140,7 @@ const RawMaterial = (props) => {
               dataSource={logistics}
               pagination={{ pageSize: 7 }}
               rowKey={"stock_id"}
+              size={"small"}
             />
           </Spin>
         </div>
@@ -165,8 +158,7 @@ const RawMaterial = (props) => {
       id={id}
       unit={unit}
       logistics={logistics}
-      sendAddToParent={addStocks}
-      sendReductionToParent={reduceStocks}
+      sendChangesToParent={manageStocks}
       totalAmount={totalAmount}
     />
   );

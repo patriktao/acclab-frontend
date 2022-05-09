@@ -1,6 +1,5 @@
-import React from "react";
 import { useEffect, useState } from "react";
-import StockInterface from "../StockInterface";
+import StockModal from "../StockModal";
 import EditStockForm from "../../../classes/EditStockForm";
 import { InputDatePicker } from "../../InputFields";
 import InputNumber from "../../General/InputNumber";
@@ -16,8 +15,7 @@ const ManageSfpStock = ({
   unit,
   logistics,
   id,
-  sendAddToParent,
-  sendReductionToParent,
+  sendChangesToParent,
   totalAmount,
 }) => {
   const [logisticList, setLogisticList] = useState([]);
@@ -26,9 +24,10 @@ const ManageSfpStock = ({
   const [amount, setAmount] = useState();
   const [productionDate, setProductionDate] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
-    if (logistics.length >= 0) {
+    if (logistics !== undefined) {
       setLogisticList(logistics);
       setEditForm(new EditStockForm(logistics));
       setOriginalForm(new EditStockForm(logistics));
@@ -36,14 +35,26 @@ const ManageSfpStock = ({
   }, [logistics]);
 
   const isPassingRestrictions = () => {
-    if (amount != null && dateFormChecker(productionDate)) {
-      if (amount <= 0) {
-        message.error("The amount needs to be a positive number!");
+    if (
+      amount !== null &&
+      dateFormChecker(productionDate) &&
+      quantity !== null
+    ) {
+      if (!(typeof amount === "number")) {
+        message.error("Please enter a number in amount!");
+        return false;
+      } else if (quantity <= 0) {
+        message.error("You need at least 1 quantity!");
+        return false;
+      } else if (!(typeof amount === "number")) {
+        message.error("Please enter a number in quantity!");
         return false;
       }
       return true;
     }
-    message.error("Amount and production date need to be filled!");
+    message.error(
+      "Amount, quantity and production date need to be filled correctly!"
+    );
     return false;
   };
 
@@ -58,56 +69,46 @@ const ManageSfpStock = ({
       return;
     }
 
-    const data = {
-      raw_material_id: parseInt(id),
-      stock_id: "",
-      amount: amount,
-      production_date: checkEmptyInput(productionDate),
-      expiration_date: checkEmptyInput(expirationDate),
-    };
+    //Adding quantity
+    let newList = logistics;
+    let newAmount = totalAmount;
+    for (let i = 0; i < quantity; i++) {
+      const data = {
+        raw_material_id: parseInt(id),
+        stock_id: "",
+        amount: amount,
+        production_date: checkEmptyInput(productionDate),
+        expiration_date: checkEmptyInput(expirationDate),
+      };
 
-    // API call and get the new generated stock_id
-    await API.sfp.addStock(id, data).then((res) => {
-      data.stock_id = res.stock_id;
-      editForm.add(res.stock_id, amount);
-    });
+      // API call and get the new generated stock_id
+      await API.sfp.addStock(id, data).then((res) => {
+        data.stock_id = res.stock_id;
+        editForm.add(res.stock_id, amount);
+      });
 
+      newList = newList.concat(data);
+      newAmount += amount;
+    }
     API.sfp.updateTotalAmount(id);
-    const mergedList = logistics.concat(data);
-    setLogisticList(mergedList);
-    sendAddToParent(mergedList);
+
+    //Update UI
+    setLogisticList(newList);
+    sendChangesToParent(newList, newAmount);
     SuccessNotification("You have successfully added a new stock");
     close(e);
   };
 
-  const reduceStock = (e) => {
-    let totalReducedAmount = 0;
-    for (let index = 0; index < logisticList.length; index++) {
-      logisticList[index].amount -= editForm.stocks[index].subtracted_amount;
-      totalReducedAmount += editForm.stocks[index].subtracted_amount;
+  const reduceStock = async (e) => {
+    //Reduction
+    let newAmount = totalAmount;
+    for (let i = 0; i < logisticList.length; i++) {
+      logisticList[i].amount -= editForm.stocks[i].subtracted_amount;
+      newAmount -= editForm.stocks[i].subtracted_amount;
     }
 
-    logisticList.forEach((e) => {
-      if (e.amount === 0) {
-        SuccessNotification(
-          "You have successfully removed Stock " + e.stock_id
-        );
-      }
-    });
-
-    sendReductionsToAPI();
-    API.sfp.updateTotalAmount(id);
-
-    //Update the lists
-    const filteredList = logisticList.filter((e) => e.amount !== 0);
-    editForm.updateForm();
-    setLogisticList(filteredList);
-    sendReductionToParent(filteredList, totalReducedAmount);
-    close(e);
-  };
-
-  const sendReductionsToAPI = () => {
-    editForm.stocks.forEach((e) => {
+    //API Calls
+    await editForm.stocks.forEach((e) => {
       if (e.new_amount === 0) {
         API.sfp.disableStock(id, e);
       } else if (
@@ -118,11 +119,41 @@ const ManageSfpStock = ({
         API.sfp.updateStock(id, e);
       }
     });
+    API.sfp.updateTotalAmount(id);
+
+    //Remove empty stocks
+    const filteredList = logisticList.filter((e) => e.amount !== 0);
+    editForm.updateForm();
+
+    //Update UI
+    setLogisticList(filteredList);
+    sendChangesToParent(filteredList, newAmount);
+
+    //Notifications
+    logisticList.forEach((e) => {
+      if (e.amount === 0) {
+        SuccessNotification(
+          "You have successfully removed Stock " + e.stock_id
+        );
+      }
+    });
+    close(e);
   };
 
   const AddStockComponents = (
     <div className="rows">
       <div className="column-1">
+        <div className="header-field-wrapper">
+          <span className="sub-header">Quantity</span>
+          <InputNumber
+            onChange={(e) => setQuantity(e)}
+            value={quantity}
+            placeholder="e.g. 2"
+            min={1}
+            max={24}
+            step={1}
+          />
+        </div>
         <div className="header-field-wrapper">
           <span className="sub-header">Amount</span>
           <InputNumber
@@ -153,7 +184,7 @@ const ManageSfpStock = ({
   );
 
   return (
-    <StockInterface
+    <StockModal
       visible={visible}
       close={close}
       editForm={editForm}
