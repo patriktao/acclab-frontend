@@ -205,7 +205,7 @@ const EditBrands = ({ visible, close, sendChangesToParent }) => {
               allowClear
               enterbutton="true"
             />
-            <Popover trigger="click" placement={"bottom"} content={addNewBrand}>
+            <Popover trigger="click" content={addNewBrand}>
               <Button
                 type="primary"
                 style={{ height: "100%", borderRadius: "12px" }}

@@ -37,15 +37,13 @@
   flex-direction: column;
   row-gap: 1rem;
   width: 300px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
 
   .ant-btn {
     width: 80px;
   }
 
-  .button{
-    display:flex;
+  .button {
+    display: flex;
     justify-content: flex-end;
   }
 }
