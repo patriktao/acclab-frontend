@@ -17,6 +17,8 @@ html {
   height: 100%;
 }
 
+body > iframe { display: none } /* Removes Error */
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
