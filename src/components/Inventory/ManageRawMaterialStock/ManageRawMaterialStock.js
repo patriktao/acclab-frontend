@@ -116,7 +116,7 @@ const ManageRawMaterialStock = ({
     await editForm.stocks.forEach((e) => {
       console.log(e);
       if (e.new_amount === 0) {
-        API.rawMaterial.disableStock(id, e);
+        API.rawMaterial.deleteStock(id, e);
       } else if (
         e.new_amount !== e.old_amount &&
         e.new_amount > 0 &&

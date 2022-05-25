@@ -110,7 +110,7 @@ const ManageSfpStock = ({
     //API Calls
     await editForm.stocks.forEach((e) => {
       if (e.new_amount === 0) {
-        API.sfp.disableStock(id, e);
+        API.sfp.deleteStock(id, e);
       } else if (
         e.new_amount !== e.old_amount &&
         e.new_amount > 0 &&
