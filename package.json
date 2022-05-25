@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:4000",
+  "proxy": "https://acclab-backend.herokuapp.com/",
   "main": "index.js",
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^32.0.0",

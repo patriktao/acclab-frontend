@@ -90,7 +90,7 @@ const ManageSfpStock = ({
       newList = newList.concat(data);
       newAmount += amount;
     }
-    API.sfp.updateTotalAmount(id);
+    await API.sfp.updateTotalAmount(id);
 
     //Update UI
     setLogisticList(newList);
@@ -119,7 +119,7 @@ const ManageSfpStock = ({
         API.sfp.updateStock(id, e);
       }
     });
-    API.sfp.updateTotalAmount(id);
+    await API.sfp.updateTotalAmount(id);
 
     //Remove empty stocks
     const filteredList = logisticList.filter((e) => e.amount !== 0);
