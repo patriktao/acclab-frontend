@@ -1,3 +1,44 @@
+
+# 👋 Welcome to AcceleratorLAB App 👋
+
+This application is developed on Windows OS and MAC OSX. Contact **patriktao@gmail.com** if issues occur.
+
+Deploying and launching Docker Containers might be confusing, please look at README.md in Backend folder for instructions.
+
+## Programs required to run
+`Docker`
+`VS Code`
+`Node`
+`NPM`
+`Yarn via NPM`
+
+## App Specification
+### Front-End
+- React.js
+- Ant-Design
+- Axios
+- Sass
+- Moment
+### Backend
+- Node.js
+- Express.js 
+- Knex.js
+- Amazon S3
+- Bcrypt
+- Nodemon
+- Multer
+- Docker
+
+### Database
+- PostgreSQL 13.3-1
+- Docker
+
+### Nice VS Code frameworks to have
+- ESLint
+- Prettier
+- Code Spell Checker
+- ES7 
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
