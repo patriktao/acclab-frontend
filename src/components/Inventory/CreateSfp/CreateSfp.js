@@ -50,7 +50,7 @@ const CreateSfp = ({ visible, onClose, sendChangesToParent }) => {
       dataIndex: "material_name",
       key: "material_name",
       render: (material_name, record) => (
-        <Link to={`/inventory/rawmaterial/${record.raw_material_id}`}>
+        <Link to={`/rawmaterials/${record.raw_material_id}`}>
           {material_name}
         </Link>
       ),
@@ -140,7 +140,7 @@ const CreateSfp = ({ visible, onClose, sendChangesToParent }) => {
       if (res !== "failed") {
         await imageAPI().then(() => {
           sendChangesToParent(sfpForm);
-          history.push(`/inventory/sfp/${sfpForm.sfp_id}`);
+          history.push(`/sfp/${sfpForm.sfp_id}`);
         });
       }
     });

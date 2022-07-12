@@ -6,6 +6,8 @@ import {
   ProfileFilled,
   ReconciliationFilled,
   ClockCircleFilled,
+  BarsOutlined,
+  DeploymentUnitOutlined,
   ExperimentFilled,
 } from "@ant-design/icons";
 import "./Sidebar.scss";
@@ -55,10 +57,17 @@ const Sidebar = () => {
           </Menu.Item>
           <Menu.Item
             className="sidebar-item"
-            key="inventory"
-            icon={<SnippetsFilled />}
+            key="rawmaterials"
+            icon={<BarsOutlined />}
           >
-            <Link to="/inventory">Inventory</Link>
+            <Link to="/rawmaterials">Raw Materials</Link>
+          </Menu.Item>
+          <Menu.Item
+            className="sidebar-item"
+            key="sfp"
+            icon={<DeploymentUnitOutlined />}
+          >
+            <Link to="/sfp">SFP</Link>
           </Menu.Item>
           {/*           <Menu.Item
             className="sidebar-item"

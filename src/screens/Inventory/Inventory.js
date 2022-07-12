@@ -6,7 +6,7 @@ const Inventory = () => {
   return (
     <Template
       content={
-        <section name="Inventory">
+        <section className="Inventory">
           <div>
             <h1 className="blue-text"> Inventory </h1>
             <span className="sub-header">

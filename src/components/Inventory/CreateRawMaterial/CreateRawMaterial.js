@@ -123,7 +123,7 @@ const CreateRawMaterial = ({ visible, close, sendChangesToParent }) => {
       if (res !== "failed") {
         await imageAPI().then(() => {
           sendChangesToParent(rawMaterialForm);
-          history.push(`/inventory/rawmaterial/${rawMaterialForm.id}`);
+          history.push(`/rawmaterials/${rawMaterialForm.id}`);
         });
       }
     });

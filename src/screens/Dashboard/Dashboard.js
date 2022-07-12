@@ -12,7 +12,7 @@ const Dashboard = () => {
         <section name="Dashboard">
           <div title="Paragraph-Wrapper">
             <span className="content-sub-header"> DASHBOARD </span>
-            <h1 className="blue-text"> Welcome to Accelerator Lab!</h1>
+            <h1 className="blue-text"> Welcome to Accelerator Lab</h1>
             <span className="content-sub-header">
               Here's what's happening with your inventory today
             </span>

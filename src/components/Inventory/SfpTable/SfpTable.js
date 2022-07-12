@@ -197,7 +197,7 @@ const SfpTable = () => {
       dataIndex: "sfp_name",
       key: "sfp_name",
       render: (sfp_name, record) => (
-        <Link to={"/inventory/sfp/" + record.sfp_id}>{sfp_name}</Link>
+        <Link to={"/sfp/" + record.sfp_id}>{sfp_name}</Link>
       ),
       sorter: (a, b) => a.name.localeCompare(b.name),
     },

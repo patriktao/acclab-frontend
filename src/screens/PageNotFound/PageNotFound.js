@@ -1,6 +1,6 @@
 import React from "react";
-import Photo from "../images/cones.png";
-import Template from "./Template";
+import Photo from "../../images/cones.png";
+import Template from "../Template";
 
 const PageNotFound = () => {
   return (
